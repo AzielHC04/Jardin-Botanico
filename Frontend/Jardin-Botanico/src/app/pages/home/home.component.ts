@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       descripcion: 'Crea tus propias macetas de arcilla decoradas con relieve de hojas reales del jardín.',
       horario: '10:00 AM - 12:00 PM',
       precio: '$250 MXN',
-      imagen: 'assets/imagenes/ceramica.jpg',
+      imagen: 'assets/J.jpg',
       categoria: 'hoy',
       cuposLimites: 4
     },
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       descripcion: 'Paseo guiado por la hacienda sobre la historia henequenera y sus majestuosos jardines.',
       horario: '04:00 PM - 05:30 PM',
       precio: 'Entrada General ($80 MXN)',
-      imagen: 'assets/imagenes/recorrido.jpg',
+      imagen: 'assets/J.jpg',
       categoria: 'hoy'
     },
     {
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       descripcion: 'Experiencia gastronómica maya de 3 tiempos en el restaurante principal.',
       horario: '08:00 PM - 10:30 PM',
       precio: '$650 MXN',
-      imagen: 'assets/imagenes/cena.jpg',
+      imagen: 'assets/J.jpg',
       categoria: 'hoy',
       cuposLimites: 2
     },
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       descripcion: 'Muestra especial de especies raras de orquídeas en las terrazas de la hacienda.',
       horario: '11:00 AM - 03:00 PM',
       precio: '$120 MXN',
-      imagen: 'assets/imagenes/orquideas.jpg',
+      imagen: 'assets/J.jpg',
       categoria: 'proximos'
     },
     {
@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       descripcion: 'Taller práctico de fotografía de larga exposición recorriendo la arquitectura colonial.',
       horario: '07:00 PM - 09:00 PM',
       precio: '$300 MXN',
-      imagen: 'assets/imagenes/fotografia.jpg',
+      imagen: 'assets/J.jpg',
       categoria: 'pasados'
     }
   ];
@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       subtitulo: 'Música en vivo & Coctelería Yucateca',
       fecha: 'Próximo Viernes • 08:00 PM',
       descripcion: 'Disfruta de bandas de jazz en vivo rodeado de la iluminación nocturna de los jardines coloniales y prueba nuestra coctelería artesanal.',
-      imagen: 'assets/imagenes/jazz.jpg',
+      imagen: 'assets/J.jpg',
       etiqueta: 'Imperdible'
     },
     {
@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       subtitulo: 'Tradición, Jarana & Gastronomía Maya',
       fecha: '15 de Septiembre • 07:00 PM',
       descripcion: 'Celebración especial con música y jarana en vivo, cata de licores artesanales y una cena maridaje con la mejor cocina tradicional.',
-      imagen: 'assets/imagenes/mexicana.jpg',
+      imagen: 'assets/J.jpg',
       etiqueta: 'Tradicional'
     },
     {
@@ -134,7 +134,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       subtitulo: 'Montajes Exclusivos & Recorrido por Jardines',
       fecha: 'Edición Especial de Primavera',
       descripcion: 'Conoce nuestras instalaciones, decoración colonial para bodas de ensueño, salones y banquetes gourmet.',
-      imagen: 'assets/imagenes/chino.jpg',
+      imagen: 'assets/J.jpg',
       etiqueta: 'Especial'
     }
   ];
