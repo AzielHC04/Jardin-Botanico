@@ -1,0 +1,19 @@
+<!-- card-info.component.html -->
+<div class="planea-visita-wrapper">
+  <h2 class="planea-titulo">PLANEA TU VISITA</h2>
+  <p class="planea-subtitulo">
+    ¿Sabes todo lo que puedes hacer en tu visita al Jardín en individual o en compañía? ¡Ven y descúbrelo!
+  </p>
+
+  <div class="opciones-grid">
+    <button 
+      *ngFor="let opcion of opcionesVisita" 
+      class="opcion-card"
+      [class.active]="opcionActiva === opcion.id"
+      (click)="seleccionarOpcion(opcion.id)"
+    >
+      <div class="opcion-icono">{{ opcion.icono }}</div>
+      <span class="opcion-label">{{ opcion.titulo }}</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,273 @@
+:host {
+  display: block;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+}
+
+.gastronomia-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.gastronomia-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 3.5rem;
+}
+
+.badge-seccion {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
+  font-size: 0.875rem;
+  font-weight: 800;
+  padding: 0.4rem 1.25rem;
+  border-radius: 9999px;
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
+  letter-spacing: 0.02em;
+}
+
+.gastronomia-header h1 {
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.gastronomia-header p {
+  color: #64748b;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Lista de Eventos */
+.eventos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* Tarjeta Principal */
+.gastro-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.gastro-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+  border-color: #86efac;
+}
+
+@media (min-width: 850px) {
+  .gastro-card {
+    /* Lado Izquierdo (Info): 1.25fr | Lado Derecho (Imagen): 0.75fr */
+    grid-template-columns: 1.25fr 0.75fr;
+  }
+}
+
+/* Lado Izquierdo: Info */
+.gastro-info {
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info-header-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* INSIGNIA DE FECHA (REMARCADA Y MUY VISTOSA) */
+.fecha-badge-destacada {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 0.6rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  box-shadow: 0 6px 16px rgba(21, 128, 61, 0.3);
+  border: 2px solid #bbf7d0;
+  flex-shrink: 0;
+}
+
+.fecha-dia-nombre {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #86efac;
+}
+
+.fecha-numero {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0.1rem 0;
+}
+
+.fecha-mes {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #dcfce7;
+}
+
+/* Agrupador de Título y Tags */
+.titulo-meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hora-badge, .lugar-badge {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #475569;
+  background-color: #f1f5f9;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+.gastro-titulo {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.gastro-descripcion {
+  color: #475569;
+  font-size: 0.975rem;
+  line-height: 1.65;
+  margin: 0 0 1.75rem 0;
+}
+
+/* Footer de Info (Precio y Botón) */
+.gastro-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 2px dashed #f1f5f9;
+}
+
+.precio-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.precio-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.precio-valor {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #15803d;
+}
+
+/* Botón de Acción */
+.btn-reservar {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-reservar:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+}
+
+.btn-icono {
+  transition: transform 0.2s ease;
+}
+
+.btn-reservar:hover .btn-icono {
+  transform: translateX(3px);
+}
+
+/* Lado Derecho: Imagen */
+.gastro-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  overflow: hidden;
+  background-color: #cbd5e1;
+}
+
+.gastro-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.gastro-card:hover .gastro-img {
+  transform: scale(1.05);
+}
+
+.media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%);
+}
+
+.categoria-overlay {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}

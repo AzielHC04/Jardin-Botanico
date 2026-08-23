@@ -75,9 +75,11 @@
               </span>
             </div>
 
-            <button class="btn-reservar" (click)="$event.stopPropagation(); reservar(evento)">
-              <span>Reservar lugar</span>
-              <span class="arrow">→</span>
+            <button 
+              class="btn-reservar" 
+              [routerLink]="['/reserva', evento.id]"
+            >
+              Reservar Lugar
             </button>
           </div>
 

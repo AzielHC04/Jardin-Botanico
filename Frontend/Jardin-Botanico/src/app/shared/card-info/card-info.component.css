@@ -1,0 +1,71 @@
+/* card-info.component.css */
+.planea-visita-wrapper {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  border: 1px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+.planea-titulo {
+  color: #729e42; /* Verde idéntico a la captura */
+  font-size: 2.25rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem 0;
+}
+
+.planea-subtitulo {
+  color: #334155;
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.5;
+}
+
+.opciones-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.opcion-card {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.opcion-card:hover {
+  transform: translateY(-3px);
+}
+
+.opcion-icono {
+  font-size: 2.5rem;
+  filter: grayscale(100%) opacity(0.4);
+  transition: filter 0.2s ease;
+}
+
+.opcion-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+/* Estado Seleccionado (Verde como en la imagen) */
+.opcion-card.active .opcion-icono {
+  filter: grayscale(0%) opacity(1);
+}
+
+.opcion-card.active .opcion-label {
+  color: #729e42;
+}

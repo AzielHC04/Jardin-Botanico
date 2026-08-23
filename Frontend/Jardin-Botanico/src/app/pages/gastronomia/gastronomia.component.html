@@ -1,0 +1,71 @@
+<section class="gastronomia-container">
+
+  <!-- Header de la Sección -->
+  <header class="gastronomia-header">
+    <span class="badge-seccion">✨ Experiencias Culinarias Únicas</span>
+    <h1>Gastronomía del Jardín</h1>
+    <p>
+      Descubre eventos culinarios donde la botánica y la alta cocina se encuentran. Elige el día de tu preferencia y reserva tu experiencia.
+    </p>
+  </header>
+
+  <!-- Lista de Tarjetas Vistosas -->
+  <div class="eventos-lista">
+    
+    <article class="gastro-card" *ngFor="let evento of eventosGastronomia">
+      
+      <!-- LADO IZQUIERDO: Información del Evento -->
+      <div class="gastro-info">
+        
+        <!-- Bloque de Encabezado con Fecha Destacada -->
+        <div class="info-header-wrapper">
+          
+          <!-- Insignia de Fecha Estilo Calendario (MUY VISTOSA) -->
+          <div class="fecha-badge-destacada">
+            <span class="fecha-dia-nombre">{{ evento.dia.split(' ')[0] }}</span>
+            <span class="fecha-numero">{{ evento.dia.split(' ')[1] }}</span>
+            <span class="fecha-mes">{{ evento.dia.split(' ')[3] }}</span>
+          </div>
+
+          <div class="titulo-meta-group">
+            <div class="meta-tags">
+              <span class="hora-badge">⏰ {{ evento.hora }}</span>
+              <span class="lugar-badge">📍 {{ evento.lugar }}</span>
+            </div>
+            <h2 class="gastro-titulo">{{ evento.titulo }}</h2>
+          </div>
+
+        </div>
+
+        <!-- Descripción -->
+        <p class="gastro-descripcion">{{ evento.descripcion }}</p>
+
+        <!-- Footer de la Tarjeta (Precio y Botón) -->
+        <div class="gastro-footer">
+          <div class="precio-container">
+            <span class="precio-label">Precio por persona</span>
+            <span class="precio-valor">{{ evento.precio }}</span>
+          </div>
+
+            <button 
+              class="btn-reservar" 
+              [routerLink]="['/reserva', evento.id]"
+            >
+              Reservar Lugar
+            </button>
+        </div>
+
+      </div>
+
+      <!-- LADO DERECHO: Imagen del Evento con Gradient Overlays -->
+      <div class="gastro-media">
+        <img [src]="evento.imagen" [alt]="evento.titulo" class="gastro-img" />
+        <div class="media-overlay"></div>
+        <span class="categoria-overlay">🍽️ Gastronomía</span>
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
