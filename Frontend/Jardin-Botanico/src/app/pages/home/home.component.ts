@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       fecha: 'Próximo Viernes • 08:00 PM',
       descripcion: 'Disfruta de bandas de jazz en vivo rodeado de la iluminación nocturna de los jardines coloniales y prueba nuestra coctelería artesanal.',
       imagen: 'assets/imagenes/jazz.jpg',
-      etiqueta: 'Imperdible'
+      etiqueta: 'Especial'
     },
     {
       id: 102,
@@ -146,19 +146,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private sanitizer: DomSanitizer
   ) {
-    const rawMapUrl = 'https://maps.google.com/maps?q=Hacienda%20San%20Ildefonso%20Teya&t=&z=15&ie=UTF8&iwloc=&output=embed';
-    
+    const rawMapUrl =
+      'https://maps.google.com/maps?' +
+      'q=Jard%C3%ADn%20Bot%C3%A1nico%20de%20Teya%2C%20' +
+      'Carretera%20M%C3%A9rida-Canc%C3%BAn%20km%2011.2%2C%20' +
+      '97370%20M%C3%A9rida%2C%20Yucat%C3%A1n' +
+      '&t=&z=17&ie=UTF8&iwloc=&output=embed';
+
     this.infoHacienda = {
-      nombre: 'Hacienda San Ildefonso Teya',
+      nombre: 'Jardín Botánico de Teya',
+
       subtitulo: 'Historia, Gastronomía Yucateca & Eventos',
-      historia: 'Fundada en 1683, la Hacienda Teya comenzó como una próspera finca ganadera y posteriormente henequenera. Tras años de abandono, fue restaurada en 1974 para convertirse en un referente emblemático del turismo, la cocina tradicional yucateca, el hospedaje boutique y la celebración de eventos inolvidables.',
-      direccion: 'Carretera Mérida - Peto Km 12.5, Kanasín, Yucatán',
-      referencia: 'A solo 15 minutos del centro de Mérida, rumbo a Cancún/Chetumal.',
+
+      historia:
+        'Fundada en 1683, la Hacienda Teya comenzó como una próspera finca ganadera y posteriormente henequenera. Tras años de abandono, fue restaurada en 1974 para convertirse en un referente emblemático del turismo, la cocina tradicional yucateca, el hospedaje boutique y la celebración de eventos inolvidables.',
+
+      direccion:
+        'Carretera Mérida - Cancún Km 11.2, C.P. 97370, Mérida, Yucatán',
+
+      referencia:
+        'Jardín Botánico de Teya, sobre la carretera Mérida - Cancún.',
+
       telefono: '+52 (999) 988 0800',
       whatsapp: '+52 (999) 123 4567',
       email: 'ventas@haciendateya.com',
-      horariosAtencion: 'Lunes a Domingo: 08:00 AM - 06:00 PM',
-      mapaEmbedUrl: this.sanitizer.bypassSecurityTrustResourceUrl(rawMapUrl)
+
+      horariosAtencion:
+        'Lunes a Domingo: 08:00 AM - 06:00 PM',
+
+      mapaEmbedUrl:
+        this.sanitizer.bypassSecurityTrustResourceUrl(rawMapUrl)
     };
   }
 
@@ -234,6 +251,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   abrirComoLlegar(): void {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Hacienda San Ildefonso Teya, Yucatan')}`, '_blank');
+    window.open(
+      'https://maps.app.goo.gl/rWZDS1EzM5FnLZ7C9',
+      '_blank',
+      'noopener,noreferrer'
+    );
   }
 }
