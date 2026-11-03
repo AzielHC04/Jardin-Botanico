@@ -127,7 +127,7 @@
 
       <article
         class="experience-card"
-        *ngFor="let experiencia of experienciasDestacadas"
+        *ngFor="let experiencia of experienciasDestacadas; let i = index"
       >
 
         <div class="experience-image">
@@ -143,7 +143,7 @@
         <div class="experience-content">
 
           <span class="card-number">
-            0{{ experiencia.id }}
+            {{ (i + 1).toString().padStart(2, '0') }}
           </span>
 
           <h3>

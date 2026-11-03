@@ -7,7 +7,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { SupabaseService } from '../../core/services/supabase.service';
+import {
+  SupabaseService
+} from '../../core/services/supabase.service';
 
 import {
   Banner
@@ -17,10 +19,14 @@ import {
   Evento
 } from '../../core/models/evento.model';
 
+import {
+  Experiencia
+} from '../../core/models/experiencia.model';
+
 
 interface ExperienciaDestacada {
 
-  id: number;
+  id: string;
 
   titulo: string;
 
@@ -60,22 +66,26 @@ interface EventoDestacado {
     RouterLink
   ],
 
-  templateUrl: './home.component.html',
+  templateUrl:
+    './home.component.html',
 
-  styleUrl: './home.component.css'
+  styleUrl:
+    './home.component.css'
 })
 export class HomeComponent
 implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     HERO / BANNERS
+     BANNERS
      ========================================================= */
 
-  banners: Banner[] = [];
+  banners:
+    Banner[] = [];
 
 
-  currentBannerIndex: number = 0;
+  currentBannerIndex:
+    number = 0;
 
 
   private bannerInterval?:
@@ -86,9 +96,12 @@ implements OnInit, OnDestroy {
     number = 5000;
 
 
-  get bannerActual(): Banner | null {
+  get bannerActual():
+    Banner | null {
 
-    if (this.banners.length === 0) {
+    if (
+      this.banners.length === 0
+    ) {
 
       return null;
 
@@ -103,76 +116,15 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     EXPERIENCIAS
-
-     TODAVÍA LOCALES.
-     Se migrarán después a Supabase.
+     EXPERIENCIAS DESTACADAS
      ========================================================= */
 
   experienciasDestacadas:
-    ExperienciaDestacada[] = [
-
-    {
-
-      id: 1,
-
-      titulo:
-        'Recorridos por el Jardín',
-
-      descripcion:
-        'Descubre la riqueza natural del Jardín Botánico de Teya mediante recorridos y experiencias de interpretación.',
-
-      imagen:
-        'assets/J.jpg',
-
-      ruta:
-        '/jardin'
-
-    },
-
-    {
-
-      id: 2,
-
-      titulo:
-        'Gastronomía Yucateca',
-
-      descripcion:
-        'Conoce los sabores tradicionales de Yucatán y la propuesta gastronómica que forma parte de la experiencia Teya.',
-
-      imagen:
-        'assets/b.jpg',
-
-      ruta:
-        '/gastronomia'
-
-    },
-
-    {
-
-      id: 3,
-
-      titulo:
-        'Experiencias Especiales',
-
-      descripcion:
-        'Actividades culturales, naturales y experiencias diseñadas para disfrutar Teya de una manera diferente.',
-
-      imagen:
-        'assets/imagenes/jazz.jpg',
-
-      ruta:
-        '/experiencias'
-
-    }
-
-  ];
+    ExperienciaDestacada[] = [];
 
 
   /* =========================================================
      EVENTOS DESTACADOS
-
-     Ahora vienen desde Supabase.
      ========================================================= */
 
   eventosDestacados:
@@ -183,13 +135,13 @@ implements OnInit, OnDestroy {
      ESTADOS
      ========================================================= */
 
-  cargandoEventos:
+  cargandoExperiencias:
     boolean = true;
 
 
-  /* =========================================================
-     CONSTRUCTOR
-     ========================================================= */
+  cargandoEventos:
+    boolean = true;
+
 
   constructor(
     private supabaseService:
@@ -201,17 +153,15 @@ implements OnInit, OnDestroy {
      CICLO DE VIDA
      ========================================================= */
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit():
+    Promise<void> {
 
-
-    /*
-     * Ejecutamos ambas consultas
-     * al mismo tiempo.
-     */
 
     await Promise.all([
 
       this.cargarBanners(),
+
+      this.cargarExperienciasDestacadas(),
 
       this.cargarEventosDestacados()
 
@@ -256,7 +206,8 @@ implements OnInit, OnDestroy {
 
 
       /*
-       * FALLBACK LOCAL
+       * Solo el Hero conserva fallback,
+       * para evitar una portada completamente vacía.
        */
 
       this.banners = [
@@ -303,7 +254,74 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     EVENTOS
+     EXPERIENCIAS DESTACADAS
+     ========================================================= */
+
+  private async cargarExperienciasDestacadas():
+    Promise<void> {
+
+    this.cargandoExperiencias = true;
+
+
+    try {
+
+      const experiencias:
+        Experiencia[] =
+          await this.supabaseService
+            .obtenerExperienciasDestacadas(
+              3
+            );
+
+
+      this.experienciasDestacadas =
+        experiencias.map(
+          experiencia => ({
+
+            id:
+              experiencia.id,
+
+            titulo:
+              experiencia.titulo,
+
+            descripcion:
+              experiencia.descripcion,
+
+            imagen:
+              experiencia.imagen_url
+              ?? 'assets/J.jpg',
+
+            ruta:
+              experiencia.ruta_destino
+              ?? '/experiencias'
+
+          })
+        );
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible cargar las experiencias destacadas:',
+        error
+      );
+
+
+      this.experienciasDestacadas =
+        [];
+
+    }
+    finally {
+
+      this.cargandoExperiencias =
+        false;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     EVENTOS DESTACADOS
      ========================================================= */
 
   private async cargarEventosDestacados():
@@ -317,7 +335,9 @@ implements OnInit, OnDestroy {
       const eventos:
         Evento[] =
           await this.supabaseService
-            .obtenerEventosDestacados(3);
+            .obtenerEventosDestacados(
+              3
+            );
 
 
       this.eventosDestacados =
@@ -337,20 +357,14 @@ implements OnInit, OnDestroy {
       );
 
 
-      /*
-       * No utilizamos los eventos ficticios
-       * como fallback.
-       *
-       * Si Supabase falla, simplemente
-       * no mostraremos eventos falsos.
-       */
-
-      this.eventosDestacados = [];
+      this.eventosDestacados =
+        [];
 
     }
     finally {
 
-      this.cargandoEventos = false;
+      this.cargandoEventos =
+        false;
 
     }
 
@@ -358,11 +372,12 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     CONVERSIÓN EVENTO → TARJETA HOME
+     EVENTO → HOME
      ========================================================= */
 
   private convertirEventoParaHome(
-    evento: Evento
+    evento:
+      Evento
   ): EventoDestacado {
 
     return {
@@ -397,17 +412,16 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     FORMATEAR HORARIO
+     HORARIO
      ========================================================= */
 
   private formatearHorario(
-    fechaInicio: string,
-    fechaFin: string | null
+    fechaInicio:
+      string,
+
+    fechaFin:
+      string | null
   ): string {
-
-    const inicio =
-      new Date(fechaInicio);
-
 
     const formatter =
       new Intl.DateTimeFormat(
@@ -430,47 +444,47 @@ implements OnInit, OnDestroy {
       );
 
 
-    const inicioTexto =
-      formatter.format(inicio);
+    const inicio =
+      formatter.format(
+        new Date(
+          fechaInicio
+        )
+      );
 
 
     if (!fechaFin) {
 
-      return inicioTexto;
+      return inicio;
 
     }
 
 
     const fin =
-      new Date(fechaFin);
+      formatter.format(
+        new Date(
+          fechaFin
+        )
+      );
 
 
-    return (
-      `${inicioTexto} - ${formatter.format(fin)}`
-    );
+    return `${inicio} - ${fin}`;
 
   }
 
 
   /* =========================================================
-     FORMATEAR PRECIO
+     PRECIO
      ========================================================= */
 
   private formatearPrecio(
-    evento: Evento
+    evento:
+      Evento
   ): string {
 
 
-    /*
-     * Si la empresa escribe un texto específico,
-     * tiene prioridad.
-     *
-     * Ejemplo:
-     * "Entrada libre"
-     * "Consultar precio"
-     */
-
-    if (evento.precio_texto) {
+    if (
+      evento.precio_texto
+    ) {
 
       return evento.precio_texto;
 
@@ -486,40 +500,37 @@ implements OnInit, OnDestroy {
     }
 
 
-    const precio =
-      new Intl.NumberFormat(
-        'es-MX',
-        {
+    return new Intl.NumberFormat(
+      'es-MX',
+      {
 
-          style:
-            'currency',
+        style:
+          'currency',
 
-          currency:
-            evento.moneda,
+        currency:
+          evento.moneda,
 
-          minimumFractionDigits:
-            0,
+        minimumFractionDigits:
+          0,
 
-          maximumFractionDigits:
-            2
+        maximumFractionDigits:
+          2
 
-        }
-      )
-        .format(
-          evento.precio
-        );
-
-
-    return precio;
+      }
+    )
+      .format(
+        evento.precio
+      );
 
   }
 
 
   /* =========================================================
-     CARRUSEL DEL HERO
+     CARRUSEL HERO
      ========================================================= */
 
-  private iniciarCarrusel(): void {
+  private iniciarCarrusel():
+    void {
 
     this.detenerCarrusel();
 
@@ -551,7 +562,8 @@ implements OnInit, OnDestroy {
   }
 
 
-  private detenerCarrusel(): void {
+  private detenerCarrusel():
+    void {
 
     if (
       this.bannerInterval

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Banner } from '../models/banner.model';
 import { Evento } from '../models/evento.model';
+import { Experiencia } from '../models/experiencia.model';
 import { ConfiguracionSitio } from '../models/configuracion-sitio.model';
 import {
   createClient,
@@ -146,6 +147,10 @@ export class SupabaseService {
     limite: number = 3
   ): Promise<Evento[]> {
 
+    const ahora =
+      new Date().toISOString();
+
+
     const {
       data,
       error
@@ -172,16 +177,31 @@ export class SupabaseService {
         created_at,
         updated_at
       `)
-      .eq('activo', true)
-      .eq('destacado', true)
-      .eq('tipo', 'regular')
+      .eq(
+        'activo',
+        true
+      )
+      .eq(
+        'destacado',
+        true
+      )
+      .eq(
+        'tipo',
+        'regular'
+      )
+      .gte(
+        'fecha_inicio',
+        ahora
+      )
       .order(
         'fecha_inicio',
         {
           ascending: true
         }
       )
-      .limit(limite);
+      .limit(
+        limite
+      );
 
 
     if (error) {
@@ -254,6 +274,126 @@ export class SupabaseService {
 
 
     return (data ?? []) as Evento[];
+
+  }
+  /* =========================================================
+   EXPERIENCIAS
+   ========================================================= */
+
+async obtenerExperienciasActivas():
+  Promise<Experiencia[]> {
+
+  const {
+    data,
+    error
+  } = await this.supabase
+    .schema('public')
+    .from('experiencias')
+    .select(`
+      id,
+      titulo,
+      subtitulo,
+      descripcion,
+      imagen_url,
+      categoria,
+      etiqueta,
+      ruta_destino,
+      orden,
+      destacada,
+      activa,
+      created_at,
+      updated_at
+    `)
+    .eq(
+      'activa',
+      true
+    )
+    .order(
+      'orden',
+      {
+        ascending: true
+      }
+    );
+
+
+  if (error) {
+
+    console.error(
+      'Error al obtener experiencias:',
+      error
+    );
+
+    throw error;
+
+  }
+
+
+  return (data ?? []) as Experiencia[];
+
+}
+
+
+/* =========================================================
+   EXPERIENCIAS DESTACADAS DEL HOME
+   ========================================================= */
+
+  async obtenerExperienciasDestacadas(
+    limite: number = 3
+  ): Promise<Experiencia[]> {
+
+    const {
+      data,
+      error
+    } = await this.supabase
+      .schema('public')
+      .from('experiencias')
+      .select(`
+        id,
+        titulo,
+        subtitulo,
+        descripcion,
+        imagen_url,
+        categoria,
+        etiqueta,
+        ruta_destino,
+        orden,
+        destacada,
+        activa,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        'activa',
+        true
+      )
+      .eq(
+        'destacada',
+        true
+      )
+      .order(
+        'orden',
+        {
+          ascending: true
+        }
+      )
+      .limit(
+        limite
+      );
+
+
+    if (error) {
+
+      console.error(
+        'Error al obtener experiencias destacadas:',
+        error
+      );
+
+      throw error;
+
+    }
+
+
+    return (data ?? []) as Experiencia[];
 
   }
 

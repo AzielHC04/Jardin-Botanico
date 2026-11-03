@@ -1,26 +1,38 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
+import {
+  SupabaseService
+} from '../../core/services/supabase.service';
 
-interface Experiencia {
-  id: number;
+import {
+  Experiencia
+} from '../../core/models/experiencia.model';
+
+
+interface ExperienciaVista {
+
+  id: string;
 
   titulo: string;
+
   subtitulo: string;
+
   descripcion: string;
 
   imagen: string;
 
-  categoria:
-    | 'naturaleza'
-    | 'gastronomia'
-    | 'actividad'
-    | 'especial';
+  categoria: string;
 
   etiqueta: string;
 
   ruta?: string;
+
 }
 
 
@@ -34,120 +46,124 @@ interface Experiencia {
     RouterLink
   ],
 
-  templateUrl: './experiencias.component.html',
-  styleUrl: './experiencias.component.css'
+  templateUrl:
+    './experiencias.component.html',
+
+  styleUrl:
+    './experiencias.component.css'
 })
-export class ExperienciasComponent {
-
-  /* =========================================================
-     EXPERIENCIAS
-
-     Actualmente son datos locales.
-     Posteriormente vendrán desde Supabase.
-     ========================================================= */
-
-  experiencias: Experiencia[] = [
-
-    {
-      id: 1,
-
-      titulo:
-        'Recorridos por el Jardín',
-
-      subtitulo:
-        'Naturaleza & conocimiento',
-
-      descripcion:
-        'Recorre los espacios del Jardín Botánico de Teya y descubre su riqueza vegetal, sus colecciones y la relación entre naturaleza, conservación y patrimonio.',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'naturaleza',
-
-      etiqueta:
-        'Jardín Botánico',
-
-      ruta:
-        '/jardin'
-    },
+export class ExperienciasComponent
+implements OnInit {
 
 
-    {
-      id: 2,
-
-      titulo:
-        'Gastronomía Yucateca',
-
-      subtitulo:
-        'Tradición & sabores de Yucatán',
-
-      descripcion:
-        'Conoce la propuesta gastronómica de Teya y disfruta sabores inspirados en la cocina tradicional yucateca dentro de un entorno histórico y natural.',
-
-      imagen:
-        'assets/b.jpg',
-
-      categoria:
-        'gastronomia',
-
-      etiqueta:
-        'Gastronomía',
-
-      ruta:
-        '/gastronomia'
-    },
+  experiencias:
+    ExperienciaVista[] = [];
 
 
-    {
-      id: 3,
-
-      titulo:
-        'Talleres & Actividades',
-
-      subtitulo:
-        'Aprendizaje & creatividad',
-
-      descripcion:
-        'Participa en actividades culturales, botánicas y creativas diseñadas para acercar a los visitantes al entorno natural de Teya de una manera diferente.',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'actividad',
-
-      etiqueta:
-        'Actividades'
-    },
+  cargando:
+    boolean = true;
 
 
-    {
-      id: 4,
+  errorCarga:
+    boolean = false;
 
-      titulo:
-        'Experiencias Especiales',
 
-      subtitulo:
-        'Momentos únicos en Teya',
+  constructor(
+    private supabaseService:
+      SupabaseService
+  ) {}
 
-      descripcion:
-        'Descubre actividades temáticas, noches especiales, eventos culturales y propuestas que combinan naturaleza, patrimonio, música y gastronomía.',
 
-      imagen:
-        'assets/imagenes/jazz.jpg',
+  async ngOnInit():
+    Promise<void> {
 
-      categoria:
-        'especial',
+    await this.cargarExperiencias();
 
-      etiqueta:
-        'Especial',
+  }
 
-      ruta:
-        '/eventos'
+
+  private async cargarExperiencias():
+    Promise<void> {
+
+    this.cargando = true;
+
+    this.errorCarga = false;
+
+
+    try {
+
+      const experienciasSupabase:
+        Experiencia[] =
+          await this.supabaseService
+            .obtenerExperienciasActivas();
+
+
+      this.experiencias =
+        experienciasSupabase.map(
+          experiencia =>
+            this.convertirExperiencia(
+              experiencia
+            )
+        );
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible cargar las experiencias:',
+        error
+      );
+
+
+      this.experiencias = [];
+
+      this.errorCarga = true;
+
+    }
+    finally {
+
+      this.cargando = false;
+
     }
 
-  ];
+  }
+
+
+  private convertirExperiencia(
+    experiencia:
+      Experiencia
+  ): ExperienciaVista {
+
+    return {
+
+      id:
+        experiencia.id,
+
+      titulo:
+        experiencia.titulo,
+
+      subtitulo:
+        experiencia.subtitulo ?? '',
+
+      descripcion:
+        experiencia.descripcion,
+
+      imagen:
+        experiencia.imagen_url
+        ?? 'assets/J.jpg',
+
+      categoria:
+        experiencia.categoria ?? '',
+
+      etiqueta:
+        experiencia.etiqueta ?? '',
+
+      ruta:
+        experiencia.ruta_destino
+        ?? undefined
+
+    };
+
+  }
 
 }
