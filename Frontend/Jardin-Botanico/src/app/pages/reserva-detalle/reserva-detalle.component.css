@@ -1,376 +1,1235 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+
 :host {
+
+  --background: #fcfbf7;
+
+  --primary: #0b2b22;
+  --primary-light: #164e3f;
+
+  --accent: #c99d66;
+  --accent-soft: #fbf5ed;
+
+  --text: #2c3531;
+  --muted: #64748b;
+
+  --border: #e8eae6;
+
   display: block;
-  background-color: #f8fafc;
-  color: #1e293b;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  min-height: 100vh;
+
+  background:
+    var(--background);
+
 }
 
-/* HERO BANNER */
-.hero-evento {
-  position: relative;
-  background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-  padding: 5rem 1.5rem 4rem;
-  color: #ffffff;
-  border-radius: 0 0 30px 30px;
+
+*,
+*::before,
+*::after {
+
+  box-sizing:
+    border-box;
+
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.92) 100%);
-  border-radius: 0 0 30px 30px;
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.detalle-page {
+
+  width: 100%;
+
+  max-width: 1180px;
+
+  margin:
+    0 auto;
+
+  padding:
+    40px
+    20px
+    90px;
+
+  color:
+    var(--text);
+
+  font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
 }
 
-.hero-content {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
+
+/* =========================================================
+   ESTADOS
+   ========================================================= */
+
+.estado-panel {
+
+  max-width:
+    650px;
+
+  margin:
+    100px
+    auto;
+
+  padding:
+    50px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    22px;
+
+  background:
+    #ffffff;
+
+  text-align:
+    center;
+
+  box-shadow:
+    0 15px 35px
+    rgba(11, 43, 34, 0.06);
+
 }
 
-.badge-categoria {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  color: #86efac;
-  border: 1px solid rgba(134, 239, 172, 0.3);
-  padding: 0.4rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  display: inline-block;
-  margin-bottom: 1rem;
+
+.estado-icono {
+
+  margin-bottom:
+    15px;
+
+  color:
+    var(--accent);
+
+  font-size:
+    3rem;
+
 }
 
-.hero-content h1 {
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  font-weight: 900;
-  margin: 0 0 2rem 0;
-  line-height: 1.15;
+
+.estado-panel h2 {
+
+  margin:
+    0
+    0
+    10px;
+
+  color:
+    var(--primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    2rem;
+
 }
 
-.meta-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  padding: 1.25rem 2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  width: fit-content;
+
+.estado-panel p {
+
+  margin:
+    0
+    0
+    25px;
+
+  color:
+    var(--muted);
+
+  line-height:
+    1.7;
+
 }
 
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
+
+.estado-panel.error {
+
+  border-color:
+    #ecd9d4;
+
+  background:
+    #fff9f7;
+
 }
 
-.meta-icon {
-  font-size: 1.5rem;
+
+.estado-boton {
+
+  display:
+    inline-flex;
+
+  padding:
+    12px
+    22px;
+
+  border-radius:
+    11px;
+
+  color:
+    #ffffff;
+
+  background:
+    var(--primary);
+
+  font-weight:
+    700;
+
+  text-decoration:
+    none;
+
 }
 
-.meta-item small {
-  display: block;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.detalle-hero {
+
+  position:
+    relative;
+
+  min-height:
+    500px;
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    26px;
+
+  background:
+    var(--primary);
+
+  box-shadow:
+    0 24px 50px
+    rgba(11, 43, 34, 0.16);
+
 }
 
-.meta-item strong {
-  font-size: 0.95rem;
-  color: #f8fafc;
+
+.detalle-hero-image {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
 }
 
-/* ESTRUCTURA PRINCIPAL */
-.reserva-body {
-  max-width: 1200px;
-  margin: 2.5rem auto 4rem;
-  padding: 0 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
+
+.detalle-hero-overlay {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 43, 34, 0.08) 0%,
+      rgba(11, 43, 34, 0.32) 45%,
+      rgba(11, 43, 34, 0.94) 100%
+    );
+
 }
 
-@media (min-width: 992px) {
-  .reserva-body {
-    grid-template-columns: 1fr 360px;
+
+.detalle-hero-content {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    100%;
+
+  max-width:
+    900px;
+
+  padding:
+    55px;
+
+  color:
+    #ffffff;
+
+}
+
+
+/* =========================================================
+   ETIQUETA
+   ========================================================= */
+
+.evento-etiqueta {
+
+  display:
+    inline-flex;
+
+  margin-bottom:
+    18px;
+
+  padding:
+    7px
+    15px;
+
+  border:
+    1px solid
+    var(--accent);
+
+  border-radius:
+    30px;
+
+  color:
+    var(--accent);
+
+  background:
+    rgba(11, 43, 34, 0.85);
+
+  font-size:
+    0.72rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1.5px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* =========================================================
+   TÍTULO HERO
+   ========================================================= */
+
+.detalle-hero h1 {
+
+  max-width:
+    850px;
+
+  margin:
+    0
+    0
+    14px;
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    clamp(
+      2.7rem,
+      6vw,
+      4.7rem
+    );
+
+  line-height:
+    1.05;
+
+}
+
+
+.hero-subtitulo {
+
+  max-width:
+    700px;
+
+  margin:
+    0
+    0
+    30px;
+
+  color:
+    rgba(255, 255, 255, 0.8);
+
+  font-size:
+    1rem;
+
+  line-height:
+    1.6;
+
+}
+
+
+/* =========================================================
+   DATOS DEL HERO
+   ========================================================= */
+
+.hero-info {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    12px;
+
+  max-width:
+    850px;
+
+}
+
+
+.hero-info-item {
+
+  min-width:
+    180px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  padding:
+    16px
+    20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13);
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(11, 43, 34, 0.68);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+}
+
+
+.hero-info-label {
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size:
+    0.64rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1.2px;
+
+}
+
+
+.hero-info-item strong {
+
+  font-size:
+    0.86rem;
+
+}
+
+
+/* =========================================================
+   GRID PRINCIPAL
+   ========================================================= */
+
+.detalle-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(300px, 0.75fr);
+
+  align-items:
+    start;
+
+  gap:
+    32px;
+
+  margin-top:
+    45px;
+
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.detalle-contenido {
+
+  padding:
+    42px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    22px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 10px 30px
+    rgba(11, 43, 34, 0.04);
+
+}
+
+
+.section-label {
+
+  display:
+    block;
+
+  color:
+    var(--accent);
+
+  font-size:
+    0.68rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    2px;
+
+}
+
+
+.detalle-contenido h2,
+.reserva-panel h2 {
+
+  color:
+    var(--primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+}
+
+
+.detalle-contenido h2 {
+
+  margin:
+    8px
+    0
+    16px;
+
+  font-size:
+    2.1rem;
+
+}
+
+
+.detalle-divider {
+
+  width:
+    48px;
+
+  height:
+    3px;
+
+  margin-bottom:
+    25px;
+
+  background:
+    var(--accent);
+
+}
+
+
+.descripcion-principal {
+
+  margin:
+    0;
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.96rem;
+
+  line-height:
+    1.85;
+
+}
+
+
+/* =========================================================
+   EXPERIENCIA DESTACADA
+   ========================================================= */
+
+.experiencia-destacado {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
+
+  margin-top:
+    32px;
+
+  padding:
+    20px
+    22px;
+
+  border-left:
+    3px solid
+    var(--accent);
+
+  border-radius:
+    10px;
+
+  background:
+    var(--accent-soft);
+
+}
+
+
+.experiencia-destacado span {
+
+  color:
+    var(--accent);
+
+  font-size:
+    0.65rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1.5px;
+
+}
+
+
+.experiencia-destacado strong {
+
+  color:
+    var(--primary);
+
+}
+
+
+/* =========================================================
+   DATOS
+   ========================================================= */
+
+.datos-evento {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    15px;
+
+  margin-top:
+    35px;
+
+}
+
+
+.dato-evento {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    12px;
+
+  background:
+    #fafbf9;
+
+}
+
+
+.dato-evento span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.68rem;
+
+}
+
+
+.dato-evento strong {
+
+  color:
+    var(--primary);
+
+  font-size:
+    0.82rem;
+
+}
+
+
+/* =========================================================
+   PANEL DE RESERVA
+   ========================================================= */
+
+.reserva-panel {
+
+  position:
+    sticky;
+
+  top:
+    25px;
+
+  padding:
+    32px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    22px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 12px 35px
+    rgba(11, 43, 34, 0.06);
+
+}
+
+
+.reserva-panel h2 {
+
+  margin:
+    7px
+    0
+    22px;
+
+  font-size:
+    1.7rem;
+
+}
+
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.precio-panel {
+
+  padding:
+    25px;
+
+  border-radius:
+    16px;
+
+  background:
+    #f4f7f5;
+
+  text-align:
+    center;
+
+}
+
+
+.precio-panel > span {
+
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.65rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1px;
+
+}
+
+
+.precio-panel strong {
+
+  display:
+    block;
+
+  color:
+    var(--primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    2.25rem;
+
+}
+
+
+.precio-panel small {
+
+  display:
+    block;
+
+  margin-top:
+    8px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.68rem;
+
+  line-height:
+    1.5;
+
+}
+
+
+/* =========================================================
+   RESUMEN
+   ========================================================= */
+
+.reserva-datos {
+
+  margin-top:
+    25px;
+
+  border-top:
+    1px solid
+    var(--border);
+
+}
+
+
+.reserva-dato {
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  padding:
+    15px
+    0;
+
+  border-bottom:
+    1px solid
+    var(--border);
+
+  font-size:
+    0.76rem;
+
+}
+
+
+.reserva-dato span {
+
+  color:
+    var(--muted);
+
+}
+
+
+.reserva-dato strong {
+
+  color:
+    var(--primary);
+
+  text-align:
+    right;
+
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.btn-reserva,
+.btn-volver {
+
+  width:
+    100%;
+
+  min-height:
+    48px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    10px;
+
+  padding:
+    12px
+    16px;
+
+  border-radius:
+    12px;
+
+  font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
+  font-size:
+    0.82rem;
+
+  font-weight:
+    700;
+
+  text-align:
+    center;
+
+  text-decoration:
+    none;
+
+  cursor:
+    pointer;
+
+}
+
+
+.btn-reserva {
+
+  margin-top:
+    25px;
+
+  border:
+    0;
+
+  color:
+    #ffffff;
+
+  background:
+    var(--primary);
+
+  transition:
+    background-color
+    0.25s ease;
+
+}
+
+
+.btn-reserva:hover {
+
+  background:
+    var(--primary-light);
+
+}
+
+
+.btn-reserva span {
+
+  color:
+    var(--accent);
+
+}
+
+
+.btn-volver {
+
+  margin-top:
+    10px;
+
+  color:
+    var(--primary);
+
+  border:
+    1px solid
+    var(--primary);
+
+  background:
+    transparent;
+
+  transition:
+    color
+    0.25s ease,
+    background-color
+    0.25s ease;
+
+}
+
+
+.btn-volver:hover {
+
+  color:
+    #ffffff;
+
+  background:
+    var(--primary);
+
+}
+
+
+/* =========================================================
+   AVISO TEMPORAL
+   ========================================================= */
+
+.aviso-desarrollo {
+
+  margin-top:
+    20px;
+
+  padding:
+    16px;
+
+  border:
+    1px solid
+    #eadfcf;
+
+  border-radius:
+    11px;
+
+  color:
+    #795b35;
+
+  background:
+    #fffaf3;
+
+  font-size:
+    0.7rem;
+
+  line-height:
+    1.55;
+
+}
+
+
+.aviso-desarrollo strong {
+
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+}
+
+
+.aviso-desarrollo p {
+
+  margin:
+    5px
+    0;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .detalle-grid {
+
+    grid-template-columns:
+      1fr;
+
   }
+
+
+  .reserva-panel {
+
+    position:
+      static;
+
+  }
+
+
+  .detalle-hero-content {
+
+    padding:
+      42px;
+
+  }
+
 }
 
-/* SECCIONES Y CONTENIDO */
-.section-box {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 2rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-  margin-bottom: 2rem;
-}
 
-.section-box h2 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0 0 1rem 0;
-}
+/* =========================================================
+   MÓVIL
+   ========================================================= */
 
-.lead-text {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #475569;
-  margin: 0;
-}
+@media (max-width: 640px) {
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-}
+  .detalle-page {
 
-.section-header h2 {
-  margin: 0;
-}
+    padding:
+      20px
+      14px
+      65px;
 
-.chef-badge {
-  background-color: #f0fdf4;
-  color: #166534;
-  font-size: 0.825rem;
-  font-weight: 700;
-  padding: 0.35rem 0.85rem;
-  border-radius: 8px;
-  border: 1px solid #bbf7d0;
-}
+  }
 
-/* TIMELINE MENÚ */
-.menu-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
 
-.tiempo-card {
-  display: flex;
-  gap: 1.25rem;
-  background: #f8fafc;
-  padding: 1.25rem;
-  border-radius: 14px;
-  border-left: 4px solid #729e42;
-  transition: transform 0.2s ease;
-}
+  .detalle-hero {
 
-.tiempo-card:hover {
-  transform: translateX(4px);
-  background: #f1f5f9;
-}
+    min-height:
+      540px;
 
-.tiempo-num {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #729e42;
-  background: #ffffff;
-  min-width: 45px;
-  height: 45px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
+    border-radius:
+      20px;
 
-.tiempo-tag {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #64748b;
-  letter-spacing: 0.05em;
-}
+  }
 
-.tiempo-info h3 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0.25rem 0 0.4rem 0;
-}
 
-.tiempo-info p {
-  font-size: 0.925rem;
-  color: #475569;
-  line-height: 1.5;
-  margin: 0 0 0.6rem 0;
-}
+  .detalle-hero-content {
 
-.maridaje {
-  font-size: 0.85rem;
-  color: #15803d;
-  background: #dcfce7;
-  padding: 0.3rem 0.65rem;
-  border-radius: 6px;
-  display: inline-block;
-}
+    padding:
+      30px
+      24px;
 
-/* TARJETA CHECKOUT DERECORADA (FLOTANTE) */
-.checkout-col {
-  position: relative;
-}
+  }
 
-.checkout-card {
-  position: sticky;
-  top: 2rem;
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 2rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-}
 
-.checkout-card h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0 0 1.25rem 0;
-}
+  .detalle-hero h1 {
 
-.price-box {
-  background: #f8fafc;
-  padding: 1.25rem;
-  border-radius: 14px;
-  text-align: center;
-}
+    font-size:
+      2.5rem;
 
-.price-label {
-  font-size: 0.8rem;
-  color: #64748b;
-  font-weight: 600;
-  text-transform: uppercase;
-}
+  }
 
-.price-value {
-  font-size: 2.25rem;
-  font-weight: 900;
-  color: #15803d;
-  margin: 0.2rem 0;
-}
 
-.price-value small {
-  font-size: 0.9rem;
-  font-weight: 700;
-}
+  .hero-info {
 
-.price-subtext {
-  font-size: 0.775rem;
-  color: #64748b;
-  display: block;
-}
+    display:
+      grid;
 
-.divider {
-  border: 0;
-  border-top: 1px dashed #e2e8f0;
-  margin: 1.5rem 0;
-}
+    grid-template-columns:
+      1fr;
 
-.modalidad-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 1.25rem;
-}
+  }
 
-.modalidad-badge {
-  background: #f1f5f9;
-  color: #729e42;
-  font-weight: 800;
-  padding: 0.3rem 0.75rem;
-  border-radius: 8px;
-}
 
-.inclusiones ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.75rem 0;
-}
+  .hero-info-item {
 
-.inclusiones li {
-  font-size: 0.875rem;
-  color: #475569;
-  margin-bottom: 0.6rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+    min-width:
+      0;
 
-/* GRUPO DE BOTONES */
-.acciones-reserva {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
+  }
 
-.btn-reserva-final {
-  width: 100%;
-  background: linear-gradient(135deg, #729e42 0%, #5a8031 100%);
-  color: #ffffff;
-  border: none;
-  padding: 1rem 1.5rem;
-  border-radius: 14px;
-  font-size: 0.975rem;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  box-shadow: 0 6px 20px rgba(114, 158, 66, 0.3);
-  transition: all 0.25s ease;
-}
 
-.btn-reserva-final:hover {
-  background: linear-gradient(135deg, #5a8031 0%, #466425 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(114, 158, 66, 0.4);
-}
+  .detalle-grid {
 
-.btn-reserva-final .arrow {
-  transition: transform 0.2s ease;
-}
+    margin-top:
+      25px;
 
-.btn-reserva-final:hover .arrow {
-  transform: translateX(4px);
-}
+    gap:
+      20px;
 
-.btn-explorar-mas {
-  width: 100%;
-  background-color: transparent;
-  color: #475569;
-  border: 2px solid #e2e8f0;
-  padding: 0.85rem 1.25rem;
-  border-radius: 14px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
+  }
 
-.btn-explorar-mas:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
-  color: #0f172a;
-  transform: translateY(-1px);
-}
 
-.garantia-text {
-  text-align: center;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin: 1rem 0 0 0;
+  .detalle-contenido,
+  .reserva-panel {
+
+    padding:
+      26px
+      22px;
+
+    border-radius:
+      18px;
+
+  }
+
+
+  .datos-evento {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .precio-panel strong {
+
+    font-size:
+      2rem;
+
+  }
+
 }

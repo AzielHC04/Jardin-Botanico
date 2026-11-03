@@ -1,14 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Banner } from '../models/banner.model';
-import { Evento } from '../models/evento.model';
-import { Experiencia } from '../models/experiencia.model';
-import { ConfiguracionSitio } from '../models/configuracion-sitio.model';
+
 import {
   createClient,
   SupabaseClient
 } from '@supabase/supabase-js';
 
-import { environment } from '../../../environments/environment';
+import {
+  environment
+} from '../../../environments/environment';
+
+import {
+  ConfiguracionSitio
+} from '../models/configuracion-sitio.model';
+
+import {
+  Banner
+} from '../models/banner.model';
+
+import {
+  Evento
+} from '../models/evento.model';
+
+import {
+  Experiencia
+} from '../models/experiencia.model';
 
 
 @Injectable({
@@ -16,36 +31,43 @@ import { environment } from '../../../environments/environment';
 })
 export class SupabaseService {
 
-  private readonly supabase: SupabaseClient;
+  private readonly supabase:
+    SupabaseClient;
 
 
   constructor() {
 
-    this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabasePublishableKey,
-      {
-        db: {
-          schema: 'public'
-        },
+    this.supabase =
+      createClient(
+        environment.supabaseUrl,
+        environment.supabasePublishableKey,
+        {
+          db: {
+            schema: 'public'
+          },
 
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
         }
-      }
-    );
+      );
 
   }
 
 
-  async obtenerConfiguracionSitio(): Promise<ConfiguracionSitio> {
+  /* =========================================================
+     CONFIGURACIÓN DEL SITIO
+     ========================================================= */
+
+  async obtenerConfiguracionSitio():
+    Promise<ConfiguracionSitio> {
 
     const {
       data,
       error
-    } = await this. supabase
+    } = await this.supabase
       .schema('public')
       .from('configuracion_sitio')
       .select(`
@@ -85,16 +107,12 @@ export class SupabaseService {
   }
 
 
-  get client(): SupabaseClient {
-
-    return this.supabase;
-
-  }
   /* =========================================================
-   BANNERS
-   ========================================================= */
+     BANNERS
+     ========================================================= */
 
-  async obtenerBannersActivos(): Promise<Banner[]> {
+  async obtenerBannersActivos():
+    Promise<Banner[]> {
 
     const {
       data,
@@ -114,7 +132,10 @@ export class SupabaseService {
         created_at,
         updated_at
       `)
-      .eq('activo', true)
+      .eq(
+        'activo',
+        true
+      )
       .order(
         'orden',
         {
@@ -139,16 +160,18 @@ export class SupabaseService {
 
   }
 
+
   /* =========================================================
-   EVENTOS DESTACADOS
-   ========================================================= */
+     EVENTOS DESTACADOS DEL HOME
+     ========================================================= */
 
   async obtenerEventosDestacados(
     limite: number = 3
   ): Promise<Evento[]> {
 
     const ahora =
-      new Date().toISOString();
+      new Date()
+        .toISOString();
 
 
     const {
@@ -220,11 +243,13 @@ export class SupabaseService {
 
   }
 
-  /* =========================================================
-   TODOS LOS EVENTOS ACTIVOS
-   ========================================================= */
 
-  async obtenerEventosActivos(): Promise<Evento[]> {
+  /* =========================================================
+     TODOS LOS EVENTOS ACTIVOS
+     ========================================================= */
+
+  async obtenerEventosActivos():
+    Promise<Evento[]> {
 
     const {
       data,
@@ -252,7 +277,10 @@ export class SupabaseService {
         created_at,
         updated_at
       `)
-      .eq('activo', true)
+      .eq(
+        'activo',
+        true
+      )
       .order(
         'fecha_inicio',
         {
@@ -276,66 +304,133 @@ export class SupabaseService {
     return (data ?? []) as Evento[];
 
   }
+
+
   /* =========================================================
-   EXPERIENCIAS
-   ========================================================= */
+     EVENTO INDIVIDUAL
 
-async obtenerExperienciasActivas():
-  Promise<Experiencia[]> {
+     Utilizado por:
+     /reserva/:id
+     ========================================================= */
 
-  const {
-    data,
-    error
-  } = await this.supabase
-    .schema('public')
-    .from('experiencias')
-    .select(`
-      id,
-      titulo,
-      subtitulo,
-      descripcion,
-      imagen_url,
-      categoria,
-      etiqueta,
-      ruta_destino,
-      orden,
-      destacada,
-      activa,
-      created_at,
-      updated_at
-    `)
-    .eq(
-      'activa',
-      true
-    )
-    .order(
-      'orden',
-      {
-        ascending: true
-      }
-    );
+  async obtenerEventoPorId(
+    id: string
+  ): Promise<Evento | null> {
 
-
-  if (error) {
-
-    console.error(
-      'Error al obtener experiencias:',
+    const {
+      data,
       error
-    );
+    } = await this.supabase
+      .schema('public')
+      .from('eventos')
+      .select(`
+        id,
+        titulo,
+        subtitulo,
+        descripcion,
+        fecha_inicio,
+        fecha_fin,
+        precio,
+        moneda,
+        precio_texto,
+        cupo_total,
+        imagen_url,
+        tipo,
+        etiqueta,
+        destacado,
+        activo,
+        requiere_pago,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        'id',
+        id
+      )
+      .eq(
+        'activo',
+        true
+      )
+      .maybeSingle();
 
-    throw error;
+
+    if (error) {
+
+      console.error(
+        'Error al obtener evento por ID:',
+        error
+      );
+
+      throw error;
+
+    }
+
+
+    return data as Evento | null;
 
   }
 
 
-  return (data ?? []) as Experiencia[];
+  /* =========================================================
+     EXPERIENCIAS ACTIVAS
+     ========================================================= */
 
-}
+  async obtenerExperienciasActivas():
+    Promise<Experiencia[]> {
+
+    const {
+      data,
+      error
+    } = await this.supabase
+      .schema('public')
+      .from('experiencias')
+      .select(`
+        id,
+        titulo,
+        subtitulo,
+        descripcion,
+        imagen_url,
+        categoria,
+        etiqueta,
+        ruta_destino,
+        orden,
+        destacada,
+        activa,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        'activa',
+        true
+      )
+      .order(
+        'orden',
+        {
+          ascending: true
+        }
+      );
 
 
-/* =========================================================
-   EXPERIENCIAS DESTACADAS DEL HOME
-   ========================================================= */
+    if (error) {
+
+      console.error(
+        'Error al obtener experiencias:',
+        error
+      );
+
+      throw error;
+
+    }
+
+
+    return (data ?? []) as Experiencia[];
+
+  }
+
+
+  /* =========================================================
+     EXPERIENCIAS DESTACADAS DEL HOME
+     ========================================================= */
 
   async obtenerExperienciasDestacadas(
     limite: number = 3
@@ -394,6 +489,18 @@ async obtenerExperienciasActivas():
 
 
     return (data ?? []) as Experiencia[];
+
+  }
+
+
+  /* =========================================================
+     CLIENTE
+     ========================================================= */
+
+  get client():
+    SupabaseClient {
+
+    return this.supabase;
 
   }
 

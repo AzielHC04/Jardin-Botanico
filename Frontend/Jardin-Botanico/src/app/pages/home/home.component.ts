@@ -6,7 +6,9 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
+import {
+  EventoCardComponent
+} from '../../shared/evento-card/evento-card.component';
 import {
   SupabaseService
 } from '../../core/services/supabase.service';
@@ -63,7 +65,8 @@ interface EventoDestacado {
 
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    EventoCardComponent
   ],
 
   templateUrl:

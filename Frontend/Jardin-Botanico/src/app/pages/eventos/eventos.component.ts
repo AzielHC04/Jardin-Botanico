@@ -7,11 +7,17 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { SupabaseService } from '../../core/services/supabase.service';
+import {
+  SupabaseService
+} from '../../core/services/supabase.service';
 
 import {
   Evento
 } from '../../core/models/evento.model';
+
+import {
+  EventoCardComponent
+} from '../../shared/evento-card/evento-card.component';
 
 
 type CategoriaEvento =
@@ -34,7 +40,10 @@ interface EventoVista {
 
   imagen: string;
 
-  categoria: CategoriaEvento;
+  etiqueta?: string;
+
+  categoria:
+    CategoriaEvento;
 
   cupoTotal?: number;
 
@@ -67,23 +76,23 @@ interface EventoEspecialVista {
 
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    EventoCardComponent
   ],
 
-  templateUrl: './eventos.component.html',
-  styleUrl: './eventos.component.css'
+  templateUrl:
+    './eventos.component.html',
+
+  styleUrl:
+    './eventos.component.css'
 })
 export class EventosComponent
 implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     FILTROS
+     EVENTOS
      ========================================================= */
-
-  filtroActual:
-    CategoriaEvento = 'hoy';
-
 
   eventos:
     EventoVista[] = [];
@@ -97,9 +106,34 @@ implements OnInit, OnDestroy {
     EventoEspecialVista[] = [];
 
 
+  /* =========================================================
+     FILTRO
+     ========================================================= */
+
+  filtroActual:
+    CategoriaEvento =
+      'hoy';
+
+
+  /* =========================================================
+     CARRUSEL
+     ========================================================= */
+
   activeIndex:
     number = 0;
 
+
+  private carouselInterval?:
+    ReturnType<typeof setInterval>;
+
+
+  private readonly carouselDelay:
+    number = 5000;
+
+
+  /* =========================================================
+     ESTADOS
+     ========================================================= */
 
   cargando:
     boolean = true;
@@ -110,16 +144,8 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     CARRUSEL
+     CONSTRUCTOR
      ========================================================= */
-
-  private carouselInterval?:
-    ReturnType<typeof setInterval>;
-
-
-  private readonly carouselDelay:
-    number = 5000;
-
 
   constructor(
     private supabaseService:
@@ -131,14 +157,16 @@ implements OnInit, OnDestroy {
      CICLO DE VIDA
      ========================================================= */
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit():
+    Promise<void> {
 
     await this.cargarEventos();
 
   }
 
 
-  ngOnDestroy(): void {
+  ngOnDestroy():
+    void {
 
     this.detenerCarruselAutomatico();
 
@@ -146,15 +174,17 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     CARGA DESDE SUPABASE
+     SUPABASE
      ========================================================= */
 
   private async cargarEventos():
     Promise<void> {
 
-    this.cargando = true;
+    this.cargando =
+      true;
 
-    this.errorCarga = false;
+    this.errorCarga =
+      false;
 
 
     try {
@@ -165,22 +195,24 @@ implements OnInit, OnDestroy {
             .obtenerEventosActivos();
 
 
-      const regulares =
+      const eventosRegulares =
         eventosSupabase.filter(
           evento =>
-            evento.tipo === 'regular'
+            evento.tipo ===
+            'regular'
         );
 
 
       const especiales =
         eventosSupabase.filter(
           evento =>
-            evento.tipo === 'especial'
+            evento.tipo ===
+            'especial'
         );
 
 
       this.eventos =
-        regulares.map(
+        eventosRegulares.map(
           evento =>
             this.convertirEventoRegular(
               evento
@@ -198,18 +230,19 @@ implements OnInit, OnDestroy {
 
 
       /*
-       * Si no hay eventos hoy,
-       * mostramos próximos automáticamente.
+       * Si hoy no hay eventos,
+       * mostramos Próximos automáticamente.
        */
 
-      const hayEventosHoy =
+      const existenHoy =
         this.eventos.some(
           evento =>
-            evento.categoria === 'hoy'
+            evento.categoria ===
+            'hoy'
         );
 
 
-      if (!hayEventosHoy) {
+      if (!existenHoy) {
 
         this.filtroActual =
           'proximos';
@@ -225,23 +258,28 @@ implements OnInit, OnDestroy {
     catch (error) {
 
       console.error(
-        'No fue posible cargar los eventos:',
+        'Error al cargar eventos:',
         error
       );
 
 
-      this.errorCarga = true;
+      this.eventos =
+        [];
 
-      this.eventos = [];
+      this.eventosFiltrados =
+        [];
 
-      this.eventosEspeciales = [];
+      this.eventosEspeciales =
+        [];
 
-      this.eventosFiltrados = [];
+      this.errorCarga =
+        true;
 
     }
     finally {
 
-      this.cargando = false;
+      this.cargando =
+        false;
 
     }
 
@@ -249,11 +287,12 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     CONVERSIÓN
+     EVENTO REGULAR
      ========================================================= */
 
   private convertirEventoRegular(
-    evento: Evento
+    evento:
+      Evento
   ): EventoVista {
 
     return {
@@ -282,6 +321,10 @@ implements OnInit, OnDestroy {
         evento.imagen_url
         ?? 'assets/J.jpg',
 
+      etiqueta:
+        evento.etiqueta
+        ?? undefined,
+
       categoria:
         this.obtenerCategoria(
           evento
@@ -296,8 +339,13 @@ implements OnInit, OnDestroy {
   }
 
 
+  /* =========================================================
+     EVENTO ESPECIAL
+     ========================================================= */
+
   private convertirEventoEspecial(
-    evento: Evento
+    evento:
+      Evento
   ): EventoEspecialVista {
 
     return {
@@ -334,11 +382,12 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     CLASIFICACIÓN AUTOMÁTICA
+     CATEGORÍA AUTOMÁTICA
      ========================================================= */
 
   private obtenerCategoria(
-    evento: Evento
+    evento:
+      Evento
   ): CategoriaEvento {
 
     const ahora =
@@ -359,32 +408,35 @@ implements OnInit, OnDestroy {
         : inicio;
 
 
-    /*
-     * Comparamos la fecha utilizando
-     * la zona horaria de Yucatán.
-     */
-
-    const hoyTexto =
+    const fechaHoy =
       this.obtenerFechaLocal(
         ahora
       );
 
 
-    const inicioTexto =
+    const fechaInicio =
       this.obtenerFechaLocal(
         inicio
       );
 
 
+    /*
+     * Evento que comienza hoy.
+     */
+
     if (
-      inicioTexto ===
-      hoyTexto
+      fechaInicio ===
+      fechaHoy
     ) {
 
       return 'hoy';
 
     }
 
+
+    /*
+     * Evento que aún no comienza.
+     */
 
     if (
       inicio > ahora
@@ -394,6 +446,10 @@ implements OnInit, OnDestroy {
 
     }
 
+
+    /*
+     * Evento terminado.
+     */
 
     if (
       fin < ahora
@@ -405,9 +461,8 @@ implements OnInit, OnDestroy {
 
 
     /*
-     * Caso poco común:
-     * evento de varios días que ya comenzó
-     * pero todavía no termina.
+     * Evento de varios días
+     * todavía activo.
      */
 
     return 'hoy';
@@ -416,7 +471,8 @@ implements OnInit, OnDestroy {
 
 
   private obtenerFechaLocal(
-    fecha: Date
+    fecha:
+      Date
   ): string {
 
     return new Intl.DateTimeFormat(
@@ -437,7 +493,9 @@ implements OnInit, OnDestroy {
 
       }
     )
-      .format(fecha);
+      .format(
+        fecha
+      );
 
   }
 
@@ -474,16 +532,92 @@ implements OnInit, OnDestroy {
       );
 
 
-    this.activeIndex = 0;
+    this.activeIndex =
+      0;
 
   }
 
 
   /* =========================================================
-     CARRUSEL
+     CLASE DEL CARRUSEL
      ========================================================= */
 
-  siguiente(): void {
+  getCardClass(
+    index:
+      number
+  ): string {
+
+    const total =
+      this.eventosFiltrados.length;
+
+
+    if (
+      total === 0
+    ) {
+
+      return 'card-hidden';
+
+    }
+
+
+    if (
+      index ===
+      this.activeIndex
+    ) {
+
+      return 'card-center';
+
+    }
+
+
+    const anterior =
+      (
+        this.activeIndex
+        - 1
+        + total
+      )
+      %
+      total;
+
+
+    const siguiente =
+      (
+        this.activeIndex
+        + 1
+      )
+      %
+      total;
+
+
+    if (
+      index === anterior
+    ) {
+
+      return 'card-left';
+
+    }
+
+
+    if (
+      index === siguiente
+    ) {
+
+      return 'card-right';
+
+    }
+
+
+    return 'card-hidden';
+
+  }
+
+
+  /* =========================================================
+     NAVEGACIÓN
+     ========================================================= */
+
+  siguiente():
+    void {
 
     if (
       this.eventosFiltrados.length
@@ -497,7 +631,8 @@ implements OnInit, OnDestroy {
 
     this.activeIndex =
       (
-        this.activeIndex + 1
+        this.activeIndex
+        + 1
       )
       %
       this.eventosFiltrados.length;
@@ -508,7 +643,8 @@ implements OnInit, OnDestroy {
   }
 
 
-  anterior(): void {
+  anterior():
+    void {
 
     if (
       this.eventosFiltrados.length
@@ -536,7 +672,8 @@ implements OnInit, OnDestroy {
 
 
   setCardActive(
-    index: number
+    index:
+      number
   ): void {
 
     this.activeIndex =
@@ -548,72 +685,9 @@ implements OnInit, OnDestroy {
   }
 
 
-  getCardClass(
-    index: number
-  ): string {
-
-    const total =
-      this.eventosFiltrados.length;
-
-
-    if (total === 0) {
-
-      return '';
-
-    }
-
-
-    if (
-      index ===
-      this.activeIndex
-    ) {
-
-      return 'card-center';
-
-    }
-
-
-    const prevIndex =
-      (
-        this.activeIndex
-        - 1
-        + total
-      )
-      % total;
-
-
-    const nextIndex =
-      (
-        this.activeIndex
-        + 1
-      )
-      % total;
-
-
-    if (
-      index ===
-      prevIndex
-    ) {
-
-      return 'card-left';
-
-    }
-
-
-    if (
-      index ===
-      nextIndex
-    ) {
-
-      return 'card-right';
-
-    }
-
-
-    return 'card-hidden';
-
-  }
-
+  /* =========================================================
+     CARRUSEL AUTOMÁTICO
+     ========================================================= */
 
   private iniciarCarruselAutomatico():
     void {
@@ -637,7 +711,8 @@ implements OnInit, OnDestroy {
 
           this.activeIndex =
             (
-              this.activeIndex + 1
+              this.activeIndex
+              + 1
             )
             %
             this.eventosFiltrados.length;
@@ -670,12 +745,15 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     FORMATO DE HORARIO
+     HORARIO
      ========================================================= */
 
   private formatearHorario(
-    fechaInicio: string,
-    fechaFin: string | null
+    fechaInicio:
+      string,
+
+    fechaFin:
+      string | null
   ): string {
 
     const formatter =
@@ -707,7 +785,9 @@ implements OnInit, OnDestroy {
       );
 
 
-    if (!fechaFin) {
+    if (
+      !fechaFin
+    ) {
 
       return inicio;
 
@@ -722,17 +802,20 @@ implements OnInit, OnDestroy {
       );
 
 
-    return `${inicio} - ${fin}`;
+    return (
+      `${inicio} - ${fin}`
+    );
 
   }
 
 
   /* =========================================================
-     FORMATO DE PRECIO
+     PRECIO
      ========================================================= */
 
   private formatearPrecio(
-    evento: Evento
+    evento:
+      Evento
   ): string {
 
     if (
@@ -745,7 +828,8 @@ implements OnInit, OnDestroy {
 
 
     if (
-      evento.precio === null
+      evento.precio ===
+      null
     ) {
 
       return 'Consultar';
@@ -779,11 +863,12 @@ implements OnInit, OnDestroy {
 
 
   /* =========================================================
-     FORMATO EVENTO ESPECIAL
+     FECHA ESPECIAL
      ========================================================= */
 
   private formatearFechaEspecial(
-    fecha: string
+    fecha:
+      string
   ): string {
 
     return new Intl.DateTimeFormat(
@@ -814,28 +899,10 @@ implements OnInit, OnDestroy {
       }
     )
       .format(
-        new Date(fecha)
+        new Date(
+          fecha
+        )
       );
-
-  }
-
-
-  /* =========================================================
-     INFORMACIÓN ESPECIAL
-
-     Todavía temporal.
-     Más adelante puede navegar a contacto,
-     reserva o un detalle específico.
-     ========================================================= */
-
-  solicitarInformacionEspecial(
-    especial:
-      EventoEspecialVista
-  ): void {
-
-    alert(
-      `Solicitaste información sobre: ${especial.titulo}`
-    );
 
   }
 

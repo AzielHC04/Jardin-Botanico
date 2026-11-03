@@ -1,0 +1,93 @@
+<article class="evento-card">
+
+  <!-- IMAGEN -->
+  <div class="evento-imagen">
+
+    <img
+      [src]="evento.imagen"
+      [alt]="evento.titulo"
+      loading="lazy"
+    >
+
+
+    <!-- ETIQUETA -->
+    <span
+      class="evento-etiqueta"
+      *ngIf="evento.etiqueta"
+    >
+      {{ evento.etiqueta }}
+    </span>
+
+
+    <!-- CUPO -->
+    <span
+      class="evento-cupo"
+      *ngIf="evento.cupoTotal"
+    >
+      Cupo máximo:
+      {{ evento.cupoTotal }}
+    </span>
+
+  </div>
+
+
+  <!-- CONTENIDO -->
+  <div class="evento-contenido">
+
+    <h3>
+      {{ evento.titulo }}
+    </h3>
+
+
+    <p class="evento-descripcion">
+      {{ evento.descripcion }}
+    </p>
+
+
+    <div class="evento-meta">
+
+      <!-- HORARIO -->
+      <span class="evento-horario">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+
+        {{ evento.horario }}
+
+      </span>
+
+
+      <!-- PRECIO -->
+      <span class="evento-precio">
+        {{ evento.precio }}
+      </span>
+
+    </div>
+
+
+    <!-- DETALLE -->
+    <a
+      class="evento-boton"
+      [routerLink]="[
+        '/reserva',
+        evento.id
+      ]"
+    >
+      Ver información
+    </a>
+
+  </div>
+
+</article>

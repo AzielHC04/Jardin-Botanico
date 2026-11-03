@@ -3,12 +3,13 @@
   <!-- ======================================================
        HERO PRINCIPAL
        ====================================================== -->
+
   <section class="hero-banner">
 
     <img
       class="banner-img"
       [src]="bannerActual?.imagen_url || 'assets/b.jpg'"
-      alt="Jardín Botánico de Teya"
+      [alt]="bannerActual?.titulo || 'Jardín Botánico de Teya'"
     >
 
     <div class="banner-overlay">
@@ -17,20 +18,31 @@
         Santuario Natural & Cultural
       </span>
 
-      <h1>Jardín Botánico de Teya</h1>
+      <h1>
+        {{
+          bannerActual?.titulo
+          || 'Jardín Botánico de Teya'
+        }}
+      </h1>
 
       <p>
-        Naturaleza, historia y experiencias que conectan
-        con la riqueza cultural y botánica de Yucatán.
+        {{
+          bannerActual?.descripcion
+          || 'Naturaleza, historia y experiencias que conectan con la riqueza cultural y botánica de Yucatán.'
+        }}
       </p>
 
       <div class="hero-actions">
 
         <a
-          routerLink="/jardin"
+          *ngIf="bannerActual?.ruta_boton"
+          [routerLink]="bannerActual?.ruta_boton"
           class="btn-primary"
         >
-          Conocer el jardín
+          {{
+            bannerActual?.texto_boton
+            || 'Conocer más'
+          }}
         </a>
 
         <a
@@ -50,6 +62,7 @@
   <!-- ======================================================
        CONOCE EL JARDÍN
        ====================================================== -->
+
   <section class="garden-intro">
 
     <div class="garden-image">
@@ -61,6 +74,7 @@
       >
 
     </div>
+
 
     <div class="garden-content">
 
@@ -101,6 +115,7 @@
   <!-- ======================================================
        EXPERIENCIAS DESTACADAS
        ====================================================== -->
+
   <section class="content-section">
 
     <div class="section-header">
@@ -127,7 +142,10 @@
 
       <article
         class="experience-card"
-        *ngFor="let experiencia of experienciasDestacadas; let i = index"
+        *ngFor="
+          let experiencia of experienciasDestacadas;
+          let i = index
+        "
       >
 
         <div class="experience-image">
@@ -140,10 +158,15 @@
 
         </div>
 
+
         <div class="experience-content">
 
           <span class="card-number">
-            {{ (i + 1).toString().padStart(2, '0') }}
+            {{
+              (i + 1)
+                .toString()
+                .padStart(2, '0')
+            }}
           </span>
 
           <h3>
@@ -186,6 +209,7 @@
   <!-- ======================================================
        EVENTOS DESTACADOS
        ====================================================== -->
+
   <section class="content-section events-preview">
 
     <div class="section-header-inline">
@@ -202,6 +226,7 @@
 
       </div>
 
+
       <a
         routerLink="/eventos"
         class="text-link desktop-link"
@@ -213,65 +238,55 @@
     </div>
 
 
-    <div class="events-grid">
+    <!-- ====================================================
+         EVENTOS DESDE SUPABASE
+         ==================================================== -->
 
-      <article
-        class="event-card"
+    <div
+      class="featured-events-grid"
+      *ngIf="eventosDestacados.length > 0"
+    >
+
+      <app-evento-card
         *ngFor="let evento of eventosDestacados"
+        [evento]="{
+          id: evento.id,
+          titulo: evento.titulo,
+          descripcion: evento.descripcion,
+          horario: evento.horario,
+          precio: evento.precio,
+          imagen: evento.imagen,
+          etiqueta: 'Próximo evento'
+        }"
       >
-
-        <div class="event-image">
-
-          <img
-            [src]="evento.imagen"
-            [alt]="evento.titulo"
-            loading="lazy"
-          >
-
-          <span class="event-badge">
-            Próximo evento
-          </span>
-
-        </div>
-
-
-        <div class="event-content">
-
-          <h3>
-            {{ evento.titulo }}
-          </h3>
-
-          <p>
-            {{ evento.descripcion }}
-          </p>
-
-
-          <div class="event-details">
-
-            <span class="event-detail">
-              {{ evento.horario }}
-            </span>
-
-            <span class="event-detail price">
-              {{ evento.precio }}
-            </span>
-
-          </div>
-
-
-          <a
-            [routerLink]="['/reserva', evento.id]"
-            class="btn-event"
-          >
-            Ver información
-          </a>
-
-        </div>
-
-      </article>
+      </app-evento-card>
 
     </div>
 
+
+    <!-- ====================================================
+         SIN EVENTOS
+         ==================================================== -->
+
+    <div
+      class="home-no-events"
+      *ngIf="
+        !cargandoEventos
+        && eventosDestacados.length === 0
+      "
+    >
+
+      <p>
+        No hay próximos eventos destacados
+        en este momento.
+      </p>
+
+    </div>
+
+
+    <!-- ====================================================
+         ENLACE MÓVIL
+         ==================================================== -->
 
     <div class="mobile-events-link">
 
@@ -290,6 +305,7 @@
   <!-- ======================================================
        VISÍTANOS
        ====================================================== -->
+
   <section class="visit-section">
 
     <div class="visit-content">
@@ -307,7 +323,8 @@
       </p>
 
       <address>
-        Carretera Mérida - Cancún Km 11.2<br>
+        Carretera Mérida - Cancún Km 11.2
+        <br>
         C.P. 97370, Yucatán
       </address>
 

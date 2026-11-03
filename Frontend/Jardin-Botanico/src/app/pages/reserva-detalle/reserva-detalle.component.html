@@ -1,153 +1,457 @@
-<div class="reserva-wrapper">
+<div class="detalle-page">
 
-  <!-- Hero Section: Cabecera con Imagen y Detalle -->
-  <header class="hero-evento">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <span class="badge-categoria">🍷 Experiencia Gastronómica Premium</span>
-      <h1>Cena Maridaje: Sabores Silvestres</h1>
-      
-      <div class="meta-grid">
-        <div class="meta-item">
-          <span class="meta-icon">📅</span>
-          <div>
-            <small>Fecha</small>
-            <strong>Viernes 28 de Agosto</strong>
-          </div>
-        </div>
-        <div class="meta-item">
-          <span class="meta-icon">⏰</span>
-          <div>
-            <small>Horario</small>
-            <strong>18:00 - 22:00 hrs</strong>
-          </div>
-        </div>
-        <div class="meta-item">
-          <span class="meta-icon">📍</span>
-          <div>
-            <small>Ubicación</small>
-            <strong>Terraza de la Hacienda</strong>
-          </div>
-        </div>
-      </div>
+
+  <!-- ======================================================
+       CARGANDO
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+
+    <div class="estado-icono">
+      ◌
     </div>
-  </header>
 
-  <main class="reserva-body">
-    
-    <!-- LADO IZQUIERDO: Información del Evento y Menú -->
-    <div class="detalles-col">
-      
-      <!-- Descripción General -->
-      <section class="section-box">
-        <h2>Acerca de la Experiencia</h2>
-        <p class="lead-text">
-          Una noche sensorial única donde la botánica autóctona y la alta gastronomía se fusionan. Cada platillo ha sido diseñado con ingredientes silvestres cosechados directamente de nuestro jardín, maridados a la perfección con una selección exclusiva de etiquetas artesanales.
+    <h2>
+      Cargando evento
+    </h2>
+
+    <p>
+      Estamos obteniendo la información
+      de esta experiencia.
+    </p>
+
+  </div>
+
+
+  <!-- ======================================================
+       ERROR / NO ENCONTRADO
+       ====================================================== -->
+
+  <div
+    class="estado-panel error"
+    *ngIf="
+      !cargando
+      && errorCarga
+    "
+  >
+
+    <h2>
+      Evento no disponible
+    </h2>
+
+    <p>
+      Este evento no existe, fue desactivado
+      o ya no está disponible.
+    </p>
+
+    <a
+      routerLink="/eventos"
+      class="estado-boton"
+    >
+      Volver a eventos
+    </a>
+
+  </div>
+
+
+  <!-- ======================================================
+       EVENTO
+       ====================================================== -->
+
+  <ng-container
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && evento
+    "
+  >
+
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+
+    <section class="detalle-hero">
+
+
+      <img
+        class="detalle-hero-image"
+        [src]="
+          evento.imagen_url
+          || 'assets/J.jpg'
+        "
+        [alt]="evento.titulo"
+      >
+
+
+      <div class="detalle-hero-overlay">
+      </div>
+
+
+      <div class="detalle-hero-content">
+
+        <span class="evento-etiqueta">
+          {{ etiquetaEvento }}
+        </span>
+
+
+        <h1>
+          {{ evento.titulo }}
+        </h1>
+
+
+        <p
+          class="hero-subtitulo"
+          *ngIf="evento.subtitulo"
+        >
+          {{ evento.subtitulo }}
         </p>
-      </section>
 
-      <!-- Menú en 4 Tiempos -->
-      <section class="section-box">
-        <div class="section-header">
-          <h2>Menú Gourmet en 4 Tiempos</h2>
-          <span class="chef-badge">👨‍🍳 Diseñado por Chef Residente</span>
-        </div>
 
-        <div class="menu-timeline">
-          
-          <div class="tiempo-card">
-            <div class="tiempo-num">1°</div>
-            <div class="tiempo-info">
-              <span class="tiempo-tag">Entrada Fría</span>
-              <h3>Tártar de Vainica Silvestre y Aguacate</h3>
-              <p>Con brotes de hierbas aromáticas del jardín, vinagreta de cítricos y crujiente de chaya.</p>
-              <div class="maridaje">🍷 <strong>Maridaje:</strong> Sauvignon Blanc Joven (Cosecha 2023)</div>
-            </div>
+        <div class="hero-info">
+
+
+          <!-- FECHA -->
+
+          <div class="hero-info-item">
+
+            <span class="hero-info-label">
+              FECHA
+            </span>
+
+            <strong>
+              {{ fechaEvento }}
+            </strong>
+
           </div>
 
-          <div class="tiempo-card">
-            <div class="tiempo-num">2°</div>
-            <div class="tiempo-info">
-              <span class="tiempo-tag">Sopa / Crema</span>
-              <h3>Velouté de Hongos Silvestres & Trufa</h3>
-              <p>Crema de setas silvestres con un toque de aceite de trufa blanca y pétalos comestibles de temporada.</p>
-              <div class="maridaje">🥂 <strong>Maridaje:</strong> Chardonnay Barrica de Roble</div>
-            </div>
+
+          <!-- HORARIO -->
+
+          <div class="hero-info-item">
+
+            <span class="hero-info-label">
+              HORARIO
+            </span>
+
+            <strong>
+              {{ horarioEvento }}
+            </strong>
+
           </div>
 
-          <div class="tiempo-card">
-            <div class="tiempo-num">3°</div>
-            <div class="tiempo-info">
-              <span class="tiempo-tag">Plato Fuerte</span>
-              <h3>Medallón en Costra de Miel y Especias Botánicas</h3>
-              <p>Acompañado de puré de camote ahumado y reducción de frutos rojos del huerto.</p>
-              <div class="maridaje">🍷 <strong>Maridaje:</strong> Cabernet Sauvignon Reserva Especial</div>
-            </div>
+
+          <!-- CUPO -->
+
+          <div
+            class="hero-info-item"
+            *ngIf="evento.cupo_total"
+          >
+
+            <span class="hero-info-label">
+              CUPO
+            </span>
+
+            <strong>
+              {{ evento.cupo_total }}
+              personas
+            </strong>
+
           </div>
 
-          <div class="tiempo-card">
-            <div class="tiempo-num">4°</div>
-            <div class="tiempo-info">
-              <span class="tiempo-tag">Postre</span>
-              <h3>Tarta Húmeda de Cacao Orgánico y Lavanda</h3>
-              <p>Infusionada con flor de lavanda, helado artesanal de vainilla natural y tierra de galleta de almendra.</p>
-              <div class="maridaje">🍾 <strong>Maridaje:</strong> Vino Espumoso Rosé Cava</div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Componente PLANEA TU VISITA -->
-      <app-card-info (tipoSeleccionado)="onModalidadCambiada($event)"></app-card-info>
-
-    </div>
-
-    <!-- LADO DERECHO: Tarjeta Flotante de Reservación -->
-    <aside class="checkout-col">
-      <div class="checkout-card">
-        <h3>Resumen de Reserva</h3>
-        
-        <div class="price-box">
-          <span class="price-label">Precio por persona</span>
-          <div class="price-value">$1,250 <small>MXN</small></div>
-          <span class="price-subtext">Incluye menú completo + maridaje de 4 copas</span>
         </div>
 
-        <hr class="divider" />
-
-        <div class="modalidad-info">
-          <span>Modalidad elegida:</span>
-          <span class="modalidad-badge">
-            👤 {{ modalidadVisita | uppercase }}
-          </span>
-        </div>
-
-        <div class="inclusiones">
-          <ul>
-            <li>✅ Acceso exclusivo a la Terraza</li>
-            <li>✅ Recorrido guiado nocturno previo</li>
-            <li>✅ Charla con Sommelier y Chef</li>
-            <li>✅ Estacionamiento con Valet gratis</li>
-          </ul>
-        </div>
-
-        <!-- Grupo de Botones de Acción -->
-        <div class="acciones-reserva">
-          <button class="btn-reserva-final">
-            <span>Continuar con la Reserva</span>
-            <span class="arrow">→</span>
-          </button>
-
-          <a routerLink="/" class="btn-explorar-mas">
-            <span>🔍 Explorar más eventos</span>
-          </a>
-        </div>
-
-        <p class="garantia-text">🔒 Pago seguro. Cancelación gratuita hasta 24h antes.</p>
       </div>
-    </aside>
 
-  </main>
+    </section>
+
+
+    <!-- ====================================================
+         INFORMACIÓN PRINCIPAL
+         ==================================================== -->
+
+    <section class="detalle-grid">
+
+
+      <!-- ==================================================
+           DESCRIPCIÓN
+           ================================================== -->
+
+      <article class="detalle-contenido">
+
+        <span class="section-label">
+          SOBRE EL EVENTO
+        </span>
+
+
+        <h2>
+          Acerca de la experiencia
+        </h2>
+
+
+        <div class="detalle-divider">
+        </div>
+
+
+        <p class="descripcion-principal">
+          {{ evento.descripcion }}
+        </p>
+
+
+        <div
+          class="experiencia-destacado"
+          *ngIf="evento.subtitulo"
+        >
+
+          <span>
+            EXPERIENCIA
+          </span>
+
+          <strong>
+            {{ evento.subtitulo }}
+          </strong>
+
+        </div>
+
+
+        <!-- INFORMACIÓN -->
+
+        <div class="datos-evento">
+
+
+          <div class="dato-evento">
+
+            <span>
+              Fecha
+            </span>
+
+            <strong>
+              {{ fechaEvento }}
+            </strong>
+
+          </div>
+
+
+          <div class="dato-evento">
+
+            <span>
+              Horario
+            </span>
+
+            <strong>
+              {{ horarioEvento }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="dato-evento"
+            *ngIf="evento.cupo_total"
+          >
+
+            <span>
+              Capacidad máxima
+            </span>
+
+            <strong>
+              {{ evento.cupo_total }}
+              personas
+            </strong>
+
+          </div>
+
+
+          <div class="dato-evento">
+
+            <span>
+              Tipo
+            </span>
+
+            <strong>
+              {{
+                evento.tipo === 'especial'
+                  ? 'Evento especial'
+                  : 'Evento regular'
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- ==================================================
+           RESUMEN DE RESERVA
+           ================================================== -->
+
+      <aside class="reserva-panel">
+
+        <span class="section-label">
+          RESERVA
+        </span>
+
+
+        <h2>
+          Resumen
+        </h2>
+
+
+        <!-- PRECIO -->
+
+        <div class="precio-panel">
+
+          <span>
+            PRECIO POR PERSONA
+          </span>
+
+          <strong>
+            {{ precioEvento }}
+          </strong>
+
+          <small
+            *ngIf="evento.requiere_pago"
+          >
+            Pago requerido para confirmar
+            la reservación.
+          </small>
+
+          <small
+            *ngIf="!evento.requiere_pago"
+          >
+            Consulta disponibilidad
+            con nuestro equipo.
+          </small>
+
+        </div>
+
+
+        <!-- DATOS -->
+
+        <div class="reserva-datos">
+
+
+          <div class="reserva-dato">
+
+            <span>
+              Fecha
+            </span>
+
+            <strong>
+              {{ fechaEvento }}
+            </strong>
+
+          </div>
+
+
+          <div class="reserva-dato">
+
+            <span>
+              Horario
+            </span>
+
+            <strong>
+              {{ horarioEvento }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="reserva-dato"
+            *ngIf="evento.cupo_total"
+          >
+
+            <span>
+              Cupo máximo
+            </span>
+
+            <strong>
+              {{ evento.cupo_total }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             EVENTOS CON PAGO
+             ================================================= -->
+
+        <button
+          *ngIf="evento.requiere_pago"
+          type="button"
+          class="btn-reserva"
+          (click)="continuarReserva()"
+        >
+          Continuar con la reserva
+          <span>
+            →
+          </span>
+        </button>
+
+
+        <!-- =================================================
+             EVENTOS SIN PAGO
+             ================================================= -->
+
+        <a
+          *ngIf="!evento.requiere_pago"
+          routerLink="/contacto"
+          class="btn-reserva"
+        >
+          Solicitar información
+          <span>
+            →
+          </span>
+        </a>
+
+
+        <!-- VOLVER -->
+
+        <a
+          routerLink="/eventos"
+          class="btn-volver"
+        >
+          Explorar más eventos
+        </a>
+
+
+        <!-- AVISO TEMPORAL -->
+
+        <div
+          class="aviso-desarrollo"
+          *ngIf="mostrarAvisoReserva"
+        >
+
+          <strong>
+            Módulo de reserva preparado
+          </strong>
+
+          <p>
+            El siguiente paso será capturar
+            los datos del visitante y crear
+            la reserva en Supabase.
+          </p>
+
+          <p>
+            Posteriormente esta operación
+            se conectará con Clip para
+            procesar el pago.
+          </p>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </ng-container>
 
 </div>
