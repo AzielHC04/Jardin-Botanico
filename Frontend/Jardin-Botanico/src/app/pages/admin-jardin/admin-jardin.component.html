@@ -1,0 +1,566 @@
+<div class="jardin-admin-page">
+
+
+  <!-- ======================================================
+       HEADER
+       ====================================================== -->
+
+  <header class="admin-header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="volver-link"
+      >
+        ← Panel administrativo
+      </a>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Jardín Botánico
+      </h1>
+
+      <p>
+        Administra las colecciones
+        botánicas visibles en el sitio.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn-nuevo"
+      (click)="nuevaColeccion()"
+    >
+      + Nueva colección
+    </button>
+
+  </header>
+
+
+  <!-- ======================================================
+       ESTADÍSTICAS
+       ====================================================== -->
+
+  <section class="stats-grid">
+
+    <article>
+
+      <span>
+        TOTAL
+      </span>
+
+      <strong>
+        {{ colecciones.length }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        ACTIVAS
+      </span>
+
+      <strong>
+        {{ totalActivas }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        INACTIVAS
+      </span>
+
+      <strong>
+        {{ totalInactivas }}
+      </strong>
+
+    </article>
+
+  </section>
+
+
+  <!-- ======================================================
+       MENSAJES
+       ====================================================== -->
+
+  <div
+    class="mensaje-exito"
+    *ngIf="mensajeExito"
+  >
+    {{ mensajeExito }}
+  </div>
+
+
+  <div
+    class="mensaje-error"
+    *ngIf="mensajeError"
+  >
+    {{ mensajeError }}
+  </div>
+
+
+  <!-- ======================================================
+       EDITOR
+       ====================================================== -->
+
+  <section
+    id="editor-coleccion"
+    class="editor-panel"
+    *ngIf="mostrarFormulario"
+  >
+
+    <div class="editor-header">
+
+      <div>
+
+        <span class="eyebrow">
+          {{
+            coleccionEditandoId
+              ? 'EDITAR COLECCIÓN'
+              : 'NUEVA COLECCIÓN'
+          }}
+        </span>
+
+        <h2>
+          {{
+            coleccionEditandoId
+              ? 'Actualizar colección'
+              : 'Crear colección'
+          }}
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        (click)="cancelarFormulario()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      class="coleccion-form"
+      [formGroup]="formulario"
+      (ngSubmit)="guardarColeccion()"
+    >
+
+
+      <div class="campo">
+
+        <label for="titulo">
+          Título *
+        </label>
+
+        <input
+          id="titulo"
+          type="text"
+          formControlName="titulo"
+          placeholder="Ej. Orquídeas"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="etiqueta">
+          Etiqueta
+        </label>
+
+        <input
+          id="etiqueta"
+          type="text"
+          formControlName="etiqueta"
+          placeholder="Ej. Colección destacada"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="descripcion">
+          Descripción *
+        </label>
+
+        <textarea
+          id="descripcion"
+          rows="5"
+          formControlName="descripcion"
+          placeholder="Describe brevemente la colección..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="orden">
+          Orden
+        </label>
+
+        <input
+          id="orden"
+          type="number"
+          min="0"
+          formControlName="orden"
+        >
+
+        <small>
+          Los números menores aparecen primero.
+        </small>
+
+      </div>
+
+
+      <!-- IMAGEN -->
+
+      <div class="campo campo-completo">
+
+        <label>
+          Imagen
+        </label>
+
+
+        <div class="imagen-editor">
+
+          <div
+            class="imagen-preview"
+            *ngIf="
+              formulario
+                .get('imagen_url')
+                ?.value
+            "
+          >
+
+            <img
+              [src]="
+                formulario
+                  .get('imagen_url')
+                  ?.value
+              "
+              alt="Vista previa"
+            >
+
+          </div>
+
+
+          <div class="imagen-controles">
+
+            <label class="btn-subir">
+
+              {{
+                subiendoImagen
+                  ? 'Procesando...'
+                  : 'Seleccionar imagen'
+              }}
+
+              <input
+                type="file"
+                accept="image/*"
+                [disabled]="subiendoImagen"
+                (change)="
+                  seleccionarImagen(
+                    $event
+                  )
+                "
+              >
+
+            </label>
+
+
+            <span>
+              Máximo 5 MB.
+            </span>
+
+            <span>
+              Recomendado:
+              1200 × 800 px.
+            </span>
+
+            <span>
+              La imagen se adapta automáticamente.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="imagen_url">
+          URL de imagen
+        </label>
+
+        <input
+          id="imagen_url"
+          type="url"
+          formControlName="imagen_url"
+        >
+
+      </div>
+
+
+      <div class="campo-completo">
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="activa"
+          >
+
+          <span>
+
+            <strong>
+              Colección activa
+            </strong>
+
+            <small>
+              Visible en la página pública del Jardín.
+            </small>
+
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <div class="form-actions campo-completo">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cancelarFormulario()"
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="
+            guardando
+            || subiendoImagen
+          "
+        >
+          {{
+            guardando
+              ? 'Guardando...'
+              : (
+                  coleccionEditandoId
+                    ? 'Guardar cambios'
+                    : 'Crear colección'
+                )
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- ======================================================
+       FILTROS
+       ====================================================== -->
+
+  <section class="filtros">
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'todas'
+      "
+      (click)="
+        cambiarFiltro('todas')
+      "
+    >
+      Todas
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'activas'
+      "
+      (click)="
+        cambiarFiltro('activas')
+      "
+    >
+      Activas
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'inactivas'
+      "
+      (click)="
+        cambiarFiltro('inactivas')
+      "
+    >
+      Inactivas
+    </button>
+
+  </section>
+
+
+  <!-- ======================================================
+       CARGANDO / ERROR
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando colecciones...
+  </div>
+
+
+  <div
+    class="estado-panel"
+    *ngIf="
+      !cargando
+      && errorCarga
+    "
+  >
+    No fue posible cargar las colecciones.
+  </div>
+
+
+  <!-- ======================================================
+       GRID
+       ====================================================== -->
+
+  <section
+    class="colecciones-grid"
+    *ngIf="
+      !cargando
+      && !errorCarga
+    "
+  >
+
+    <article
+      class="coleccion-card"
+      *ngFor="
+        let coleccion
+        of coleccionesFiltradas
+      "
+      [class.inactiva]="
+        !coleccion.activa
+      "
+    >
+
+      <div class="coleccion-imagen">
+
+        <img
+          [src]="
+            coleccion.imagen_url
+            || 'assets/J.jpg'
+          "
+          [alt]="coleccion.titulo"
+        >
+
+        <span
+          *ngIf="!coleccion.activa"
+        >
+          Inactiva
+        </span>
+
+      </div>
+
+
+      <div class="coleccion-content">
+
+        <div class="coleccion-orden">
+          Orden {{ coleccion.orden }}
+        </div>
+
+
+        <span
+          class="coleccion-etiqueta"
+          *ngIf="coleccion.etiqueta"
+        >
+          {{ coleccion.etiqueta }}
+        </span>
+
+
+        <h2>
+          {{ coleccion.titulo }}
+        </h2>
+
+
+        <p>
+          {{ coleccion.descripcion }}
+        </p>
+
+
+        <div class="coleccion-actions">
+
+          <button
+            type="button"
+            class="btn-editar"
+            (click)="
+              editarColeccion(
+                coleccion
+              )
+            "
+          >
+            Editar
+          </button>
+
+
+          <button
+            type="button"
+            class="btn-estado"
+            [disabled]="
+              coleccionActualizandoId
+              === coleccion.id
+            "
+            (click)="
+              cambiarEstado(
+                coleccion
+              )
+            "
+          >
+            {{
+              coleccion.activa
+                ? 'Desactivar'
+                : 'Activar'
+            }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</div>

@@ -55,6 +55,10 @@ import {
 } from './pages/admin-contenido/admin-contenido.component';
 
 import {
+  AdminJardinComponent
+} from './pages/admin-jardin/admin-jardin.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -64,7 +68,7 @@ export const routes:
 
 
   /* =========================================================
-     SITIO PÚBLICO
+     PÚBLICO
      ========================================================= */
 
   {
@@ -172,6 +176,15 @@ export const routes:
   {
     path: 'admin/contenido',
     component: AdminContenidoComponent,
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  {
+    path: 'admin/jardin',
+    component: AdminJardinComponent,
     canActivate: [
       adminGuard
     ]

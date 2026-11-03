@@ -1,33 +1,28 @@
-<div class="garden-page">
+<div class="jardin-page">
+
 
   <!-- ======================================================
        HERO
        ====================================================== -->
 
-  <section class="garden-hero">
+  <section class="jardin-hero">
 
-    <div class="garden-hero-content">
+    <div class="hero-content">
 
-      <span class="hero-eyebrow">
-        JARDÍN BOTÁNICO DE TEYA
+      <span class="eyebrow">
+        NATURALEZA · CONSERVACIÓN · CONOCIMIENTO
       </span>
 
       <h1>
-        Naturaleza, conocimiento y conservación
+        Jardín Botánico de Teya
       </h1>
 
       <p>
-        Un espacio donde la riqueza vegetal,
-        la historia y la divulgación botánica
-        forman parte de una misma experiencia.
+        Un espacio dedicado a conocer,
+        apreciar y conservar la diversidad
+        vegetal que forma parte del entorno
+        natural de Yucatán.
       </p>
-
-      <a
-        routerLink="/contacto"
-        class="hero-button"
-      >
-        Planear mi visita
-      </a>
 
     </div>
 
@@ -38,35 +33,36 @@
        INTRODUCCIÓN
        ====================================================== -->
 
-  <section class="garden-introduction">
+  <section class="intro-section">
 
-    <div class="intro-heading">
+    <div class="intro-label">
 
-      <span class="section-eyebrow">
-        CONOCE EL JARDÍN
+      <span>
+        DESCUBRE EL JARDÍN
       </span>
-
-      <h2>
-        Un espacio para descubrir
-        la diversidad vegetal
-      </h2>
 
     </div>
 
 
-    <div class="intro-text">
+    <div class="intro-content">
+
+      <h2>
+        Naturaleza viva en el corazón de Teya
+      </h2>
 
       <p>
-        El Jardín Botánico de Teya reúne distintos espacios
-        y colecciones vegetales dentro del entorno de Hacienda Teya.
-        Su propósito es acercar a los visitantes al conocimiento,
-        apreciación y conservación de la naturaleza.
+        El Jardín Botánico de Teya reúne espacios
+        destinados a la conservación, divulgación
+        y apreciación de distintas especies vegetales,
+        integrándose al entorno histórico y cultural
+        de la Hacienda.
       </p>
 
       <p>
-        A través de recorridos, experiencias y herramientas
-        digitales, el jardín busca facilitar la consulta
-        de información y enriquecer la experiencia de cada visitante.
+        A través de sus recorridos y colecciones,
+        los visitantes pueden acercarse a la riqueza
+        natural de la región y descubrir la importancia
+        de su preservación.
       </p>
 
     </div>
@@ -78,45 +74,63 @@
        PILARES
        ====================================================== -->
 
-  <section class="pillars-section">
+  <section class="pilares-grid">
 
-    <div class="section-header">
+    <article>
 
-      <span class="subheading">
-        NUESTRO PROPÓSITO
+      <span>
+        01
       </span>
 
-      <h2>
-        Naturaleza que se conoce y se valora
-      </h2>
+      <h3>
+        Conservación
+      </h3>
 
-      <div class="header-divider"></div>
+      <p>
+        Protección y valoración de especies
+        vegetales dentro de un entorno dedicado
+        al conocimiento y cuidado de la naturaleza.
+      </p>
 
-    </div>
+    </article>
 
 
-    <div class="pillars-grid">
+    <article>
 
-      <article
-        class="pillar-card"
-        *ngFor="let pilar of pilares"
-      >
+      <span>
+        02
+      </span>
 
-        <span class="pillar-number">
-          0{{ pilar.id }}
-        </span>
+      <h3>
+        Divulgación
+      </h3>
 
-        <h3>
-          {{ pilar.titulo }}
-        </h3>
+      <p>
+        Información accesible para acercar
+        el conocimiento botánico a visitantes
+        de diferentes edades e intereses.
+      </p>
 
-        <p>
-          {{ pilar.descripcion }}
-        </p>
+    </article>
 
-      </article>
 
-    </div>
+    <article>
+
+      <span>
+        03
+      </span>
+
+      <h3>
+        Experiencia
+      </h3>
+
+      <p>
+        Recorridos que conectan naturaleza,
+        historia y cultura dentro de los espacios
+        de Teya.
+      </p>
+
+    </article>
 
   </section>
 
@@ -125,60 +139,102 @@
        COLECCIONES
        ====================================================== -->
 
-  <section class="collections-section">
+  <section class="colecciones-section">
 
     <div class="section-header">
 
-      <span class="subheading">
+      <span class="eyebrow">
         COLECCIONES BOTÁNICAS
       </span>
 
       <h2>
-        Explora el jardín
+        Explora nuestros espacios
       </h2>
 
-      <div class="header-divider"></div>
-
-      <p class="section-description">
-        Las distintas colecciones permiten conocer
-        especies y grupos vegetales presentes
-        dentro del Jardín Botánico de Teya.
+      <p>
+        Conoce algunas de las colecciones y áreas
+        que forman parte del Jardín Botánico.
       </p>
 
     </div>
 
 
-    <div class="collections-grid">
+    <div
+      class="estado"
+      *ngIf="cargando"
+    >
+      Cargando colecciones...
+    </div>
+
+
+    <div
+      class="estado"
+      *ngIf="
+        !cargando
+        && errorCarga
+      "
+    >
+      No fue posible cargar las colecciones.
+    </div>
+
+
+    <div
+      class="colecciones-grid"
+      *ngIf="
+        !cargando
+        && !errorCarga
+        && colecciones.length > 0
+      "
+    >
 
       <article
-        class="collection-card"
-        *ngFor="let coleccion of colecciones"
+        class="coleccion-card"
+        *ngFor="
+          let coleccion
+          of colecciones;
+          let i = index
+        "
       >
 
-        <div class="collection-image">
+        <div class="coleccion-imagen">
 
           <img
-            [src]="coleccion.imagen"
+            [src]="
+              coleccion.imagen_url
+              || 'assets/J.jpg'
+            "
             [alt]="coleccion.titulo"
             loading="lazy"
           >
 
-          <span class="collection-badge">
+
+          <span
+            *ngIf="coleccion.etiqueta"
+          >
             {{ coleccion.etiqueta }}
           </span>
 
         </div>
 
 
-        <div class="collection-content">
+        <div class="coleccion-content">
 
-          <span class="collection-number">
-            0{{ coleccion.id }}
-          </span>
+          <div class="coleccion-numero">
+            {{
+              (i + 1)
+                .toString()
+                .padStart(
+                  2,
+                  '0'
+                )
+            }}
+          </div>
+
 
           <h3>
             {{ coleccion.titulo }}
           </h3>
+
 
           <p>
             {{ coleccion.descripcion }}
@@ -194,110 +250,57 @@
 
 
   <!-- ======================================================
-       ORQUÍDEAS Y QR
+       QR BOTÁNICO
        ====================================================== -->
 
-  <section class="orchids-section">
+  <section class="qr-section">
 
-    <div class="orchids-content">
+    <div class="qr-content">
 
-      <span class="section-eyebrow light">
-        COLECCIÓN DE ORQUÍDEAS
+      <span class="eyebrow">
+        CONOCIMIENTO EN CADA RECORRIDO
       </span>
 
       <h2>
-        Información botánica al alcance de cada visitante
+        Descubre las especies a través de códigos QR
       </h2>
 
       <p>
-        Las orquídeas identificadas dentro del jardín
-        cuentan con fichas botánicas digitales que pueden
-        consultarse mediante códigos QR ubicados junto
-        a los ejemplares.
+        Durante el recorrido encontrarás identificadores
+        con códigos QR que permiten consultar información
+        de las especies directamente desde tu teléfono.
       </p>
 
       <p>
-        El sistema permite consultar directamente
-        la información de cada planta sin necesidad
-        de recorrer un catálogo general.
+        Cada código dirige a la ficha correspondiente
+        de la planta, facilitando una experiencia
+        informativa durante la visita.
       </p>
-
-
-      <div class="qr-example">
-
-        <div class="qr-icon">
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-
-            <rect
-              width="5"
-              height="5"
-              x="3"
-              y="3"
-              rx="1"
-            />
-
-            <rect
-              width="5"
-              height="5"
-              x="16"
-              y="3"
-              rx="1"
-            />
-
-            <rect
-              width="5"
-              height="5"
-              x="3"
-              y="16"
-              rx="1"
-            />
-
-            <path d="M16 16h2v2h-2z"/>
-            <path d="M21 16v5"/>
-            <path d="M16 21h2"/>
-            <path d="M18 18h3"/>
-
-          </svg>
-
-        </div>
-
-
-        <div>
-
-          <strong>
-            Identificación mediante QR
-          </strong>
-
-          <span>
-            Escanea la placa ubicada junto a cada ejemplar
-            para consultar su ficha botánica.
-          </span>
-
-        </div>
-
-      </div>
 
     </div>
 
 
-    <div class="orchids-visual">
+    <div class="qr-visual">
 
-      <img
-        src="assets/J.jpg"
-        alt="Colección de orquídeas del Jardín Botánico de Teya"
-        loading="lazy"
-      >
+      <div class="qr-demo">
+
+        <span>
+          Jardín botánico de Teya
+        </span>
+
+        <div class="qr-placeholder">
+
+          <div></div>
+          <div></div>
+          <div></div>
+
+        </div>
+
+        <small>
+          Hacienda Teya - Kanasín, Yucatán
+        </small>
+
+      </div>
 
     </div>
 
@@ -308,67 +311,45 @@
        CONSERVACIÓN
        ====================================================== -->
 
-  <section class="conservation-section">
+  <section class="conservacion-section">
 
-    <div class="conservation-image">
+    <span class="eyebrow">
+      NUESTRO COMPROMISO
+    </span>
 
-      <img
-        src="assets/b.jpg"
-        alt="Naturaleza en el Jardín Botánico de Teya"
-        loading="lazy"
-      >
+    <h2>
+      Conservar para conocer
+    </h2>
 
-    </div>
-
-
-    <div class="conservation-content">
-
-      <span class="section-eyebrow">
-        CONSERVACIÓN & DIVULGACIÓN
-      </span>
-
-      <h2>
-        Conocer también es conservar
-      </h2>
-
-      <div class="content-divider"></div>
-
-      <p>
-        La identificación y documentación de las especies
-        permite acercar información botánica a los visitantes
-        y fortalecer el valor educativo de las colecciones.
-      </p>
-
-      <p>
-        El sistema digital del jardín está diseñado
-        para crecer junto con nuevas especies,
-        colecciones y contenidos.
-      </p>
-
-    </div>
+    <p>
+      Cada colección representa una oportunidad
+      para acercar al visitante a la diversidad
+      vegetal y fomentar una relación más consciente
+      con el entorno natural.
+    </p>
 
   </section>
 
 
   <!-- ======================================================
-       CTA FINAL
+       CTA
        ====================================================== -->
 
-  <section class="garden-cta">
+  <section class="cta-section">
 
     <div>
 
       <span>
-        VISITA EL JARDÍN
+        VISITA TEYA
       </span>
 
       <h2>
-        Descubre Teya por ti mismo
+        Vive el Jardín Botánico
       </h2>
 
       <p>
-        Consulta nuestra ubicación e información
-        para planear tu próxima visita.
+        Descubre sus colecciones, recorre sus espacios
+        y conecta con la naturaleza de Yucatán.
       </p>
 
     </div>
@@ -377,17 +358,18 @@
     <div class="cta-actions">
 
       <a
-        routerLink="/contacto"
-        class="cta-primary"
-      >
-        Ubicación & Contacto
-      </a>
-
-      <a
         routerLink="/experiencias"
-        class="cta-secondary"
+        class="btn-primary"
       >
         Ver experiencias
+      </a>
+
+
+      <a
+        routerLink="/contacto"
+        class="btn-secondary"
+      >
+        Contacto
       </a>
 
     </div>

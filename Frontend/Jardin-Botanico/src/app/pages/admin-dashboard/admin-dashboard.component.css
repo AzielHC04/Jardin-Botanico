@@ -7,7 +7,6 @@
   --primary-light: #164e3f;
 
   --accent: #c99d66;
-  --accent-soft: #fbf5ed;
 
   --background: #fcfbf7;
 
@@ -35,10 +34,6 @@
 }
 
 
-/* =========================================================
-   CONTENEDOR
-   ========================================================= */
-
 .admin-page {
 
   width: 100%;
@@ -62,9 +57,7 @@
 }
 
 
-/* =========================================================
-   CABECERA
-   ========================================================= */
+/* HEADER */
 
 .admin-header {
 
@@ -72,7 +65,8 @@
 
   align-items: center;
 
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
   gap: 30px;
 
@@ -87,18 +81,12 @@
   background:
     var(--primary);
 
-  box-shadow:
-    0 14px 35px
-    rgba(11, 43, 34, 0.11);
-
 }
 
 
 .admin-eyebrow {
 
   display: block;
-
-  margin-bottom: 4px;
 
   color:
     var(--accent);
@@ -124,10 +112,7 @@
     'Playfair Display',
     serif;
 
-  font-size:
-    2.2rem;
-
-  line-height: 1.1;
+  font-size: 2.2rem;
 
 }
 
@@ -137,16 +122,9 @@
   margin: 0;
 
   color:
-    rgba(
-      255,
-      255,
-      255,
-      0.68
-    );
+    rgba(255,255,255,0.68);
 
   font-size: 0.72rem;
-
-  line-height: 1.55;
 
 }
 
@@ -160,15 +138,13 @@
 
 .btn-cerrar-sesion {
 
-  flex-shrink: 0;
-
   padding:
     11px
     18px;
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.35);
+    rgba(255,255,255,0.35);
 
   border-radius: 10px;
 
@@ -177,56 +153,16 @@
   background:
     transparent;
 
-  font-family:
-    'Plus Jakarta Sans',
-    sans-serif;
-
-  font-size: 0.78rem;
+  font-family: inherit;
 
   font-weight: 600;
 
   cursor: pointer;
 
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease;
-
 }
 
 
-.btn-cerrar-sesion:hover:not(:disabled) {
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.1
-    );
-
-  border-color:
-    rgba(
-      255,
-      255,
-      255,
-      0.65
-    );
-
-}
-
-
-.btn-cerrar-sesion:disabled {
-
-  opacity: 0.6;
-
-  cursor: not-allowed;
-
-}
-
-
-/* =========================================================
-   BIENVENIDA
-   ========================================================= */
+/* WELCOME */
 
 .welcome {
 
@@ -240,8 +176,7 @@
 
   border-radius: 20px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
 }
 
@@ -283,23 +218,17 @@
 
 .welcome p {
 
-  max-width: 750px;
-
   margin: 0;
 
   color:
     var(--muted);
-
-  font-size: 0.92rem;
 
   line-height: 1.7;
 
 }
 
 
-/* =========================================================
-   GRID DE MÓDULOS
-   ========================================================= */
+/* MODULES */
 
 .modules-grid {
 
@@ -307,25 +236,16 @@
 
   grid-template-columns:
     repeat(
-      4,
-      minmax(0, 1fr)
+      auto-fit,
+      minmax(190px, 1fr)
     );
 
-  gap: 20px;
+  gap: 18px;
 
   margin-top: 30px;
 
 }
 
-
-/* =========================================================
-   TARJETA BASE
-
-   Esta regla afecta exactamente igual a:
-   <a class="module-card">
-   y
-   <article class="module-card">
-   ========================================================= */
 
 .modules-grid > .module-card {
 
@@ -333,15 +253,11 @@
 
   flex-direction: column;
 
-  width: 100%;
-
   min-width: 0;
 
   min-height: 225px;
 
-  padding: 28px;
-
-  margin: 0;
+  padding: 26px;
 
   border:
     1px solid
@@ -352,30 +268,15 @@
   color:
     var(--text);
 
-  background:
-    #ffffff;
-
-  text-align: left;
+  background: #ffffff;
 
   text-decoration: none;
-
-  box-shadow:
-    0 6px 20px
-    rgba(11, 43, 34, 0.025);
 
 }
 
 
-/* =========================================================
-   IMPORTANTE:
-   RESET DEL ENLACE RESERVAS
-   ========================================================= */
-
 .modules-grid > a.module-card,
-.modules-grid > a.module-card:link,
-.modules-grid > a.module-card:visited,
-.modules-grid > a.module-card:hover,
-.modules-grid > a.module-card:active {
+.modules-grid > a.module-card:visited {
 
   color:
     var(--text);
@@ -384,10 +285,6 @@
 
 }
 
-
-/* =========================================================
-   NÚMERO
-   ========================================================= */
 
 .module-number {
 
@@ -400,14 +297,8 @@
 
   font-weight: 700;
 
-  letter-spacing: 0.5px;
-
 }
 
-
-/* =========================================================
-   TÍTULO
-   ========================================================= */
 
 .module-card h3 {
 
@@ -425,16 +316,8 @@
 
   font-size: 1.45rem;
 
-  line-height: 1.25;
-
-  text-decoration: none;
-
 }
 
-
-/* =========================================================
-   DESCRIPCIÓN
-   ========================================================= */
 
 .module-card p {
 
@@ -446,18 +329,12 @@
   color:
     var(--muted);
 
-  font-size: 0.79rem;
+  font-size: 0.75rem;
 
-  line-height: 1.65;
-
-  text-decoration: none;
+  line-height: 1.6;
 
 }
 
-
-/* =========================================================
-   PIE DE TARJETA
-   ========================================================= */
 
 .module-footer {
 
@@ -489,34 +366,13 @@
   color:
     var(--accent);
 
-  font-size: 1rem;
-
   transition:
-    transform
-    0.25s ease;
+    transform 0.25s ease;
 
 }
 
-
-.module-soon {
-
-  color:
-    #94a3b8;
-
-  font-size: 0.68rem;
-
-  font-weight: 500;
-
-}
-
-
-/* =========================================================
-   TARJETA ACTIVA
-   ========================================================= */
 
 .module-card-active {
-
-  cursor: pointer;
 
   transition:
     transform 0.25s ease,
@@ -536,7 +392,7 @@
 
   box-shadow:
     0 16px 38px
-    rgba(11, 43, 34, 0.09);
+    rgba(11,43,34,0.09);
 
 }
 
@@ -550,20 +406,7 @@
 }
 
 
-/* =========================================================
-   TARJETAS DESACTIVADAS
-   ========================================================= */
-
-.module-card-disabled {
-
-  cursor: default;
-
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
 
@@ -579,10 +422,6 @@
 
 }
 
-
-/* =========================================================
-   MÓVIL
-   ========================================================= */
 
 @media (max-width: 600px) {
 
@@ -603,17 +442,6 @@
 
     flex-direction:
       column;
-
-    padding:
-      26px;
-
-  }
-
-
-  .admin-header h1 {
-
-    font-size:
-      1.9rem;
 
   }
 
@@ -636,29 +464,10 @@
   }
 
 
-  .welcome h2 {
-
-    font-size:
-      2rem;
-
-  }
-
-
   .modules-grid {
 
     grid-template-columns:
       1fr;
-
-    gap: 16px;
-
-  }
-
-
-  .modules-grid > .module-card {
-
-    min-height: 200px;
-
-    padding: 24px;
 
   }
 
