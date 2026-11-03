@@ -111,8 +111,6 @@
     <section class="experiencia-grid">
 
 
-      <!-- CONTENIDO -->
-
       <article class="experiencia-contenido">
 
         <span class="section-eyebrow">
@@ -188,8 +186,6 @@
       </article>
 
 
-      <!-- PANEL -->
-
       <aside class="experiencia-panel">
 
         <span class="section-eyebrow">
@@ -240,14 +236,12 @@
 
 
     <!-- ====================================================
-         COLLAGE
+         GALERÍA
          ==================================================== -->
 
     <section
       class="galeria-publica"
-      *ngIf="
-        galeria.length > 0
-      "
+      *ngIf="galeria.length > 0"
     >
 
 
@@ -272,13 +266,21 @@
       </div>
 
 
-      <!-- COLLAGE FIJO -->
+      <!-- ==================================================
+           COLLAGE
+
+           Aplicamos una composición distinta
+           según la cantidad de imágenes.
+           ================================================== -->
 
       <div
         class="collage"
-        [class.pocas-imagenes]="
-          galeria.length <= 3
-        "
+        [class.collage-1]="galeria.length === 1"
+        [class.collage-2]="galeria.length === 2"
+        [class.collage-3]="galeria.length === 3"
+        [class.collage-4]="galeria.length === 4"
+        [class.collage-5]="galeria.length === 5"
+        [class.collage-6]="galeria.length >= 6"
       >
 
         <button
@@ -302,8 +304,6 @@
           >
 
 
-          <!-- DESCRIPCIÓN -->
-
           <div
             class="collage-caption"
             *ngIf="
@@ -318,8 +318,6 @@
             {{ imagen.descripcion }}
           </div>
 
-
-          <!-- +N -->
 
           <div
             class="collage-mas"
@@ -349,12 +347,14 @@
 
         <span>
           {{ galeria.length }}
+
           {{
             galeria.length === 1
               ? 'fotografía'
               : 'fotografías'
           }}
         </span>
+
 
         <span>
           Haz clic para ampliar
@@ -383,8 +383,6 @@
 >
 
 
-  <!-- CERRAR -->
-
   <button
     type="button"
     class="visor-cerrar"
@@ -394,8 +392,6 @@
     ×
   </button>
 
-
-  <!-- CONTADOR -->
 
   <div class="visor-contador">
 
@@ -410,8 +406,6 @@
   </div>
 
 
-  <!-- ANTERIOR -->
-
   <button
     type="button"
     class="
@@ -424,8 +418,6 @@
     ‹
   </button>
 
-
-  <!-- IMAGEN -->
 
   <div
     class="visor-contenido"
@@ -455,8 +447,6 @@
 
   </div>
 
-
-  <!-- SIGUIENTE -->
 
   <button
     type="button"
