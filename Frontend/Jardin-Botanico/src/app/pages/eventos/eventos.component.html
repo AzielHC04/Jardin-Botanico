@@ -92,7 +92,20 @@
 
     </div>
 
+    <div
+      class="loading-state"
+      *ngIf="cargando"
+    >
+      Cargando eventos...
+    </div>
 
+    <div
+      class="error-state"
+      *ngIf="errorCarga"
+    >
+      No fue posible cargar los eventos en este momento.
+    </div>
+    
     <!-- ====================================================
          CARRUSEL 3D
          ==================================================== -->
@@ -172,13 +185,10 @@
 
             <span
               class="image-badge spots-badge"
-              *ngIf="evento.cuposLimites"
+              *ngIf="evento.cupoTotal"
             >
-
-              Quedan
-              {{ evento.cuposLimites }}
-              lugares
-
+              Cupo máximo:
+              {{ evento.cupoTotal }}
             </span>
 
           </div>

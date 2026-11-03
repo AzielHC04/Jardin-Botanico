@@ -1,25 +1,46 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import { CommonModule } from '@angular/common';
+
 import {
   DomSanitizer,
   SafeResourceUrl
 } from '@angular/platform-browser';
 
+import { SupabaseService } from '../../core/services/supabase.service';
+
+import {
+  ConfiguracionSitio
+} from '../../core/models/configuracion-sitio.model';
+
 
 interface InfoJardin {
+
   nombre: string;
+
   subtitulo: string;
+
   descripcion: string;
 
   direccion: string;
+
   referencia: string;
 
   telefono: string;
+
   whatsapp: string;
+
   email: string;
 
   horariosAtencion: string;
 
+  googleMapsUrl: string;
+
   mapaEmbedUrl: SafeResourceUrl;
+
 }
 
 
@@ -28,82 +49,117 @@ interface InfoJardin {
 
   standalone: true,
 
-  imports: [],
+  imports: [
+    CommonModule
+  ],
 
   templateUrl: './contacto.component.html',
   styleUrl: './contacto.component.css'
 })
-export class ContactoComponent {
+export class ContactoComponent implements OnInit {
 
-  infoJardin: InfoJardin;
+
+  infoJardin: InfoJardin | null = null;
+
+
+  cargando: boolean = true;
+
+  errorCarga: boolean = false;
 
 
   constructor(
+    private supabaseService: SupabaseService,
     private sanitizer: DomSanitizer
-  ) {
-
-    /* =======================================================
-       MAPA EMBEBIDO
-       ======================================================= */
-
-    const rawMapUrl =
-      'https://maps.google.com/maps?' +
-      'q=Jard%C3%ADn%20Bot%C3%A1nico%20de%20Teya%2C%20' +
-      'Carretera%20M%C3%A9rida-Canc%C3%BAn%20km%2011.2%2C%20' +
-      '97370%20Yucat%C3%A1n' +
-      '&t=&z=17&ie=UTF8&iwloc=&output=embed';
+  ) {}
 
 
-    /* =======================================================
-       INFORMACIÓN
+  async ngOnInit(): Promise<void> {
 
-       IMPORTANTE:
-       teléfono, WhatsApp, correo y horarios deben validarse
-       con la empresa antes de publicar la versión definitiva.
-       ======================================================= */
+    await this.cargarConfiguracion();
 
-    this.infoJardin = {
-
-      nombre:
-        'Jardín Botánico de Teya',
-
-      subtitulo:
-        'Naturaleza, patrimonio & experiencias',
-
-      descripcion:
-        'Conoce el Jardín Botánico de Teya y encuentra la información necesaria para planear tu visita.',
-
-      direccion:
-        'Carretera Mérida - Cancún Km 11.2, C.P. 97370, Yucatán',
-
-      referencia:
-        'Jardín Botánico de Teya, sobre la carretera Mérida - Cancún.',
+  }
 
 
-      // PENDIENTE DE VALIDACIÓN CON LA EMPRESA
-      telefono:
-        '+52 (999) 988 0800',
+  /* =========================================================
+     CARGAR INFORMACIÓN DESDE SUPABASE
+     ========================================================= */
 
-      // PENDIENTE DE VALIDACIÓN CON LA EMPRESA
-      whatsapp:
-        '+52 (999) 123 4567',
+  private async cargarConfiguracion(): Promise<void> {
 
-      // PENDIENTE DE VALIDACIÓN CON LA EMPRESA
-      email:
-        'ventas@haciendateya.com',
+    this.cargando = true;
 
-      // PENDIENTE DE VALIDACIÓN CON LA EMPRESA
-      horariosAtencion:
-        'Lunes a Domingo: 08:00 AM - 06:00 PM',
+    this.errorCarga = false;
 
 
-      mapaEmbedUrl:
+    try {
+
+      const configuracion:
+        ConfiguracionSitio =
+          await this.supabaseService
+            .obtenerConfiguracionSitio();
+
+
+      const mapaSeguro =
         this.sanitizer
           .bypassSecurityTrustResourceUrl(
-            rawMapUrl
-          )
+            configuracion.mapa_embed_url
+              ?? 'about:blank'
+          );
 
-    };
+
+      this.infoJardin = {
+
+        nombre:
+          configuracion.nombre,
+
+        subtitulo:
+          configuracion.subtitulo ?? '',
+
+        descripcion:
+          configuracion.descripcion ?? '',
+
+        direccion:
+          configuracion.direccion ?? '',
+
+        referencia:
+          configuracion.referencia ?? '',
+
+        telefono:
+          configuracion.telefono ?? '',
+
+        whatsapp:
+          configuracion.whatsapp ?? '',
+
+        email:
+          configuracion.email ?? '',
+
+        horariosAtencion:
+          configuracion.horarios_atencion ?? '',
+
+        googleMapsUrl:
+          configuracion.google_maps_url ?? '',
+
+        mapaEmbedUrl:
+          mapaSeguro
+
+      };
+
+    }
+    catch (error) {
+
+      console.error(
+        'No se pudo cargar la información del jardín:',
+        error
+      );
+
+      this.errorCarga = true;
+
+    }
+    finally {
+
+      this.cargando = false;
+
+    }
 
   }
 
@@ -114,8 +170,23 @@ export class ContactoComponent {
 
   abrirComoLlegar(): void {
 
+    const url =
+      this.infoJardin?.googleMapsUrl;
+
+
+    if (!url) {
+
+      console.warn(
+        'No existe una URL de Google Maps configurada.'
+      );
+
+      return;
+
+    }
+
+
     window.open(
-      'https://maps.app.goo.gl/rWZDS1EzM5FnLZ7C9',
+      url,
       '_blank',
       'noopener,noreferrer'
     );

@@ -3,35 +3,60 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
+import { SupabaseService } from '../../core/services/supabase.service';
 
-interface Evento {
-  id: number;
+import {
+  Evento
+} from '../../core/models/evento.model';
+
+
+type CategoriaEvento =
+  | 'hoy'
+  | 'proximos'
+  | 'pasados';
+
+
+interface EventoVista {
+
+  id: string;
+
   titulo: string;
+
   descripcion: string;
+
   horario: string;
+
   precio: string;
+
   imagen: string;
 
-  categoria:
-    | 'hoy'
-    | 'proximos'
-    | 'pasados';
+  categoria: CategoriaEvento;
 
-  cuposLimites?: number;
+  cupoTotal?: number;
+
 }
 
 
-interface EventoEspecial {
-  id: number;
+interface EventoEspecialVista {
+
+  id: string;
+
   titulo: string;
+
   subtitulo: string;
+
   fecha: string;
+
   descripcion: string;
+
   imagen: string;
+
   etiqueta: string;
+
 }
 
 
@@ -48,242 +73,70 @@ interface EventoEspecial {
   templateUrl: './eventos.component.html',
   styleUrl: './eventos.component.css'
 })
-export class EventosComponent implements OnInit, OnDestroy {
+export class EventosComponent
+implements OnInit, OnDestroy {
+
 
   /* =========================================================
      FILTROS
      ========================================================= */
 
   filtroActual:
-    | 'hoy'
-    | 'proximos'
-    | 'pasados' = 'hoy';
+    CategoriaEvento = 'hoy';
 
 
-  eventosFiltrados: Evento[] = [];
-
-  activeIndex: number = 0;
-  private carouselInterval?: ReturnType<typeof setInterval>;
-
-  private readonly carouselDelay = 5000;
+  eventos:
+    EventoVista[] = [];
 
 
-  /* =========================================================
-     EVENTOS
-
-     Actualmente son datos de demostración.
-     Posteriormente vendrán desde el backend.
-     ========================================================= */
-
-  eventos: Evento[] = [
-
-    {
-      id: 1,
-
-      titulo:
-        'Taller de Cerámica Botánica',
-
-      descripcion:
-        'Crea tus propias macetas de arcilla decoradas con relieve de hojas reales del jardín.',
-
-      horario:
-        '10:00 AM - 12:00 PM',
-
-      precio:
-        '$250 MXN',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'hoy',
-
-      cuposLimites: 4
-    },
+  eventosFiltrados:
+    EventoVista[] = [];
 
 
-    {
-      id: 2,
-
-      titulo:
-        'Recorrido Informativo Guiado',
-
-      descripcion:
-        'Paseo guiado para conocer la historia, el entorno y los jardines de Teya.',
-
-      horario:
-        '04:00 PM - 05:30 PM',
-
-      precio:
-        'Entrada General ($80 MXN)',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'hoy'
-    },
+  eventosEspeciales:
+    EventoEspecialVista[] = [];
 
 
-    {
-      id: 3,
-
-      titulo:
-        'Cena Yucateca Tradicional',
-
-      descripcion:
-        'Experiencia gastronómica inspirada en la cocina tradicional yucateca.',
-
-      horario:
-        '08:00 PM - 10:30 PM',
-
-      precio:
-        '$650 MXN',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'hoy',
-
-      cuposLimites: 2
-    },
+  activeIndex:
+    number = 0;
 
 
-    {
-      id: 4,
-
-      titulo:
-        'Exposición de Orquídeas Exóticas',
-
-      descripcion:
-        'Muestra especial dedicada a distintas especies de orquídeas y su riqueza botánica.',
-
-      horario:
-        '11:00 AM - 03:00 PM',
-
-      precio:
-        '$120 MXN',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'proximos'
-    },
+  cargando:
+    boolean = true;
 
 
-    {
-      id: 5,
-
-      titulo:
-        'Noche de Fotografías Nocturnas',
-
-      descripcion:
-        'Taller práctico de fotografía de larga exposición recorriendo distintos espacios de Teya.',
-
-      horario:
-        '07:00 PM - 09:00 PM',
-
-      precio:
-        '$300 MXN',
-
-      imagen:
-        'assets/J.jpg',
-
-      categoria:
-        'pasados'
-    }
-
-  ];
+  errorCarga:
+    boolean = false;
 
 
   /* =========================================================
-     EVENTOS ESPECIALES
+     CARRUSEL
      ========================================================= */
 
-  eventosEspeciales: EventoEspecial[] = [
-
-    {
-      id: 101,
-
-      titulo:
-        'Noches de Jazz en la Hacienda',
-
-      subtitulo:
-        'Música en vivo & Coctelería Yucateca',
-
-      fecha:
-        'Próxima edición',
-
-      descripcion:
-        'Disfruta de música en vivo rodeado de la iluminación nocturna de los jardines y espacios de Teya.',
-
-      imagen:
-        'assets/imagenes/jazz.jpg',
-
-      etiqueta:
-        'Especial'
-    },
+  private carouselInterval?:
+    ReturnType<typeof setInterval>;
 
 
-    {
-      id: 102,
-
-      titulo:
-        'Gran Gala Yucateca',
-
-      subtitulo:
-        'Tradición, Jarana & Gastronomía',
-
-      fecha:
-        'Fecha por confirmar',
-
-      descripcion:
-        'Una celebración especial inspirada en las tradiciones, música y gastronomía de Yucatán.',
-
-      imagen:
-        'assets/J.jpg',
-
-      etiqueta:
-        'Tradicional'
-    },
+  private readonly carouselDelay:
+    number = 5000;
 
 
-    {
-      id: 103,
-
-      titulo:
-        'Boda Muestra & Expo Eventos',
-
-      subtitulo:
-        'Montajes Exclusivos & Recorrido por Jardines',
-
-      fecha:
-        'Edición especial',
-
-      descripcion:
-        'Conoce espacios, montajes y propuestas para la realización de celebraciones y eventos.',
-
-      imagen:
-        'assets/J.jpg',
-
-      etiqueta:
-        'Especial'
-    }
-
-  ];
+  constructor(
+    private supabaseService:
+      SupabaseService
+  ) {}
 
 
   /* =========================================================
      CICLO DE VIDA
      ========================================================= */
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
-    this.actualizarFiltro();
-    this.iniciarCarruselAutomatico();
+    await this.cargarEventos();
+
   }
+
 
   ngOnDestroy(): void {
 
@@ -291,27 +144,327 @@ export class EventosComponent implements OnInit, OnDestroy {
 
   }
 
+
   /* =========================================================
-     FILTRADO
+     CARGA DESDE SUPABASE
+     ========================================================= */
+
+  private async cargarEventos():
+    Promise<void> {
+
+    this.cargando = true;
+
+    this.errorCarga = false;
+
+
+    try {
+
+      const eventosSupabase:
+        Evento[] =
+          await this.supabaseService
+            .obtenerEventosActivos();
+
+
+      const regulares =
+        eventosSupabase.filter(
+          evento =>
+            evento.tipo === 'regular'
+        );
+
+
+      const especiales =
+        eventosSupabase.filter(
+          evento =>
+            evento.tipo === 'especial'
+        );
+
+
+      this.eventos =
+        regulares.map(
+          evento =>
+            this.convertirEventoRegular(
+              evento
+            )
+        );
+
+
+      this.eventosEspeciales =
+        especiales.map(
+          evento =>
+            this.convertirEventoEspecial(
+              evento
+            )
+        );
+
+
+      /*
+       * Si no hay eventos hoy,
+       * mostramos próximos automáticamente.
+       */
+
+      const hayEventosHoy =
+        this.eventos.some(
+          evento =>
+            evento.categoria === 'hoy'
+        );
+
+
+      if (!hayEventosHoy) {
+
+        this.filtroActual =
+          'proximos';
+
+      }
+
+
+      this.actualizarFiltro();
+
+      this.iniciarCarruselAutomatico();
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible cargar los eventos:',
+        error
+      );
+
+
+      this.errorCarga = true;
+
+      this.eventos = [];
+
+      this.eventosEspeciales = [];
+
+      this.eventosFiltrados = [];
+
+    }
+    finally {
+
+      this.cargando = false;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     CONVERSIÓN
+     ========================================================= */
+
+  private convertirEventoRegular(
+    evento: Evento
+  ): EventoVista {
+
+    return {
+
+      id:
+        evento.id,
+
+      titulo:
+        evento.titulo,
+
+      descripcion:
+        evento.descripcion,
+
+      horario:
+        this.formatearHorario(
+          evento.fecha_inicio,
+          evento.fecha_fin
+        ),
+
+      precio:
+        this.formatearPrecio(
+          evento
+        ),
+
+      imagen:
+        evento.imagen_url
+        ?? 'assets/J.jpg',
+
+      categoria:
+        this.obtenerCategoria(
+          evento
+        ),
+
+      cupoTotal:
+        evento.cupo_total
+        ?? undefined
+
+    };
+
+  }
+
+
+  private convertirEventoEspecial(
+    evento: Evento
+  ): EventoEspecialVista {
+
+    return {
+
+      id:
+        evento.id,
+
+      titulo:
+        evento.titulo,
+
+      subtitulo:
+        evento.subtitulo
+        ?? '',
+
+      fecha:
+        this.formatearFechaEspecial(
+          evento.fecha_inicio
+        ),
+
+      descripcion:
+        evento.descripcion,
+
+      imagen:
+        evento.imagen_url
+        ?? 'assets/J.jpg',
+
+      etiqueta:
+        evento.etiqueta
+        ?? 'Especial'
+
+    };
+
+  }
+
+
+  /* =========================================================
+     CLASIFICACIÓN AUTOMÁTICA
+     ========================================================= */
+
+  private obtenerCategoria(
+    evento: Evento
+  ): CategoriaEvento {
+
+    const ahora =
+      new Date();
+
+
+    const inicio =
+      new Date(
+        evento.fecha_inicio
+      );
+
+
+    const fin =
+      evento.fecha_fin
+        ? new Date(
+            evento.fecha_fin
+          )
+        : inicio;
+
+
+    /*
+     * Comparamos la fecha utilizando
+     * la zona horaria de Yucatán.
+     */
+
+    const hoyTexto =
+      this.obtenerFechaLocal(
+        ahora
+      );
+
+
+    const inicioTexto =
+      this.obtenerFechaLocal(
+        inicio
+      );
+
+
+    if (
+      inicioTexto ===
+      hoyTexto
+    ) {
+
+      return 'hoy';
+
+    }
+
+
+    if (
+      inicio > ahora
+    ) {
+
+      return 'proximos';
+
+    }
+
+
+    if (
+      fin < ahora
+    ) {
+
+      return 'pasados';
+
+    }
+
+
+    /*
+     * Caso poco común:
+     * evento de varios días que ya comenzó
+     * pero todavía no termina.
+     */
+
+    return 'hoy';
+
+  }
+
+
+  private obtenerFechaLocal(
+    fecha: Date
+  ): string {
+
+    return new Intl.DateTimeFormat(
+      'en-CA',
+      {
+
+        timeZone:
+          'America/Merida',
+
+        year:
+          'numeric',
+
+        month:
+          '2-digit',
+
+        day:
+          '2-digit'
+
+      }
+    )
+      .format(fecha);
+
+  }
+
+
+  /* =========================================================
+     FILTROS
      ========================================================= */
 
   setFiltro(
     categoria:
-      | 'hoy'
-      | 'proximos'
-      | 'pasados'
+      CategoriaEvento
   ): void {
 
-    this.filtroActual = categoria;
+    this.filtroActual =
+      categoria;
+
 
     this.actualizarFiltro();
+
 
     this.iniciarCarruselAutomatico();
 
   }
 
 
-  private actualizarFiltro(): void {
+  private actualizarFiltro():
+    void {
 
     this.eventosFiltrados =
       this.eventos.filter(
@@ -320,45 +473,11 @@ export class EventosComponent implements OnInit, OnDestroy {
           this.filtroActual
       );
 
+
     this.activeIndex = 0;
 
   }
 
-  private iniciarCarruselAutomatico(): void {
-
-  this.detenerCarruselAutomatico();
-
-
-    if (this.eventosFiltrados.length <= 1) {
-      return;
-    }
-
-
-    this.carouselInterval = setInterval(() => {
-
-      this.activeIndex =
-        (
-          this.activeIndex + 1
-        )
-        %
-        this.eventosFiltrados.length;
-
-    }, this.carouselDelay);
-
-  }
-
-
-  private detenerCarruselAutomatico(): void {
-
-    if (this.carouselInterval) {
-
-      clearInterval(this.carouselInterval);
-
-      this.carouselInterval = undefined;
-
-    }
-
-  }
 
   /* =========================================================
      CARRUSEL
@@ -366,8 +485,13 @@ export class EventosComponent implements OnInit, OnDestroy {
 
   siguiente(): void {
 
-    if (this.eventosFiltrados.length <= 1) {
+    if (
+      this.eventosFiltrados.length
+      <= 1
+    ) {
+
       return;
+
     }
 
 
@@ -386,8 +510,13 @@ export class EventosComponent implements OnInit, OnDestroy {
 
   anterior(): void {
 
-    if (this.eventosFiltrados.length <= 1) {
+    if (
+      this.eventosFiltrados.length
+      <= 1
+    ) {
+
       return;
+
     }
 
 
@@ -410,8 +539,12 @@ export class EventosComponent implements OnInit, OnDestroy {
     index: number
   ): void {
 
-    this.activeIndex = index;
+    this.activeIndex =
+      index;
+
+
     this.iniciarCarruselAutomatico();
+
   }
 
 
@@ -482,15 +615,222 @@ export class EventosComponent implements OnInit, OnDestroy {
   }
 
 
-  /* =========================================================
-     EVENTOS ESPECIALES
+  private iniciarCarruselAutomatico():
+    void {
 
-     Esto es temporal. Después podemos convertirlo en
-     navegación, formulario o información desde backend.
+    this.detenerCarruselAutomatico();
+
+
+    if (
+      this.eventosFiltrados.length
+      <= 1
+    ) {
+
+      return;
+
+    }
+
+
+    this.carouselInterval =
+      setInterval(
+        () => {
+
+          this.activeIndex =
+            (
+              this.activeIndex + 1
+            )
+            %
+            this.eventosFiltrados.length;
+
+        },
+        this.carouselDelay
+      );
+
+  }
+
+
+  private detenerCarruselAutomatico():
+    void {
+
+    if (
+      this.carouselInterval
+    ) {
+
+      clearInterval(
+        this.carouselInterval
+      );
+
+
+      this.carouselInterval =
+        undefined;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     FORMATO DE HORARIO
+     ========================================================= */
+
+  private formatearHorario(
+    fechaInicio: string,
+    fechaFin: string | null
+  ): string {
+
+    const formatter =
+      new Intl.DateTimeFormat(
+        'es-MX',
+        {
+
+          hour:
+            '2-digit',
+
+          minute:
+            '2-digit',
+
+          hour12:
+            true,
+
+          timeZone:
+            'America/Merida'
+
+        }
+      );
+
+
+    const inicio =
+      formatter.format(
+        new Date(
+          fechaInicio
+        )
+      );
+
+
+    if (!fechaFin) {
+
+      return inicio;
+
+    }
+
+
+    const fin =
+      formatter.format(
+        new Date(
+          fechaFin
+        )
+      );
+
+
+    return `${inicio} - ${fin}`;
+
+  }
+
+
+  /* =========================================================
+     FORMATO DE PRECIO
+     ========================================================= */
+
+  private formatearPrecio(
+    evento: Evento
+  ): string {
+
+    if (
+      evento.precio_texto
+    ) {
+
+      return evento.precio_texto;
+
+    }
+
+
+    if (
+      evento.precio === null
+    ) {
+
+      return 'Consultar';
+
+    }
+
+
+    return new Intl.NumberFormat(
+      'es-MX',
+      {
+
+        style:
+          'currency',
+
+        currency:
+          evento.moneda,
+
+        minimumFractionDigits:
+          0,
+
+        maximumFractionDigits:
+          2
+
+      }
+    )
+      .format(
+        evento.precio
+      );
+
+  }
+
+
+  /* =========================================================
+     FORMATO EVENTO ESPECIAL
+     ========================================================= */
+
+  private formatearFechaEspecial(
+    fecha: string
+  ): string {
+
+    return new Intl.DateTimeFormat(
+      'es-MX',
+      {
+
+        weekday:
+          'long',
+
+        day:
+          'numeric',
+
+        month:
+          'long',
+
+        hour:
+          '2-digit',
+
+        minute:
+          '2-digit',
+
+        hour12:
+          true,
+
+        timeZone:
+          'America/Merida'
+
+      }
+    )
+      .format(
+        new Date(fecha)
+      );
+
+  }
+
+
+  /* =========================================================
+     INFORMACIÓN ESPECIAL
+
+     Todavía temporal.
+     Más adelante puede navegar a contacto,
+     reserva o un detalle específico.
      ========================================================= */
 
   solicitarInformacionEspecial(
-    especial: EventoEspecial
+    especial:
+      EventoEspecialVista
   ): void {
 
     alert(

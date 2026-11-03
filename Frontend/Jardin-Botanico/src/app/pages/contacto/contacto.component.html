@@ -25,8 +25,28 @@
   <!-- ======================================================
        INFORMACIÓN + MAPA
        ====================================================== -->
+  <div
+    class="loading-state"
+    *ngIf="cargando"
+  >
+    <p>
+      Cargando información...
+    </p>
+  </div>
 
-  <section class="contact-section">
+  <div
+    class="error-state"
+    *ngIf="errorCarga"
+  >
+    <p>
+      No fue posible cargar la información en este momento.
+    </p>
+  </div>
+
+  <section
+    class="contact-section"
+    *ngIf="infoJardin"
+  >
 
     <div class="contact-container">
 
