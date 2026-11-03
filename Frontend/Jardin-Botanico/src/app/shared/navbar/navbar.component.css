@@ -15,11 +15,20 @@
 
   --border: #e8eae6;
 
+
+  /*
+   * Como el header ahora es fixed,
+   * el host reserva su espacio.
+   *
+   * Así el contenido de la página
+   * no queda oculto debajo de la navbar.
+   */
+
   display: block;
 
-  position: relative;
+  width: 100%;
 
-  z-index: 1000;
+  height: 95px;
 
 }
 
@@ -34,16 +43,18 @@
 
 
 /* =========================================================
-   HEADER
+   HEADER FIJO
    ========================================================= */
 
 .site-header {
 
-  position: sticky;
+  position: fixed;
+
+  z-index: 5000;
 
   top: 0;
-
-  z-index: 1000;
+  right: 0;
+  left: 0;
 
   width: 100%;
 
@@ -52,7 +63,7 @@
       252,
       251,
       247,
-      0.96
+      0.97
     );
 
   border-top:
@@ -61,19 +72,27 @@
 
   border-bottom:
     1px solid
-    var(--border);
-
-  box-shadow:
-    0 8px 30px
     rgba(
       11,
       43,
       34,
-      0.07
+      0.10
+    );
+
+  box-shadow:
+    0 8px 28px
+    rgba(
+      11,
+      43,
+      34,
+      0.08
     );
 
   backdrop-filter:
-    blur(12px);
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
 
 }
 
@@ -90,7 +109,9 @@
 
   min-height: 92px;
 
-  margin: 0 auto;
+  margin:
+    0
+    auto;
 
   padding:
     0
@@ -103,7 +124,7 @@
   justify-content:
     space-between;
 
-  gap: 40px;
+  gap: 35px;
 
 }
 
@@ -119,6 +140,9 @@
   display: flex;
 
   flex-direction: column;
+
+  color:
+    inherit;
 
   text-decoration: none;
 
@@ -173,12 +197,12 @@
 
   align-items: center;
 
-  gap: 32px;
+  gap: 30px;
 
 }
 
 
-.nav-links > a:not(.nav-cta) {
+.nav-links > a:not(.account-button) {
 
   position: relative;
 
@@ -209,17 +233,21 @@
 }
 
 
-.nav-links > a:not(.nav-cta)::after {
+/* LÍNEA ACTIVA */
+
+.nav-links > a:not(.account-button)::after {
 
   content: '';
 
   position: absolute;
 
   right: 0;
-  bottom: 23px;
+  bottom: 22px;
   left: 0;
 
   height: 2px;
+
+  border-radius: 10px;
 
   background:
     var(--accent);
@@ -237,7 +265,7 @@
 }
 
 
-.nav-links > a:not(.nav-cta):hover {
+.nav-links > a:not(.account-button):hover {
 
   color:
     var(--primary);
@@ -245,8 +273,8 @@
 }
 
 
-.nav-links > a:not(.nav-cta):hover::after,
-.nav-links > a:not(.nav-cta).active::after {
+.nav-links > a:not(.account-button):hover::after,
+.nav-links > a:not(.account-button).active::after {
 
   transform:
     scaleX(1);
@@ -254,7 +282,7 @@
 }
 
 
-.nav-links > a:not(.nav-cta).active {
+.nav-links > a:not(.account-button).active {
 
   color:
     var(--primary);
@@ -265,53 +293,87 @@
 
 
 /* =========================================================
-   CTA
-
-   Antes era el rectángulo blanco.
-   Ahora su función queda visualmente clara.
+   CUENTA / PERFIL
    ========================================================= */
 
-.nav-cta {
+.account-button {
 
-  min-height: 46px;
+  min-height: 54px;
 
-  display: inline-flex;
+  display: flex;
 
   align-items: center;
 
-  justify-content: center;
-
-  gap: 9px;
+  gap: 11px;
 
   padding:
-    0
-    20px;
+    7px
+    15px
+    7px
+    9px;
 
   border:
     1px solid
+    rgba(
+      11,
+      43,
+      34,
+      0.16
+    );
+
+  border-radius: 14px;
+
+  color:
     var(--primary);
-
-  border-radius: 12px;
-
-  color: #ffffff;
 
   background:
-    var(--primary);
+    #ffffff;
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      11,
+      43,
+      34,
+      0.08
+    );
 
   font-family:
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size: 0.78rem;
-
-  font-weight: 700;
-
   text-decoration: none;
 
   white-space: nowrap;
 
+  transition:
+    transform
+    0.25s ease,
+    box-shadow
+    0.25s ease,
+    border-color
+    0.25s ease,
+    background-color
+    0.25s ease;
+
+}
+
+
+.account-button:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(
+      201,
+      157,
+      102,
+      0.8
+    );
+
   box-shadow:
-    0 8px 20px
+    0 12px 28px
     rgba(
       11,
       43,
@@ -319,53 +381,173 @@
       0.12
     );
 
-  transition:
-    background-color
-    0.25s ease,
-    transform
-    0.25s ease,
-    box-shadow
-    0.25s ease;
-
 }
 
 
-.nav-cta span {
+/* =========================================================
+   ÍCONO LOGIN
+   ========================================================= */
 
-  color:
-    var(--accent);
+.account-icon {
 
-  transition:
-    transform
-    0.25s ease;
+  width: 38px;
+  height: 38px;
 
-}
+  flex-shrink: 0;
 
+  display: flex;
 
-.nav-cta:hover {
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #ffffff;
 
   background:
-    var(--primary-light);
+    var(--primary);
 
-  transform:
-    translateY(-2px);
+}
 
-  box-shadow:
-    0 12px 25px
+
+.account-icon svg {
+
+  display: block;
+
+}
+
+
+/* =========================================================
+   AVATAR SESIÓN
+   ========================================================= */
+
+.account-avatar {
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color:
+    var(--primary);
+
+  background:
+    var(--accent-soft);
+
+  border:
+    1px solid
     rgba(
-      11,
-      43,
-      34,
-      0.18
+      201,
+      157,
+      102,
+      0.55
+    );
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+}
+
+
+.account-button.logged {
+
+  background:
+    var(--primary);
+
+  border-color:
+    var(--primary);
+
+}
+
+
+.account-button.logged
+.account-avatar {
+
+  color:
+    var(--primary);
+
+  background:
+    var(--accent);
+
+  border-color:
+    var(--accent);
+
+}
+
+
+.account-button.logged
+.account-text strong {
+
+  color: #ffffff;
+
+}
+
+
+.account-button.logged
+.account-text small {
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
     );
 
 }
 
 
-.nav-cta:hover span {
+/* =========================================================
+   TEXTO CUENTA
+   ========================================================= */
 
-  transform:
-    translateX(4px);
+.account-text {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1px;
+
+}
+
+
+.account-text strong {
+
+  color:
+    var(--primary);
+
+  font-size: 0.74rem;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+}
+
+
+.account-text small {
+
+  color:
+    var(--muted);
+
+  font-size: 0.57rem;
+
+  line-height: 1.2;
 
 }
 
@@ -404,7 +586,9 @@
   width: 100%;
   height: 2px;
 
-  margin: 5px 0;
+  margin:
+    5px
+    0;
 
   border-radius: 5px;
 
@@ -415,10 +599,10 @@
 
 
 /* =========================================================
-   TABLET
+   PANTALLAS INTERMEDIAS
    ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
 
   .navbar {
 
@@ -426,37 +610,36 @@
       0
       25px;
 
+    gap: 22px;
+
   }
 
 
   .nav-links {
 
-    gap: 20px;
+    gap: 18px;
 
   }
 
 
   .brand strong {
 
-    font-size: 1.7rem;
+    font-size: 1.65rem;
 
   }
 
 
-  .nav-links > a:not(.nav-cta) {
+  .nav-links >
+  a:not(.account-button) {
 
-    font-size: 0.8rem;
+    font-size: 0.78rem;
 
   }
 
 
-  .nav-cta {
+  .account-text small {
 
-    padding:
-      0
-      15px;
-
-    font-size: 0.72rem;
+    display: none;
 
   }
 
@@ -464,10 +647,17 @@
 
 
 /* =========================================================
-   MÓVIL
+   MÓVIL / TABLET
    ========================================================= */
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
+
+  :host {
+
+    height: 81px;
+
+  }
+
 
   .navbar {
 
@@ -533,12 +723,12 @@
       var(--surface);
 
     box-shadow:
-      0 18px 30px
+      0 18px 35px
       rgba(
         11,
         43,
         34,
-        0.1
+        0.12
       );
 
   }
@@ -551,7 +741,8 @@
   }
 
 
-  .nav-links > a:not(.nav-cta) {
+  .nav-links >
+  a:not(.account-button) {
 
     width: 100%;
 
@@ -566,14 +757,16 @@
   }
 
 
-  .nav-links > a:not(.nav-cta)::after {
+  .nav-links >
+  a:not(.account-button)::after {
 
     display: none;
 
   }
 
 
-  .nav-links > a:not(.nav-cta).active {
+  .nav-links >
+  a:not(.account-button).active {
 
     padding-left: 14px;
 
@@ -581,17 +774,50 @@
       3px solid
       var(--accent);
 
-    color:
-      var(--primary);
+  }
+
+
+  /* CUENTA EN MÓVIL */
+
+  .account-button {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding:
+      10px;
 
   }
 
 
-  .nav-cta {
+  .account-text small {
 
-    width: 100%;
+    display: block;
 
-    margin-top: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+  .brand strong {
+
+    font-size: 1.38rem;
+
+  }
+
+
+  .brand span {
+
+    font-size: 0.52rem;
+
+    letter-spacing: 1.2px;
 
   }
 
