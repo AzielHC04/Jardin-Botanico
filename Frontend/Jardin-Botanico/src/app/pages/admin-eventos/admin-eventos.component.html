@@ -1,0 +1,868 @@
+<div class="eventos-admin-page">
+
+
+  <!-- ======================================================
+       HEADER
+       ====================================================== -->
+
+  <header class="admin-header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="volver-link"
+      >
+        ← Panel administrativo
+      </a>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Eventos
+      </h1>
+
+      <p>
+        Crea, edita y administra
+        la agenda pública de Teya.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn-nuevo"
+      (click)="nuevoEvento()"
+    >
+      + Nuevo evento
+    </button>
+
+  </header>
+
+
+  <!-- ======================================================
+       ESTADÍSTICAS
+       ====================================================== -->
+
+  <section class="stats-grid">
+
+    <article>
+
+      <span>
+        TOTAL
+      </span>
+
+      <strong>
+        {{ eventos.length }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        ACTIVOS
+      </span>
+
+      <strong>
+        {{ totalActivos }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        DESTACADOS
+      </span>
+
+      <strong>
+        {{ totalDestacados }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        ESPECIALES
+      </span>
+
+      <strong>
+        {{ totalEspeciales }}
+      </strong>
+
+    </article>
+
+  </section>
+
+
+  <!-- ======================================================
+       MENSAJES
+       ====================================================== -->
+
+  <div
+    class="mensaje-exito"
+    *ngIf="mensajeExito"
+  >
+    {{ mensajeExito }}
+  </div>
+
+
+  <div
+    class="mensaje-error"
+    *ngIf="mensajeError"
+  >
+    {{ mensajeError }}
+  </div>
+
+
+  <!-- ======================================================
+       FORMULARIO
+       ====================================================== -->
+
+  <section
+    id="editor-evento"
+    class="editor-panel"
+    *ngIf="mostrarFormulario"
+  >
+
+
+    <div class="editor-header">
+
+      <div>
+
+        <span class="eyebrow">
+          {{
+            eventoEditandoId
+              ? 'EDITAR EVENTO'
+              : 'NUEVO EVENTO'
+          }}
+        </span>
+
+        <h2>
+          {{
+            eventoEditandoId
+              ? 'Actualizar evento'
+              : 'Crear evento'
+          }}
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        (click)="cancelarFormulario()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      class="evento-form"
+      [formGroup]="formulario"
+      (ngSubmit)="guardarEvento()"
+    >
+
+
+      <!-- TÍTULO -->
+
+      <div class="campo campo-completo">
+
+        <label for="titulo">
+          Título *
+        </label>
+
+        <input
+          id="titulo"
+          type="text"
+          formControlName="titulo"
+          placeholder="Nombre del evento"
+        >
+
+        <small
+          class="campo-error"
+          *ngIf="campoInvalido('titulo')"
+        >
+          Ingresa un título válido.
+        </small>
+
+      </div>
+
+
+      <!-- SUBTÍTULO -->
+
+      <div class="campo campo-completo">
+
+        <label for="subtitulo">
+          Subtítulo
+        </label>
+
+        <input
+          id="subtitulo"
+          type="text"
+          formControlName="subtitulo"
+          placeholder="Texto complementario opcional"
+        >
+
+      </div>
+
+
+      <!-- DESCRIPCIÓN -->
+
+      <div class="campo campo-completo">
+
+        <label for="descripcion">
+          Descripción *
+        </label>
+
+        <textarea
+          id="descripcion"
+          rows="5"
+          formControlName="descripcion"
+          placeholder="Describe la experiencia..."
+        ></textarea>
+
+        <small
+          class="campo-error"
+          *ngIf="campoInvalido('descripcion')"
+        >
+          Ingresa una descripción válida.
+        </small>
+
+      </div>
+
+
+      <!-- TIPO -->
+
+      <div class="campo">
+
+        <label for="tipo">
+          Tipo de evento
+        </label>
+
+        <select
+          id="tipo"
+          formControlName="tipo"
+        >
+
+          <option value="regular">
+            Regular
+          </option>
+
+          <option value="especial">
+            Especial
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ETIQUETA -->
+
+      <div class="campo">
+
+        <label for="etiqueta">
+          Etiqueta
+        </label>
+
+        <input
+          id="etiqueta"
+          type="text"
+          formControlName="etiqueta"
+          placeholder="Ej. Taller, Especial..."
+        >
+
+      </div>
+
+
+      <!-- FECHA INICIO -->
+
+      <div class="campo">
+
+        <label for="fecha_inicio">
+          Inicio *
+        </label>
+
+        <input
+          id="fecha_inicio"
+          type="datetime-local"
+          formControlName="fecha_inicio"
+        >
+
+      </div>
+
+
+      <!-- FECHA FIN -->
+
+      <div class="campo">
+
+        <label for="fecha_fin">
+          Finalización
+        </label>
+
+        <input
+          id="fecha_fin"
+          type="datetime-local"
+          formControlName="fecha_fin"
+        >
+
+      </div>
+
+
+      <!-- PRECIO -->
+
+      <div class="campo">
+
+        <label for="precio">
+          Precio
+        </label>
+
+        <input
+          id="precio"
+          type="number"
+          min="0"
+          step="0.01"
+          formControlName="precio"
+          placeholder="0"
+        >
+
+      </div>
+
+
+      <!-- MONEDA -->
+
+      <div class="campo">
+
+        <label for="moneda">
+          Moneda
+        </label>
+
+        <input
+          id="moneda"
+          type="text"
+          maxlength="3"
+          formControlName="moneda"
+          placeholder="MXN"
+        >
+
+      </div>
+
+
+      <!-- PRECIO TEXTO -->
+
+      <div class="campo">
+
+        <label for="precio_texto">
+          Texto alternativo de precio
+        </label>
+
+        <input
+          id="precio_texto"
+          type="text"
+          formControlName="precio_texto"
+          placeholder="Ej. Consultar"
+        >
+
+      </div>
+
+
+      <!-- CUPO -->
+
+      <div class="campo">
+
+        <label for="cupo_total">
+          Cupo máximo
+        </label>
+
+        <input
+          id="cupo_total"
+          type="number"
+          min="1"
+          formControlName="cupo_total"
+          placeholder="30"
+        >
+
+      </div>
+
+
+      <!-- ==================================================
+           IMAGEN
+           ================================================== -->
+
+      <div class="campo campo-completo">
+
+        <label>
+          Imagen del evento
+        </label>
+
+
+        <div class="imagen-editor">
+
+
+          <!-- PREVIEW -->
+
+          <div
+            class="imagen-preview"
+            *ngIf="
+              formulario.get('imagen_url')?.value
+            "
+          >
+
+            <img
+              [src]="
+                formulario.get('imagen_url')?.value
+              "
+              alt="Vista previa del evento"
+            >
+
+          </div>
+
+
+          <!-- CONTROLES -->
+
+          <div class="imagen-controles">
+
+            <label class="btn-subir">
+
+              {{
+                subiendoImagen
+                  ? 'Procesando imagen...'
+                  : 'Seleccionar imagen'
+              }}
+
+              <input
+                type="file"
+                accept="image/*"
+                [disabled]="subiendoImagen"
+                (change)="seleccionarImagen($event)"
+              >
+
+            </label>
+
+
+            <span>
+              <strong>
+                Máximo 5 MB.
+              </strong>
+            </span>
+
+
+            <span>
+              De preferencia subir imágenes
+              de 1200 × 720 px.
+            </span>
+
+
+            <span>
+              El sistema adaptará automáticamente
+              la imagen a 1200 × 720 px.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- URL -->
+
+      <div class="campo campo-completo">
+
+        <label for="imagen_url">
+          URL de imagen
+        </label>
+
+        <input
+          id="imagen_url"
+          type="url"
+          formControlName="imagen_url"
+          placeholder="Se completa automáticamente al subir una imagen"
+        >
+
+      </div>
+
+
+      <!-- ==================================================
+           OPCIONES
+           ================================================== -->
+
+      <div class="opciones campo-completo">
+
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="activo"
+          >
+
+          <span>
+
+            <strong>
+              Evento activo
+            </strong>
+
+            <small>
+              Visible en el sitio público.
+            </small>
+
+          </span>
+
+        </label>
+
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="destacado"
+          >
+
+          <span>
+
+            <strong>
+              Destacado
+            </strong>
+
+            <small>
+              Puede aparecer en Home.
+            </small>
+
+          </span>
+
+        </label>
+
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="requiere_pago"
+          >
+
+          <span>
+
+            <strong>
+              Requiere pago
+            </strong>
+
+            <small>
+              Habilita el flujo de reserva.
+            </small>
+
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+
+      <div class="form-actions campo-completo">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cancelarFormulario()"
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="
+            guardando
+            || subiendoImagen
+          "
+        >
+          {{
+            guardando
+              ? 'Guardando...'
+              : (
+                  eventoEditandoId
+                    ? 'Guardar cambios'
+                    : 'Crear evento'
+                )
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- ======================================================
+       FILTROS
+       ====================================================== -->
+
+  <section class="filtros">
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'todos'"
+      (click)="cambiarFiltro('todos')"
+    >
+      Todos
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'activos'"
+      (click)="cambiarFiltro('activos')"
+    >
+      Activos
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'inactivos'"
+      (click)="cambiarFiltro('inactivos')"
+    >
+      Inactivos
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'regulares'"
+      (click)="cambiarFiltro('regulares')"
+    >
+      Regulares
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'especiales'"
+      (click)="cambiarFiltro('especiales')"
+    >
+      Especiales
+    </button>
+
+  </section>
+
+
+  <!-- ======================================================
+       CARGANDO
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando eventos...
+  </div>
+
+
+  <!-- ======================================================
+       ERROR
+       ====================================================== -->
+
+  <div
+    class="estado-panel error"
+    *ngIf="
+      !cargando
+      && errorCarga
+    "
+  >
+
+    <p>
+      No fue posible cargar los eventos.
+    </p>
+
+    <button
+      type="button"
+      (click)="cargarEventos()"
+    >
+      Intentar nuevamente
+    </button>
+
+  </div>
+
+
+  <!-- ======================================================
+       VACÍO
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && eventosFiltrados.length === 0
+    "
+  >
+    No hay eventos en esta categoría.
+  </div>
+
+
+  <!-- ======================================================
+       EVENTOS
+       ====================================================== -->
+
+  <section
+    class="eventos-grid"
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && eventosFiltrados.length > 0
+    "
+  >
+
+    <article
+      class="evento-card"
+      *ngFor="
+        let evento
+        of eventosFiltrados
+      "
+      [class.inactivo]="
+        !evento.activo
+      "
+    >
+
+
+      <div class="evento-imagen">
+
+        <img
+          [src]="
+            evento.imagen_url
+            || 'assets/J.jpg'
+          "
+          [alt]="evento.titulo"
+        >
+
+
+        <div class="badges">
+
+          <span class="badge tipo">
+            {{ evento.tipo }}
+          </span>
+
+          <span
+            class="badge destacado"
+            *ngIf="evento.destacado"
+          >
+            Destacado
+          </span>
+
+          <span
+            class="badge inactivo-badge"
+            *ngIf="!evento.activo"
+          >
+            Inactivo
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="evento-content">
+
+        <span class="evento-etiqueta">
+          {{
+            evento.etiqueta
+            || 'Evento'
+          }}
+        </span>
+
+
+        <h2>
+          {{ evento.titulo }}
+        </h2>
+
+
+        <p class="evento-fecha">
+          {{
+            formatearFecha(
+              evento.fecha_inicio
+            )
+          }}
+        </p>
+
+
+        <p class="evento-descripcion">
+          {{ evento.descripcion }}
+        </p>
+
+
+        <div class="evento-meta">
+
+          <span>
+            {{
+              formatearPrecio(
+                evento
+              )
+            }}
+          </span>
+
+
+          <span
+            *ngIf="evento.cupo_total"
+          >
+            Cupo:
+            {{ evento.cupo_total }}
+          </span>
+
+
+          <span
+            *ngIf="evento.requiere_pago"
+          >
+            Requiere pago
+          </span>
+
+        </div>
+
+
+        <div class="evento-actions">
+
+          <button
+            type="button"
+            class="btn-editar"
+            (click)="editarEvento(evento)"
+          >
+            Editar
+          </button>
+
+
+          <button
+            type="button"
+            class="btn-estado"
+            [disabled]="
+              eventoActualizandoId
+              === evento.id
+            "
+            (click)="cambiarActivo(evento)"
+          >
+            {{
+              evento.activo
+                ? 'Desactivar'
+                : 'Activar'
+            }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</div>

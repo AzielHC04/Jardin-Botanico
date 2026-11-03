@@ -43,6 +43,10 @@ import {
 } from './pages/admin-reservas/admin-reservas.component';
 
 import {
+  AdminEventosComponent
+} from './pages/admin-eventos/admin-eventos.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -161,6 +165,19 @@ export const routes:
 
     component:
       AdminReservasComponent,
+
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  {
+    path:
+      'admin/eventos',
+
+    component:
+      AdminEventosComponent,
 
     canActivate: [
       adminGuard
