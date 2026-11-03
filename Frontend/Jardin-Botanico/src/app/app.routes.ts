@@ -59,6 +59,10 @@ import {
 } from './pages/admin-jardin/admin-jardin.component';
 
 import {
+  AdminEventoGaleriaComponent
+} from './pages/admin-evento-galeria/admin-evento-galeria.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -158,6 +162,24 @@ export const routes:
   {
     path: 'admin/eventos',
     component: AdminEventosComponent,
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  {
+    path: 'admin/eventos/galerias',
+    component: AdminEventoGaleriaComponent,
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  {
+    path: 'admin/eventos/:id/galeria',
+    component: AdminEventoGaleriaComponent,
     canActivate: [
       adminGuard
     ]

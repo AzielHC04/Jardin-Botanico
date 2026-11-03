@@ -1,0 +1,197 @@
+<section
+  class="evento-galeria"
+  *ngIf="
+    eventoId
+    && !cargando
+    && galeria.length > 0
+  "
+>
+
+  <div class="galeria-header">
+
+    <span>
+      MOMENTOS DEL EVENTO
+    </span>
+
+    <h2>
+      Una mirada a la experiencia
+    </h2>
+
+    <p>
+      Conoce algunos de los espacios,
+      detalles y momentos que forman
+      parte de {{ eventoTitulo }}.
+    </p>
+
+  </div>
+
+
+  <div
+    class="collage"
+    [class.collage-1]="galeria.length === 1"
+    [class.collage-2]="galeria.length === 2"
+    [class.collage-3]="galeria.length === 3"
+    [class.collage-4]="galeria.length === 4"
+    [class.collage-5]="galeria.length === 5"
+    [class.collage-6]="galeria.length >= 6"
+  >
+
+    <button
+      type="button"
+      class="collage-item"
+      *ngFor="
+        let imagen
+        of galeria | slice:0:6;
+        let i = index
+      "
+      (click)="abrirImagen(i)"
+    >
+
+      <img
+        [src]="imagen.imagen_url"
+        [alt]="
+          imagen.descripcion
+          || eventoTitulo
+        "
+        loading="lazy"
+      >
+
+
+      <div
+        class="caption"
+        *ngIf="
+          imagen.descripcion
+          &&
+          !(
+            i === 5
+            &&
+            cantidadImagenesOcultas > 0
+          )
+        "
+      >
+        {{ imagen.descripcion }}
+      </div>
+
+
+      <div
+        class="mas"
+        *ngIf="
+          i === 5
+          &&
+          cantidadImagenesOcultas > 0
+        "
+      >
+
+        <strong>
+          +{{ cantidadImagenesOcultas }}
+        </strong>
+
+        <span>
+          Ver más fotografías
+        </span>
+
+      </div>
+
+    </button>
+
+  </div>
+
+
+  <div class="galeria-footer">
+
+    <span>
+      {{ galeria.length }}
+      {{
+        galeria.length === 1
+          ? 'fotografía'
+          : 'fotografías'
+      }}
+    </span>
+
+    <span>
+      Haz clic para ampliar
+    </span>
+
+  </div>
+
+</section>
+
+
+<!-- VISOR -->
+
+<div
+  class="visor"
+  *ngIf="imagenSeleccionada"
+  (click)="cerrarImagen()"
+>
+
+  <button
+    type="button"
+    class="cerrar"
+    (click)="cerrarImagen()"
+  >
+    ×
+  </button>
+
+
+  <div class="contador">
+
+    {{
+      imagenSeleccionadaIndex
+      + 1
+    }}
+
+    /
+
+    {{ galeria.length }}
+
+  </div>
+
+
+  <button
+    type="button"
+    class="flecha anterior"
+    (click)="anterior($event)"
+  >
+    ‹
+  </button>
+
+
+  <div
+    class="visor-contenido"
+    (click)="$event.stopPropagation()"
+  >
+
+    <img
+      [src]="
+        imagenSeleccionada.imagen_url
+      "
+      [alt]="
+        imagenSeleccionada.descripcion
+        || eventoTitulo
+      "
+    >
+
+
+    <p
+      *ngIf="
+        imagenSeleccionada.descripcion
+      "
+    >
+      {{
+        imagenSeleccionada.descripcion
+      }}
+    </p>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="flecha siguiente"
+    (click)="siguiente($event)"
+  >
+    ›
+  </button>
+
+</div>

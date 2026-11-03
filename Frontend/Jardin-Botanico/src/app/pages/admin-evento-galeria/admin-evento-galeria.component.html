@@ -1,0 +1,438 @@
+<div class="galeria-admin-page">
+
+
+  <!-- ======================================================
+       LISTADO DE EVENTOS
+       ====================================================== -->
+
+  <ng-container
+    *ngIf="!eventoId"
+  >
+
+    <header class="admin-header">
+
+      <div>
+
+        <a
+          routerLink="/admin"
+          class="volver-link"
+        >
+          ← Panel administrativo
+        </a>
+
+        <span class="eyebrow">
+          ADMINISTRACIÓN
+        </span>
+
+        <h1>
+          Galerías de eventos
+        </h1>
+
+        <p>
+          Selecciona un evento para administrar
+          sus fotografías adicionales.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <div
+      class="mensaje-error"
+      *ngIf="mensajeError"
+    >
+      {{ mensajeError }}
+    </div>
+
+
+    <div
+      class="estado-panel"
+      *ngIf="cargando"
+    >
+      Cargando eventos...
+    </div>
+
+
+    <section
+      class="eventos-grid"
+      *ngIf="
+        !cargando
+        && eventos.length > 0
+      "
+    >
+
+      <article
+        class="evento-card"
+        *ngFor="
+          let item
+          of eventos
+        "
+        [class.inactivo]="
+          !item.activo
+        "
+      >
+
+        <div class="evento-imagen">
+
+          <img
+            [src]="
+              item.imagen_url
+              || 'assets/J.jpg'
+            "
+            [alt]="item.titulo"
+          >
+
+
+          <span class="tipo">
+            {{ item.tipo }}
+          </span>
+
+
+          <span
+            class="inactivo-badge"
+            *ngIf="!item.activo"
+          >
+            Inactivo
+          </span>
+
+        </div>
+
+
+        <div class="evento-content">
+
+          <span class="fecha">
+            {{
+              formatearFecha(
+                item.fecha_inicio
+              )
+            }}
+          </span>
+
+
+          <h2>
+            {{ item.titulo }}
+          </h2>
+
+
+          <a
+            [routerLink]="[
+              '/admin/eventos',
+              item.id,
+              'galeria'
+            ]"
+            class="btn-fotos"
+          >
+            Administrar fotografías
+            <span>→</span>
+          </a>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </ng-container>
+
+
+  <!-- ======================================================
+       EDITOR DE GALERÍA
+       ====================================================== -->
+
+  <ng-container
+    *ngIf="eventoId"
+  >
+
+    <header class="admin-header">
+
+      <div>
+
+        <a
+          routerLink="/admin/eventos/galerias"
+          class="volver-link"
+        >
+          ← Galerías de eventos
+        </a>
+
+        <span class="eyebrow">
+          FOTOGRAFÍAS DEL EVENTO
+        </span>
+
+        <h1>
+          {{
+            evento?.titulo
+            || 'Evento'
+          }}
+        </h1>
+
+        <p
+          *ngIf="evento"
+        >
+          {{
+            formatearFecha(
+              evento.fecha_inicio
+            )
+          }}
+        </p>
+
+      </div>
+
+
+      <label
+        class="btn-agregar"
+        *ngIf="
+          evento
+          && !cargando
+        "
+      >
+
+        {{
+          subiendo
+            ? 'Procesando...'
+            : '+ Agregar fotografía'
+        }}
+
+        <input
+          type="file"
+          accept="image/*"
+          [disabled]="subiendo"
+          (change)="
+            seleccionarImagen(
+              $event
+            )
+          "
+        >
+
+      </label>
+
+    </header>
+
+
+    <div class="ayuda-imagen">
+
+      <strong>
+        Fotografías del evento
+      </strong>
+
+      <span>
+        Máximo 5 MB · Recomendado 1200 × 720 px ·
+        La imagen se adapta automáticamente.
+      </span>
+
+    </div>
+
+
+    <div
+      class="mensaje-exito"
+      *ngIf="mensajeExito"
+    >
+      {{ mensajeExito }}
+    </div>
+
+
+    <div
+      class="mensaje-error"
+      *ngIf="mensajeError"
+    >
+      {{ mensajeError }}
+    </div>
+
+
+    <div
+      class="estado-panel"
+      *ngIf="cargando"
+    >
+      Cargando galería...
+    </div>
+
+
+    <!-- PORTADA -->
+
+    <section
+      class="portada-panel"
+      *ngIf="
+        !cargando
+        && evento
+      "
+    >
+
+      <div>
+
+        <span class="eyebrow">
+          IMAGEN PRINCIPAL
+        </span>
+
+        <h2>
+          Portada actual
+        </h2>
+
+        <p>
+          Esta imagen continúa utilizándose
+          en tarjetas y encabezados del evento.
+        </p>
+
+      </div>
+
+
+      <img
+        [src]="
+          evento.imagen_url
+          || 'assets/J.jpg'
+        "
+        [alt]="evento.titulo"
+      >
+
+    </section>
+
+
+    <!-- VACÍA -->
+
+    <section
+      class="galeria-vacia"
+      *ngIf="
+        !cargando
+        && evento
+        && galeria.length === 0
+      "
+    >
+
+      <strong>
+        Este evento todavía no tiene galería.
+      </strong>
+
+      <p>
+        Agrega fotografías para mostrar
+        visualmente lo que las personas pueden esperar.
+      </p>
+
+    </section>
+
+
+    <!-- FOTOS -->
+
+    <section
+      class="galeria-grid"
+      *ngIf="
+        !cargando
+        && galeria.length > 0
+      "
+    >
+
+      <article
+        class="foto-card"
+        *ngFor="
+          let imagen
+          of galeria
+        "
+        [class.inactiva]="
+          !imagen.activa
+        "
+      >
+
+        <div class="foto-preview">
+
+          <img
+            [src]="imagen.imagen_url"
+            alt="Fotografía del evento"
+          >
+
+
+          <span
+            *ngIf="!imagen.activa"
+          >
+            Inactiva
+          </span>
+
+        </div>
+
+
+        <div class="foto-content">
+
+          <label>
+            Descripción
+          </label>
+
+          <input
+            #descripcionImagen
+            type="text"
+            [value]="
+              imagen.descripcion
+              || ''
+            "
+            placeholder="Ej. Área preparada para la sesión"
+          >
+
+
+          <label>
+            Orden
+          </label>
+
+          <input
+            #ordenImagen
+            type="number"
+            min="0"
+            [value]="imagen.orden"
+          >
+
+
+          <button
+            type="button"
+            class="btn-guardar"
+            [disabled]="
+              imagenActualizandoId
+              === imagen.id
+            "
+            (click)="
+              actualizarImagen(
+                imagen,
+                descripcionImagen.value,
+                ordenImagen.value
+              )
+            "
+          >
+            Guardar información
+          </button>
+
+
+          <div class="foto-actions">
+
+            <button
+              type="button"
+              (click)="
+                cambiarEstado(
+                  imagen
+                )
+              "
+            >
+              {{
+                imagen.activa
+                  ? 'Desactivar'
+                  : 'Activar'
+              }}
+            </button>
+
+
+            <button
+              type="button"
+              class="eliminar"
+              (click)="
+                eliminarImagen(
+                  imagen
+                )
+              "
+            >
+              Eliminar
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </ng-container>
+
+</div>
