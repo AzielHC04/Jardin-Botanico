@@ -1,54 +1,56 @@
-<div class="events-page">
+<div class="eventos-page">
 
 
   <!-- ======================================================
        ENCABEZADO
        ====================================================== -->
 
-  <section class="events-header">
+  <section class="eventos-header">
 
-    <span class="section-eyebrow">
+    <span class="eyebrow">
       AGENDA TEYA
     </span>
 
     <h1>
-      Eventos & Experiencias
+      Eventos & experiencias
     </h1>
 
     <p>
-      Descubre actividades, recorridos,
-      experiencias y eventos especiales
-      para disfrutar Teya.
+      Descubre actividades, encuentros y momentos
+      especiales para vivir Teya de distintas formas.
     </p>
 
   </section>
 
 
   <!-- ======================================================
-       CARGANDO
+       ESTADOS
        ====================================================== -->
 
   <div
-    class="state-message"
+    class="estado-panel"
     *ngIf="cargando"
   >
     Cargando eventos...
   </div>
 
 
-  <!-- ======================================================
-       ERROR
-       ====================================================== -->
-
   <div
-    class="state-message error"
+    class="estado-panel"
     *ngIf="
       !cargando
       && errorCarga
     "
   >
-    No fue posible cargar los eventos
-    en este momento.
+
+    <strong>
+      No fue posible cargar la agenda.
+    </strong>
+
+    <p>
+      Intenta nuevamente más tarde.
+    </p>
+
   </div>
 
 
@@ -64,42 +66,45 @@
          EVENTOS REGULARES
          ==================================================== -->
 
-    <section class="regular-events-section">
+    <section class="agenda-section">
 
 
-      <div class="section-title">
+      <div class="section-header">
 
-        <span>
-          CALENDARIO
+        <span class="eyebrow">
+          AGENDA
         </span>
 
         <h2>
-          Explora nuestra agenda
+          Próximos eventos
         </h2>
 
-        <div class="title-divider">
-        </div>
+        <p>
+          Consulta las actividades disponibles
+          y encuentra la experiencia que deseas vivir.
+        </p>
 
       </div>
 
 
       <!-- FILTROS -->
 
-      <div class="tabs-container">
+      <div class="filtros">
 
         <button
           type="button"
           [class.active]="
             filtroActual === 'hoy'
           "
-          (click)="setFiltro('hoy')"
+          (click)="
+            cambiarFiltro('hoy')
+          "
         >
+          Hoy
 
-          <span class="dot">
+          <span>
+            {{ cantidadFiltro('hoy') }}
           </span>
-
-          Eventos de Hoy
-
         </button>
 
 
@@ -108,14 +113,15 @@
           [class.active]="
             filtroActual === 'proximos'
           "
-          (click)="setFiltro('proximos')"
+          (click)="
+            cambiarFiltro('proximos')
+          "
         >
+          Próximos
 
-          <span class="dot">
+          <span>
+            {{ cantidadFiltro('proximos') }}
           </span>
-
-          Próximos Eventos
-
         </button>
 
 
@@ -124,41 +130,44 @@
           [class.active]="
             filtroActual === 'pasados'
           "
-          (click)="setFiltro('pasados')"
+          (click)="
+            cambiarFiltro('pasados')
+          "
         >
+          Pasados
 
-          <span class="dot">
+          <span>
+            {{ cantidadFiltro('pasados') }}
           </span>
-
-          Eventos Pasados
-
         </button>
 
       </div>
 
 
-      <!-- SIN EVENTOS -->
+      <!-- VACÍO -->
 
       <div
-        class="no-events"
+        class="eventos-vacios"
         *ngIf="
           eventosFiltrados.length === 0
         "
       >
 
-        <h3>
-          No hay eventos disponibles
-        </h3>
+        <strong>
+          No hay eventos en esta categoría.
+        </strong>
 
         <p>
-          Actualmente no tenemos eventos
-          en esta categoría.
+          Puedes consultar otra fecha
+          o revisar nuestras experiencias especiales.
         </p>
 
       </div>
 
 
-      <!-- CARRUSEL -->
+      <!-- ==================================================
+           CARRUSEL
+           ================================================== -->
 
       <div
         class="carousel-wrapper"
@@ -171,13 +180,13 @@
         <!-- ANTERIOR -->
 
         <button
-          *ngIf="
-            eventosFiltrados.length > 1
-          "
           type="button"
           class="
-            nav-btn
-            prev-btn
+            carousel-control
+            carousel-prev
+          "
+          *ngIf="
+            eventosFiltrados.length > 1
           "
           aria-label="Evento anterior"
           (click)="anterior()"
@@ -188,30 +197,51 @@
 
         <!-- TARJETAS -->
 
-        <div class="carousel-container">
+        <div class="carousel-stage">
 
           <app-evento-card
             *ngFor="
-              let evento of eventosFiltrados;
+              let evento
+              of eventosFiltrados;
               let i = index
             "
             class="carousel-evento"
-            [ngClass]="
-              getCardClass(i)
+            [class.card-center]="
+              i === activeIndex
+            "
+            [class.card-left]="
+              i ===
+              (
+                activeIndex
+                - 1
+                + eventosFiltrados.length
+              )
+              %
+              eventosFiltrados.length
+            "
+            [class.card-right]="
+              i ===
+              (
+                activeIndex
+                + 1
+              )
+              %
+              eventosFiltrados.length
             "
             [evento]="{
               id: evento.id,
               titulo: evento.titulo,
               descripcion: evento.descripcion,
+              fecha: evento.fecha,
               horario: evento.horario,
               precio: evento.precio,
               imagen: evento.imagen,
               etiqueta: evento.etiqueta,
-              cupoTotal: evento.cupoTotal
+              cupoTotal: evento.cupoTotal,
+              variante: 'regular',
+              textoBoton: 'Ver información'
             }"
-            (click)="
-              setCardActive(i)
-            "
+            (click)="setCardActive(i)"
           >
           </app-evento-card>
 
@@ -221,13 +251,13 @@
         <!-- SIGUIENTE -->
 
         <button
-          *ngIf="
-            eventosFiltrados.length > 1
-          "
           type="button"
           class="
-            nav-btn
-            next-btn
+            carousel-control
+            carousel-next
+          "
+          *ngIf="
+            eventosFiltrados.length > 1
           "
           aria-label="Evento siguiente"
           (click)="siguiente()"
@@ -241,29 +271,27 @@
       <!-- INDICADORES -->
 
       <div
-        class="dots-indicators"
+        class="carousel-dots"
         *ngIf="
           eventosFiltrados.length > 1
         "
       >
 
         <button
+          type="button"
           *ngFor="
-            let evento of eventosFiltrados;
+            let evento
+            of eventosFiltrados;
             let i = index
           "
-          type="button"
-          class="indicator-dot"
           [class.active]="
             i === activeIndex
           "
           [attr.aria-label]="
-            'Ver evento '
+            'Ir al evento '
             + (i + 1)
           "
-          (click)="
-            setCardActive(i)
-          "
+          (click)="irAEvento(i)"
         >
         </button>
 
@@ -277,16 +305,16 @@
          ==================================================== -->
 
     <section
-      class="special-events-section"
+      class="especiales-section"
       *ngIf="
         eventosEspeciales.length > 0
       "
     >
 
 
-      <div class="section-title">
+      <div class="especiales-header">
 
-        <span>
+        <span class="eyebrow">
           EXPERIENCIAS ESPECIALES
         </span>
 
@@ -294,134 +322,48 @@
           Galas & Noches Especiales
         </h2>
 
-        <div class="title-divider">
+        <div class="header-divider">
         </div>
 
         <p>
-          Experiencias especiales que combinan
-          cultura, gastronomía, música
-          y los espacios de Teya.
+          Experiencias especiales que combinan cultura,
+          gastronomía, música y los espacios de Teya.
         </p>
 
       </div>
 
 
-      <div class="special-events-grid">
+      <!--
+        Ahora usamos exactamente el mismo componente
+        que los eventos regulares.
+      -->
 
-        <article
-          class="special-card"
+      <div class="especiales-grid">
+
+        <app-evento-card
           *ngFor="
-            let especial
+            let evento
             of eventosEspeciales
           "
+          [evento]="{
+            id: evento.id,
+            titulo: evento.titulo,
+            descripcion: evento.descripcion,
+            fecha: evento.fecha,
+            horario: evento.horario,
+            precio: evento.precio,
+            imagen: evento.imagen,
+            etiqueta: evento.etiqueta,
+            cupoTotal: evento.cupoTotal,
+            variante: 'especial',
+            textoBoton: 'Ver información'
+          }"
         >
-
-
-          <!-- IMAGEN -->
-
-          <div class="special-image-container">
-
-            <img
-              [src]="especial.imagen"
-              [alt]="especial.titulo"
-              loading="lazy"
-            >
-
-
-            <span class="special-badge">
-              {{ especial.etiqueta }}
-            </span>
-
-
-            <span class="special-date">
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <rect
-                  x="3"
-                  y="4"
-                  width="18"
-                  height="18"
-                  rx="2"
-                />
-
-                <line
-                  x1="16"
-                  y1="2"
-                  x2="16"
-                  y2="6"
-                />
-
-                <line
-                  x1="8"
-                  y1="2"
-                  x2="8"
-                  y2="6"
-                />
-
-                <line
-                  x1="3"
-                  y1="10"
-                  x2="21"
-                  y2="10"
-                />
-              </svg>
-
-              {{ especial.fecha }}
-
-            </span>
-
-          </div>
-
-
-          <!-- CONTENIDO -->
-
-          <div class="special-content">
-
-            <span class="special-subtitle">
-              {{ especial.subtitulo }}
-            </span>
-
-
-            <h3>
-              {{ especial.titulo }}
-            </h3>
-
-
-            <p>
-              {{ especial.descripcion }}
-            </p>
-
-
-            <a
-              class="btn-special-info"
-              [routerLink]="[
-                '/reserva',
-                especial.id
-              ]"
-            >
-              Más información
-
-              <span>
-                ✦
-              </span>
-            </a>
-
-          </div>
-
-        </article>
+        </app-evento-card>
 
       </div>
 
     </section>
-
 
   </ng-container>
 

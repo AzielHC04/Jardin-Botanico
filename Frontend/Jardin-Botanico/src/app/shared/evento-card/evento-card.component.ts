@@ -3,8 +3,13 @@ import {
   Input
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  RouterLink
+} from '@angular/router';
 
 
 export interface EventoCardData {
@@ -21,17 +26,27 @@ export interface EventoCardData {
 
   imagen: string;
 
+  fecha?: string;
+
   etiqueta?: string;
 
-  cupoTotal?: number;
+  cupoTotal?: number | null;
+
+  variante?:
+    'regular'
+    | 'especial';
+
+  textoBoton?: string;
 
 }
 
 
 @Component({
-  selector: 'app-evento-card',
+  selector:
+    'app-evento-card',
 
-  standalone: true,
+  standalone:
+    true,
 
   imports: [
     CommonModule,
@@ -46,9 +61,20 @@ export interface EventoCardData {
 })
 export class EventoCardComponent {
 
+
   @Input({
     required: true
   })
-  evento!: EventoCardData;
+  evento!:
+    EventoCardData;
+
+
+  get esEspecial():
+    boolean {
+
+    return this.evento.variante ===
+      'especial';
+
+  }
 
 }

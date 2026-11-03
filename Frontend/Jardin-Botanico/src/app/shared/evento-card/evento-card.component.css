@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 
 :host {
@@ -6,6 +6,7 @@
   display: block;
 
   width: 100%;
+  height: 100%;
 
   --primary: #0b2b22;
   --primary-light: #164e3f;
@@ -20,13 +21,6 @@
 
 }
 
-
-/* =========================================================
-   BOX SIZING
-
-   Evita que width: 100% + padding haga que botones
-   u otros elementos sobresalgan del contenedor.
-   ========================================================= */
 
 *,
 *::before,
@@ -43,20 +37,14 @@
 
 .evento-card {
 
+  width: 100%;
+  height: 100%;
+
+  min-height: 610px;
+
   display: flex;
 
   flex-direction: column;
-
-  width: 100%;
-
-  /*
-   * Altura uniforme para escritorio.
-   *
-   * Esto hace que todas las tarjetas mantengan
-   * exactamente la misma proporción aunque un título
-   * ocupe una o dos líneas.
-   */
-  height: 600px;
 
   overflow: hidden;
 
@@ -66,16 +54,16 @@
 
   border-radius: 22px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
   box-shadow:
     0 10px 30px
-    rgba(11, 43, 34, 0.06);
+    rgba(11,43,34,0.06);
 
   transition:
     transform 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 
 }
 
@@ -83,11 +71,31 @@
 .evento-card:hover {
 
   transform:
-    translateY(-4px);
+    translateY(-5px);
 
   box-shadow:
-    0 20px 42px
-    rgba(11, 43, 34, 0.12);
+    0 20px 45px
+    rgba(11,43,34,0.12);
+
+}
+
+
+/* =========================================================
+   ESPECIAL
+   ========================================================= */
+
+.evento-card.evento-especial {
+
+  border-color:
+    rgba(201,157,102,0.36);
+
+}
+
+
+.evento-card.evento-especial:hover {
+
+  border-color:
+    rgba(201,157,102,0.75);
 
 }
 
@@ -101,12 +109,14 @@
   position: relative;
 
   width: 100%;
-
   height: 255px;
 
   flex-shrink: 0;
 
   overflow: hidden;
+
+  background:
+    var(--primary);
 
 }
 
@@ -116,13 +126,12 @@
   display: block;
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 
   transition:
-    transform 0.7s ease;
+    transform 0.65s ease;
 
 }
 
@@ -137,23 +146,24 @@
 
 
 /* =========================================================
-   ETIQUETA SUPERIOR
+   ETIQUETA
    ========================================================= */
 
 .evento-etiqueta {
 
   position: absolute;
 
-  top: 17px;
-
-  left: 17px;
+  top: 18px;
+  left: 18px;
 
   max-width:
-    calc(100% - 34px);
+    calc(100% - 36px);
 
   padding:
     7px
     14px;
+
+  overflow: hidden;
 
   border-radius: 30px;
 
@@ -161,29 +171,35 @@
     var(--accent);
 
   background:
-    rgba(11, 43, 34, 0.94);
+    rgba(11,43,34,0.93);
 
   font-family:
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size:
-    0.68rem;
+  font-size: 0.66rem;
 
-  font-weight:
-    700;
+  font-weight: 700;
 
-  letter-spacing:
-    1.2px;
+  letter-spacing: 1.1px;
 
-  text-transform:
-    uppercase;
+  text-overflow: ellipsis;
+
+  text-transform: uppercase;
 
   white-space: nowrap;
 
-  overflow: hidden;
+}
 
-  text-overflow: ellipsis;
+
+.evento-especial
+.evento-etiqueta {
+
+  color:
+    var(--primary);
+
+  background:
+    rgba(201,157,102,0.96);
 
 }
 
@@ -196,31 +212,27 @@
 
   position: absolute;
 
-  bottom: 14px;
-
-  left: 17px;
+  bottom: 15px;
+  left: 18px;
 
   padding:
-    6px
+    7px
     13px;
 
   border-radius: 30px;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
-    rgba(201, 157, 102, 0.96);
+    rgba(201,157,102,0.96);
 
   font-family:
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size:
-    0.72rem;
+  font-size: 0.68rem;
 
-  font-weight:
-    700;
+  font-weight: 700;
 
 }
 
@@ -231,18 +243,50 @@
 
 .evento-contenido {
 
+  flex: 1;
+
   display: flex;
 
   flex-direction: column;
 
-  flex: 1;
-
-  min-height: 0;
-
   padding:
     28px
     30px
-    28px;
+    29px;
+
+}
+
+
+/* =========================================================
+   FECHA
+   ========================================================= */
+
+.evento-fecha {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  min-height: 21px;
+
+  margin-bottom: 12px;
+
+  color:
+    var(--accent);
+
+  font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  text-transform: capitalize;
 
 }
 
@@ -265,38 +309,11 @@
     'Playfair Display',
     serif;
 
-  font-size:
-    1.55rem;
+  font-size: 1.62rem;
 
-  line-height:
-    1.25;
+  font-weight: 700;
 
-
-  /*
-   * Reservamos espacio equivalente a dos líneas.
-   * Así un título de una línea no altera la posición
-   * del resto de la tarjeta.
-   */
-  min-height:
-    calc(1.55rem * 1.25 * 2);
-
-
-  /*
-   * Máximo dos líneas.
-   */
-  display:
-    -webkit-box;
-
-  -webkit-box-orient:
-    vertical;
-
-  -webkit-line-clamp:
-    2;
-
-  line-clamp:
-    2;
-
-  overflow: hidden;
+  line-height: 1.17;
 
 }
 
@@ -310,7 +327,7 @@
   margin:
     0
     0
-    20px;
+    25px;
 
   color:
     var(--muted);
@@ -319,44 +336,15 @@
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size:
-    0.9rem;
+  font-size: 0.87rem;
 
-  line-height:
-    1.65;
-
-
-  /*
-   * Todas las tarjetas reservan espacio
-   * equivalente a tres líneas.
-   */
-  min-height:
-    calc(0.9rem * 1.65 * 3);
-
-
-  /*
-   * Evita que una descripción demasiado larga
-   * rompa la simetría.
-   */
-  display:
-    -webkit-box;
-
-  -webkit-box-orient:
-    vertical;
-
-  -webkit-line-clamp:
-    3;
-
-  line-clamp:
-    3;
-
-  overflow: hidden;
+  line-height: 1.7;
 
 }
 
 
 /* =========================================================
-   HORARIO Y PRECIO
+   META
    ========================================================= */
 
 .evento-meta {
@@ -369,12 +357,9 @@
 
   gap: 10px;
 
-  /*
-   * Empuja metadatos + botón hacia la parte inferior.
-   */
   margin-top: auto;
 
-  margin-bottom: 24px;
+  margin-bottom: 25px;
 
 }
 
@@ -382,15 +367,13 @@
 .evento-horario,
 .evento-precio {
 
+  min-height: 36px;
+
   display: inline-flex;
 
   align-items: center;
 
-  justify-content: center;
-
   gap: 7px;
-
-  min-height: 36px;
 
   padding:
     7px
@@ -402,13 +385,9 @@
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size:
-    0.8rem;
+  font-size: 0.77rem;
 
-  font-weight:
-    600;
-
-  white-space: nowrap;
+  font-weight: 700;
 
 }
 
@@ -427,7 +406,7 @@
 .evento-precio {
 
   color:
-    #9a6d34;
+    #97662b;
 
   background:
     var(--accent-soft);
@@ -441,18 +420,9 @@
 
 .evento-boton {
 
-  /*
-   * Importante:
-   *
-   * width: 100% ahora incluye el padding debido
-   * al box-sizing declarado arriba.
-   *
-   * Por eso ya no sobresale lateralmente.
-   */
-
   width: 100%;
 
-  min-height: 48px;
+  min-height: 49px;
 
   display: flex;
 
@@ -460,16 +430,13 @@
 
   justify-content: center;
 
-  flex-shrink: 0;
-
   padding:
     12px
-    18px;
+    16px;
 
   border-radius: 12px;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
     var(--primary);
@@ -478,13 +445,9 @@
     'Plus Jakarta Sans',
     sans-serif;
 
-  font-size:
-    0.84rem;
+  font-size: 0.82rem;
 
-  font-weight:
-    700;
-
-  text-align: center;
+  font-weight: 700;
 
   text-decoration: none;
 
@@ -503,59 +466,32 @@
 }
 
 
-/* =========================================================
-   TABLET
-   ========================================================= */
+.evento-especial
+.evento-boton {
 
-@media (max-width: 900px) {
-
-  .evento-card {
-
-    height: 580px;
-
-  }
-
-
-  .evento-imagen {
-
-    height: 235px;
-
-  }
-
-
-  .evento-contenido {
-
-    padding:
-      25px;
-
-  }
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(201,157,102,0.22);
 
 }
 
 
 /* =========================================================
-   MÓVIL
+   RESPONSIVE
    ========================================================= */
 
 @media (max-width: 600px) {
 
-  /*
-   * En móvil ya no imponemos altura fija.
-   * Una tarjeta debajo de otra puede crecer naturalmente.
-   */
-
   .evento-card {
 
-    height: auto;
-
-    min-height: 0;
+    min-height: 560px;
 
   }
 
 
   .evento-imagen {
 
-    height: 215px;
+    height: 225px;
 
   }
 
@@ -563,54 +499,16 @@
   .evento-contenido {
 
     padding:
-      22px;
+      23px
+      22px
+      24px;
 
   }
 
 
   .evento-contenido h3 {
 
-    font-size:
-      1.4rem;
-
-    /*
-     * En móvil tampoco necesitamos reservar
-     * espacio artificial entre tarjetas.
-     */
-    min-height: 0;
-
-  }
-
-
-  .evento-descripcion {
-
-    min-height: 0;
-
-  }
-
-
-  .evento-meta {
-
-    margin-top: 12px;
-
-    margin-bottom: 20px;
-
-  }
-
-
-  .evento-horario,
-  .evento-precio {
-
-    font-size:
-      0.75rem;
-
-  }
-
-
-  .evento-boton {
-
-    min-height:
-      46px;
+    font-size: 1.45rem;
 
   }
 
