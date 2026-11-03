@@ -8,6 +8,13 @@ import {
 } from '@angular/common';
 
 import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+
+import {
   ActivatedRoute,
   Router,
   RouterLink
@@ -29,7 +36,8 @@ import {
 
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
 
   templateUrl:
@@ -51,7 +59,7 @@ implements OnInit {
 
 
   /* =========================================================
-     ESTADOS
+     ESTADOS DE LA PÁGINA
      ========================================================= */
 
   cargando:
@@ -62,13 +70,29 @@ implements OnInit {
     boolean = false;
 
 
-  mostrarAvisoReserva:
+  mostrarFormularioReserva:
     boolean = false;
 
 
+  enviandoReserva:
+    boolean = false;
+
+
+  reservaEnviada:
+    boolean = false;
+
+
+  errorReserva:
+    string = '';
+
+
   /* =========================================================
-     CONSTRUCTOR
+     FORMULARIO
      ========================================================= */
+
+  formularioReserva:
+    FormGroup;
+
 
   constructor(
 
@@ -79,9 +103,65 @@ implements OnInit {
       Router,
 
     private supabaseService:
-      SupabaseService
+      SupabaseService,
 
-  ) {}
+    private formBuilder:
+      FormBuilder
+
+  ) {
+
+
+    this.formularioReserva =
+      this.formBuilder.group({
+
+        nombre: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(120)
+          ]
+        ],
+
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            Validators.maxLength(200)
+          ]
+        ],
+
+        telefono: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(7),
+            Validators.maxLength(25),
+            Validators.pattern(
+              /^[0-9+\s()\-]+$/
+            )
+          ]
+        ],
+
+        cantidadPersonas: [
+          1,
+          [
+            Validators.required,
+            Validators.min(1)
+          ]
+        ],
+
+        mensaje: [
+          '',
+          [
+            Validators.maxLength(500)
+          ]
+        ]
+
+      });
+
+  }
 
 
   /* =========================================================
@@ -145,6 +225,39 @@ implements OnInit {
         this.errorCarga =
           true;
 
+        return;
+
+      }
+
+
+      /*
+       * Si existe un cupo máximo,
+       * también lo aplicamos al formulario.
+       */
+
+      if (
+        this.evento.cupo_total
+      ) {
+
+        const controlCantidad =
+          this.formularioReserva
+            .get(
+              'cantidadPersonas'
+            );
+
+
+        controlCantidad?.setValidators([
+          Validators.required,
+          Validators.min(1),
+          Validators.max(
+            this.evento.cupo_total
+          )
+        ]);
+
+
+        controlCantidad
+          ?.updateValueAndValidity();
+
       }
 
     }
@@ -187,12 +300,6 @@ implements OnInit {
     }
 
 
-    const fecha =
-      new Date(
-        this.evento.fecha_inicio
-      );
-
-
     return new Intl.DateTimeFormat(
       'es-MX',
       {
@@ -214,7 +321,11 @@ implements OnInit {
 
       }
     )
-      .format(fecha);
+      .format(
+        new Date(
+          this.evento.fecha_inicio
+        )
+      );
 
   }
 
@@ -298,14 +409,6 @@ implements OnInit {
     }
 
 
-    /*
-     * Un texto especial tiene prioridad.
-     *
-     * Ejemplos:
-     * "Entrada libre"
-     * "Consultar"
-     */
-
     if (
       this.evento.precio_texto
     ) {
@@ -373,32 +476,289 @@ implements OnInit {
     }
 
 
-    if (
-      this.evento.tipo ===
+    return this.evento.tipo ===
       'especial'
-    ) {
-
-      return 'Evento especial';
-
-    }
-
-
-    return 'Experiencia Teya';
+        ? 'Evento especial'
+        : 'Experiencia Teya';
 
   }
 
 
   /* =========================================================
-     RESERVA
+     DISPONIBILIDAD
+     ========================================================= */
 
-     Temporal hasta conectar formulario + Clip.
+  get eventoDisponibleParaReserva():
+    boolean {
+
+    if (!this.evento) {
+
+      return false;
+
+    }
+
+
+    const fechaLimite =
+      this.evento.fecha_fin
+        ?? this.evento.fecha_inicio;
+
+
+    return (
+      new Date(
+        fechaLimite
+      )
+      >
+      new Date()
+    );
+
+  }
+
+
+  /* =========================================================
+     MOSTRAR FORMULARIO + SCROLL AUTOMÁTICO
      ========================================================= */
 
   continuarReserva():
     void {
 
-    this.mostrarAvisoReserva =
+    this.mostrarFormularioReserva =
       true;
+
+
+    this.reservaEnviada =
+      false;
+
+
+    this.errorReserva =
+      '';
+
+
+    /*
+     * Esperamos a que Angular renderice
+     * el formulario en el DOM.
+     *
+     * Después desplazamos la página
+     * automáticamente hasta la sección.
+     */
+
+    setTimeout(
+      () => {
+
+        const formulario =
+          document.getElementById(
+            'form-reserva'
+          );
+
+
+        if (!formulario) {
+
+          return;
+
+        }
+
+
+        formulario.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+
+        /*
+         * Después del desplazamiento,
+         * colocamos el cursor en
+         * Nombre completo.
+         */
+
+        setTimeout(
+          () => {
+
+            const campoNombre =
+              document.getElementById(
+                'nombre'
+              ) as HTMLInputElement | null;
+
+
+            campoNombre?.focus();
+
+          },
+          600
+        );
+
+      },
+      50
+    );
+
+  }
+
+
+  /* =========================================================
+     ENVIAR RESERVA
+     ========================================================= */
+
+  async enviarReserva():
+    Promise<void> {
+
+    if (
+      !this.evento
+      ||
+      !this.eventoDisponibleParaReserva
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      this.formularioReserva.invalid
+    ) {
+
+      this.formularioReserva
+        .markAllAsTouched();
+
+      return;
+
+    }
+
+
+    this.enviandoReserva =
+      true;
+
+
+    this.errorReserva =
+      '';
+
+
+    try {
+
+      const valores =
+        this.formularioReserva
+          .getRawValue();
+
+
+      await this.supabaseService
+        .crearReservaSolicitud({
+
+          evento_id:
+            this.evento.id,
+
+          nombre:
+            valores.nombre.trim(),
+
+          email:
+            valores.email
+              .trim()
+              .toLowerCase(),
+
+          telefono:
+            valores.telefono.trim(),
+
+          cantidad_personas:
+            Number(
+              valores.cantidadPersonas
+            ),
+
+          mensaje:
+            valores.mensaje?.trim()
+              ? valores.mensaje.trim()
+              : null
+
+        });
+
+
+      this.reservaEnviada =
+        true;
+
+
+      this.formularioReserva
+        .reset({
+
+          nombre: '',
+
+          email: '',
+
+          telefono: '',
+
+          cantidadPersonas: 1,
+
+          mensaje: ''
+
+        });
+
+
+      /*
+       * Después de registrar correctamente
+       * la solicitud, regresamos suavemente
+       * al inicio del formulario para que
+       * el usuario vea el mensaje de éxito.
+       */
+
+      setTimeout(
+        () => {
+
+          document
+            .getElementById(
+              'form-reserva'
+            )
+            ?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+
+        },
+        50
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible registrar la reserva:',
+        error
+      );
+
+
+      this.errorReserva =
+        'No fue posible registrar tu solicitud. Inténtalo nuevamente.';
+
+    }
+    finally {
+
+      this.enviandoReserva =
+        false;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     VALIDACIÓN
+     ========================================================= */
+
+  campoInvalido(
+    nombreCampo:
+      string
+  ): boolean {
+
+    const campo =
+      this.formularioReserva
+        .get(
+          nombreCampo
+        );
+
+
+    return !!(
+      campo
+      &&
+      campo.invalid
+      &&
+      (
+        campo.dirty
+        ||
+        campo.touched
+      )
+    );
 
   }
 

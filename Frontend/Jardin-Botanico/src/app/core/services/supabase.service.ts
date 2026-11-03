@@ -26,6 +26,23 @@ import {
 } from '../models/experiencia.model';
 
 
+export interface NuevaReservaPublica {
+
+  evento_id: string;
+
+  nombre: string;
+
+  email: string;
+
+  telefono: string;
+
+  cantidad_personas: number;
+
+  mensaje: string | null;
+
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -308,9 +325,6 @@ export class SupabaseService {
 
   /* =========================================================
      EVENTO INDIVIDUAL
-
-     Utilizado por:
-     /reserva/:id
      ========================================================= */
 
   async obtenerEventoPorId(
@@ -367,6 +381,60 @@ export class SupabaseService {
 
 
     return data as Evento | null;
+
+  }
+
+
+  /* =========================================================
+     CREAR SOLICITUD DE RESERVA
+
+     Importante:
+     No enviamos precio, monto, moneda ni estado.
+     Esos valores no deben ser decididos por Angular.
+     ========================================================= */
+
+  async crearReservaSolicitud(
+    reserva: NuevaReservaPublica
+  ): Promise<void> {
+
+    const {
+      error
+    } = await this.supabase
+      .schema('public')
+      .from('reservas')
+      .insert({
+
+        evento_id:
+          reserva.evento_id,
+
+        nombre:
+          reserva.nombre,
+
+        email:
+          reserva.email,
+
+        telefono:
+          reserva.telefono,
+
+        cantidad_personas:
+          reserva.cantidad_personas,
+
+        mensaje:
+          reserva.mensaje
+
+      });
+
+
+    if (error) {
+
+      console.error(
+        'Error al crear la reserva:',
+        error
+      );
+
+      throw error;
+
+    }
 
   }
 
@@ -494,7 +562,7 @@ export class SupabaseService {
 
 
   /* =========================================================
-     CLIENTE
+     CLIENTE SUPABASE
      ========================================================= */
 
   get client():

@@ -1,72 +1,166 @@
-import { Routes } from '@angular/router';
+import {
+  Routes
+} from '@angular/router';
 
-import { HomeComponent } from './pages/home/home.component';
-import { ExperienciasComponent } from './pages/experiencias/experiencias.component';
-import { EventosComponent } from './pages/eventos/eventos.component';
-import { JardinComponent } from './pages/jardin/jardin.component';
-import { ContactoComponent } from './pages/contacto/contacto.component';
+import {
+  HomeComponent
+} from './pages/home/home.component';
 
-import { GastronomiaComponent } from './pages/gastronomia/gastronomia.component';
-import { ReservaDetalleComponent } from './pages/reserva-detalle/reserva-detalle.component';
+import {
+  GastronomiaComponent
+} from './pages/gastronomia/gastronomia.component';
 
-export const routes: Routes = [
+import {
+  ReservaDetalleComponent
+} from './pages/reserva-detalle/reserva-detalle.component';
 
-  // Página principal
+import {
+  ExperienciasComponent
+} from './pages/experiencias/experiencias.component';
+
+import {
+  EventosComponent
+} from './pages/eventos/eventos.component';
+
+import {
+  JardinComponent
+} from './pages/jardin/jardin.component';
+
+import {
+  ContactoComponent
+} from './pages/contacto/contacto.component';
+
+import {
+  AdminLoginComponent
+} from './pages/admin-login/admin-login.component';
+
+import {
+  AdminDashboardComponent
+} from './pages/admin-dashboard/admin-dashboard.component';
+
+import {
+  adminGuard
+} from './core/guards/admin.guard';
+
+
+export const routes:
+  Routes = [
+
+
+  /* =========================================================
+     SITIO PÚBLICO
+     ========================================================= */
+
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'home'
+
+    redirectTo:
+      'home',
+
+    pathMatch:
+      'full'
   },
 
-  {
-    path: 'home',
-    component: HomeComponent,
-    title: 'Inicio | Jardín Botánico de Teya'
-  },
-
-  // Secciones principales
-  {
-    path: 'experiencias',
-    component: ExperienciasComponent,
-    title: 'Experiencias | Jardín Botánico de Teya'
-  },
 
   {
-    path: 'eventos',
-    component: EventosComponent,
-    title: 'Eventos | Jardín Botánico de Teya'
+    path:
+      'home',
+
+    component:
+      HomeComponent
   },
 
-  {
-    path: 'jardin',
-    component: JardinComponent,
-    title: 'Jardín Botánico | Hacienda Teya'
-  },
 
   {
-    path: 'contacto',
-    component: ContactoComponent,
-    title: 'Contacto | Jardín Botánico de Teya'
+    path:
+      'experiencias',
+
+    component:
+      ExperienciasComponent
   },
 
-  // Página existente de gastronomía
+
   {
-    path: 'gastronomia',
-    component: GastronomiaComponent,
-    title: 'Gastronomía | Hacienda Teya'
+    path:
+      'eventos',
+
+    component:
+      EventosComponent
   },
 
-  // Detalle de una reserva o evento
+
   {
-    path: 'reserva/:id',
-    component: ReservaDetalleComponent,
-    title: 'Detalle de reserva | Hacienda Teya'
+    path:
+      'jardin',
+
+    component:
+      JardinComponent
   },
 
-  // Cualquier URL que no exista regresa al Home
+
   {
-    path: '**',
-    redirectTo: 'home'
+    path:
+      'gastronomia',
+
+    component:
+      GastronomiaComponent
+  },
+
+
+  {
+    path:
+      'contacto',
+
+    component:
+      ContactoComponent
+  },
+
+
+  {
+    path:
+      'reserva/:id',
+
+    component:
+      ReservaDetalleComponent
+  },
+
+
+  /* =========================================================
+     ADMINISTRACIÓN
+     ========================================================= */
+
+  {
+    path:
+      'admin/login',
+
+    component:
+      AdminLoginComponent
+  },
+
+
+  {
+    path:
+      'admin',
+
+    component:
+      AdminDashboardComponent,
+
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  /* =========================================================
+     RUTA NO ENCONTRADA
+     ========================================================= */
+
+  {
+    path:
+      '**',
+
+    redirectTo:
+      'home'
   }
 
 ];
