@@ -1,60 +1,119 @@
-<header class="teya-navbar">
-  <div class="navbar-container">
+<header class="site-header">
 
-    <!-- IDENTIDAD -->
-    <a href="/home" class="brand" aria-label="Ir al inicio">
-      <div class="brand-text">
-        <span class="brand-name">Hacienda Teya</span>
-        <span class="brand-tagline">Jardín Botánico & Eventos</span>
-      </div>
+  <div class="navbar">
+
+
+    <!-- ====================================================
+         IDENTIDAD
+         ==================================================== -->
+
+    <a
+      routerLink="/home"
+      class="brand"
+      (click)="cerrarMenu()"
+    >
+
+      <strong>
+        Hacienda Teya
+      </strong>
+
+      <span>
+        JARDÍN BOTÁNICO & EVENTOS
+      </span>
+
     </a>
 
-    <!-- NAVEGACIÓN PRINCIPAL -->
-    <nav class="nav-menu">
+
+    <!-- ====================================================
+         MENÚ MÓVIL
+         ==================================================== -->
+
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-label="Abrir menú"
+      [class.active]="menuAbierto"
+      (click)="alternarMenu()"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+
+    <!-- ====================================================
+         NAVEGACIÓN
+         ==================================================== -->
+
+    <nav
+      class="nav-links"
+      [class.open]="menuAbierto"
+    >
+
 
       <a
         routerLink="/home"
         routerLinkActive="active"
-        class="nav-link">
+        [routerLinkActiveOptions]="{
+          exact: true
+        }"
+        (click)="cerrarMenu()"
+      >
         Inicio
       </a>
+
 
       <a
         routerLink="/experiencias"
         routerLinkActive="active"
-        class="nav-link">
+        (click)="cerrarMenu()"
+      >
         Experiencias
       </a>
+
 
       <a
         routerLink="/eventos"
         routerLinkActive="active"
-        class="nav-link">
+        (click)="cerrarMenu()"
+      >
         Eventos
       </a>
+
 
       <a
         routerLink="/jardin"
         routerLinkActive="active"
-        class="nav-link">
+        (click)="cerrarMenu()"
+      >
         Jardín Botánico
       </a>
+
 
       <a
         routerLink="/contacto"
         routerLinkActive="active"
-        class="nav-link">
+        (click)="cerrarMenu()"
+      >
         Contacto
+      </a>
+
+
+      <!-- CTA -->
+
+      <a
+        routerLink="/contacto"
+        class="nav-cta"
+        (click)="cerrarMenu()"
+      >
+        Solicitar información
+        <span>→</span>
       </a>
 
     </nav>
 
-    <!-- ACCIÓN PRINCIPAL -->
-    <div class="nav-actions">
-      <a href="/contacto" class="btn-nav-primary">
-        Solicitar información
-      </a>
-    </div>
-
   </div>
+
 </header>
