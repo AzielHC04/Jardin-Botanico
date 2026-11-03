@@ -7,32 +7,28 @@ import {
 } from '@angular/common';
 
 import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
+  FormsModule
 } from '@angular/forms';
 
 import {
-  ActivatedRoute,
-  Router
+  Router,
+  RouterLink
 } from '@angular/router';
 
 import {
-  AuthService
-} from '../../core/services/auth.service';
+  SupabaseService
+} from '../../core/services/supabase.service';
 
 
 @Component({
-  selector:
-    'app-admin-login',
+  selector: 'app-admin-login',
 
-  standalone:
-    true,
+  standalone: true,
 
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    FormsModule,
+    RouterLink
   ],
 
   templateUrl:
@@ -44,15 +40,11 @@ import {
 export class AdminLoginComponent {
 
 
-  formulario:
-    FormGroup;
+  email:
+    string = '';
 
 
-  enviando:
-    boolean = false;
-
-
-  errorLogin:
+  password:
     string = '';
 
 
@@ -60,195 +52,195 @@ export class AdminLoginComponent {
     boolean = false;
 
 
+  ingresando:
+    boolean = false;
+
+
+  mensajeError:
+    string = '';
+
+
   constructor(
 
-    private formBuilder:
-      FormBuilder,
-
-    private authService:
-      AuthService,
+    private supabaseService:
+      SupabaseService,
 
     private router:
-      Router,
+      Router
 
-    private route:
-      ActivatedRoute
-
-  ) {
-
-
-    this.formulario =
-      this.formBuilder.group({
-
-        email: [
-          '',
-          [
-            Validators.required,
-            Validators.email
-          ]
-        ],
-
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6)
-          ]
-        ]
-
-      });
-
-  }
+  ) {}
 
 
   /* =========================================================
-     LOGIN
+     MOSTRAR / OCULTAR CONTRASEÑA
      ========================================================= */
-
-  async iniciarSesion():
-    Promise<void> {
-
-    if (
-      this.formulario.invalid
-    ) {
-
-      this.formulario
-        .markAllAsTouched();
-
-      return;
-
-    }
-
-
-    this.enviando =
-      true;
-
-
-    this.errorLogin =
-      '';
-
-
-    try {
-
-      const valores =
-        this.formulario
-          .getRawValue();
-
-
-      await this.authService
-        .iniciarSesion(
-
-          valores.email
-            .trim()
-            .toLowerCase(),
-
-          valores.password
-
-        );
-
-
-      const perfil =
-        await this.authService
-          .obtenerPerfilAdminActual();
-
-
-      if (!perfil) {
-
-        await this.authService
-          .cerrarSesion();
-
-
-        throw new Error(
-          'SIN_ACCESO_ADMIN'
-        );
-
-      }
-
-
-      const returnUrl =
-        this.route
-          .snapshot
-          .queryParamMap
-          .get(
-            'returnUrl'
-          );
-
-
-      await this.router
-        .navigateByUrl(
-          returnUrl
-          || '/admin'
-        );
-
-    }
-    catch (error) {
-
-      console.error(
-        'Inicio de sesión rechazado:',
-        error
-      );
-
-
-      if (
-        error instanceof Error
-        &&
-        error.message ===
-          'SIN_ACCESO_ADMIN'
-      ) {
-
-        this.errorLogin =
-          'Esta cuenta no tiene acceso al panel administrativo.';
-
-      }
-      else {
-
-        this.errorLogin =
-          'Correo o contraseña incorrectos.';
-
-      }
-
-    }
-    finally {
-
-      this.enviando =
-        false;
-
-    }
-
-  }
-
-
-  campoInvalido(
-    campo: string
-  ): boolean {
-
-    const control =
-      this.formulario
-        .get(
-          campo
-        );
-
-
-    return !!(
-      control
-      &&
-      control.invalid
-      &&
-      (
-        control.touched
-        ||
-        control.dirty
-      )
-    );
-
-  }
-
 
   alternarPassword():
     void {
 
     this.mostrarPassword =
       !this.mostrarPassword;
+
+  }
+
+
+  /* =========================================================
+     INICIAR SESIÓN
+     ========================================================= */
+
+  async iniciarSesion():
+    Promise<void> {
+
+    this.mensajeError =
+      '';
+
+
+    const emailLimpio =
+      this.email
+        .trim();
+
+
+    if (
+      !emailLimpio
+      ||
+      !this.password
+    ) {
+
+      this.mensajeError =
+        'Ingresa tu correo electrónico y contraseña.';
+
+      return;
+
+    }
+
+
+    this.ingresando =
+      true;
+
+
+    try {
+
+      const {
+        data,
+        error
+      } = await this.supabaseService
+        .client
+        .auth
+        .signInWithPassword({
+
+          email:
+            emailLimpio,
+
+          password:
+            this.password
+
+        });
+
+
+      if (error) {
+
+        console.error(
+          'Error al iniciar sesión:',
+          error
+        );
+
+
+        this.mensajeError =
+          'El correo electrónico o la contraseña son incorrectos.';
+
+        return;
+
+      }
+
+
+      if (
+        !data.user
+      ) {
+
+        this.mensajeError =
+          'No fue posible iniciar sesión.';
+
+        return;
+
+      }
+
+
+      /* =====================================================
+         VERIFICAR QUE SEA PERSONAL AUTORIZADO
+         ===================================================== */
+
+      const {
+        data:
+          perfil,
+
+        error:
+          perfilError
+
+      } = await this.supabaseService
+        .client
+        .schema('public')
+        .from('perfiles_admin')
+        .select(`
+          id,
+          nombre,
+          rol,
+          activo
+        `)
+        .eq(
+          'id',
+          data.user.id
+        )
+        .eq(
+          'activo',
+          true
+        )
+        .maybeSingle();
+
+
+      if (
+        perfilError
+        ||
+        !perfil
+      ) {
+
+        await this.supabaseService
+          .client
+          .auth
+          .signOut();
+
+
+        this.mensajeError =
+          'Tu cuenta no tiene acceso autorizado al panel administrativo.';
+
+        return;
+
+      }
+
+
+      await this.router
+        .navigate([
+          '/admin'
+        ]);
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible iniciar sesión:',
+        error
+      );
+
+
+      this.mensajeError =
+        'Ocurrió un problema al iniciar sesión. Inténtalo nuevamente.';
+
+    }
+    finally {
+
+      this.ingresando =
+        false;
+
+    }
 
   }
 
