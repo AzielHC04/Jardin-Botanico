@@ -1,36 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 
 :host {
 
-  --bg-surface: #fcfbf7;
+  --background: #fcfbf7;
 
-  --color-primary: #0b2b22;
-  --color-primary-light: #164e3f;
+  --primary: #0b2b22;
+  --primary-light: #164e3f;
 
-  --color-accent: #c99d66;
-  --color-accent-soft: #fbf5ed;
+  --accent: #c99d66;
 
-  --color-text-main: #2c3531;
-  --color-text-muted: #64748b;
+  --text: #2c3531;
+  --muted: #64748b;
 
-  --color-border: #e8eae6;
+  --border: #e8eae6;
 
   display: block;
 
   background:
-    var(--bg-surface);
+    var(--background);
 
 }
 
 
-/* =========================================================
-   CONTENEDOR
-   ========================================================= */
+*,
+*::before,
+*::after {
+
+  box-sizing: border-box;
+
+}
+
 
 .experiences-page {
 
   width: 100%;
+
   max-width: 1180px;
 
   margin: 0 auto;
@@ -38,30 +43,23 @@
   padding:
     40px
     20px
-    80px;
+    90px;
 
   font-family:
     'Plus Jakarta Sans',
     sans-serif;
 
-  color:
-    var(--color-text-main);
-
 }
 
 
 /* =========================================================
-   HERO
+   HEADER
    ========================================================= */
 
-.experiences-hero {
-
-  position: relative;
-
-  overflow: hidden;
+.experiences-header {
 
   padding:
-    70px
+    65px
     55px;
 
   border-radius: 24px;
@@ -69,61 +67,29 @@
   color: #ffffff;
 
   background:
-    linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      var(--color-primary-light) 100%
-    );
-
-  box-shadow:
-    0 20px 45px
-    rgba(11, 43, 34, 0.16);
+    var(--primary);
 
 }
 
 
-.experiences-hero::after {
-
-  content: '';
-
-  position: absolute;
-
-  width: 320px;
-  height: 320px;
-
-  top: -160px;
-  right: -70px;
-
-  border-radius: 50%;
-
-  border:
-    1px solid
-    rgba(201, 157, 102, 0.28);
-
-}
-
-
-.hero-eyebrow {
-
-  display: block;
-
-  margin-bottom: 10px;
+.eyebrow {
 
   color:
-    var(--color-accent);
+    var(--accent);
 
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+
   font-weight: 700;
 
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
 
 }
 
 
-.experiences-hero h1 {
+.experiences-header h1 {
 
   margin:
-    0
+    8px
     0
     15px;
 
@@ -133,26 +99,22 @@
 
   font-size:
     clamp(
-      2.6rem,
+      2.8rem,
       5vw,
       4rem
     );
 
-  line-height: 1.05;
-
 }
 
 
-.experiences-hero p {
+.experiences-header p {
 
   max-width: 650px;
 
   margin: 0;
 
   color:
-    rgba(255, 255, 255, 0.82);
-
-  font-size: 1rem;
+    rgba(255,255,255,0.75);
 
   line-height: 1.7;
 
@@ -160,194 +122,50 @@
 
 
 /* =========================================================
-   INTRODUCCIÓN
+   ESTADOS
    ========================================================= */
 
-.intro-section {
+.estado-panel {
 
-  display: grid;
+  margin-top: 30px;
 
-  grid-template-columns:
-    0.7fr
-    2fr;
+  padding: 35px;
 
-  gap: 60px;
+  border:
+    1px solid
+    var(--border);
 
-  margin-top: 80px;
-
-  padding:
-    0
-    30px;
-
-}
-
-
-.intro-label span {
+  border-radius: 17px;
 
   color:
-    var(--color-accent);
+    var(--muted);
 
-  font-size: 0.72rem;
-  font-weight: 700;
-
-  letter-spacing: 2px;
-
-}
-
-
-.intro-content {
-
-  max-width: 680px;
-
-}
-
-
-.intro-content h2 {
-
-  margin:
-    0
-    0
-    16px;
-
-  color:
-    var(--color-primary);
-
-  font-family:
-    'Playfair Display',
-    serif;
-
-  font-size: 2.5rem;
-
-}
-
-
-.intro-content p {
-
-  margin: 0;
-
-  color:
-    var(--color-text-muted);
-
-  font-size: 0.98rem;
-
-  line-height: 1.8;
-
-}
-
-
-/* =========================================================
-   ENCABEZADO
-   ========================================================= */
-
-.experiences-section {
-
-  margin-top: 90px;
-
-}
-
-
-.section-header {
-
-  max-width: 680px;
-
-  margin:
-    0
-    auto
-    40px;
+  background: #ffffff;
 
   text-align: center;
 
 }
 
 
-.subheading {
-
-  display: block;
-
-  margin-bottom: 6px;
-
-  color:
-    var(--color-accent);
-
-  font-size: 0.76rem;
-  font-weight: 700;
-
-  letter-spacing: 2.4px;
-
-}
-
-
-.section-header h2 {
-
-  margin:
-    0
-    0
-    14px;
-
-  color:
-    var(--color-primary);
-
-  font-family:
-    'Playfair Display',
-    serif;
-
-  font-size: 2.4rem;
-
-}
-
-
-.header-divider {
-
-  width: 50px;
-  height: 3px;
-
-  margin:
-    0
-    auto;
-
-  background:
-    var(--color-accent);
-
-}
-
-
-.section-header p {
-
-  margin:
-    20px
-    auto
-    0;
-
-  max-width: 600px;
-
-  color:
-    var(--color-text-muted);
-
-  font-size: 0.9rem;
-
-  line-height: 1.7;
-
-}
-
-
 /* =========================================================
-   GRID
+   LISTA
    ========================================================= */
 
-.experiences-grid {
+.experiences-list {
 
-  display: grid;
+  display: flex;
 
-  grid-template-columns:
-    repeat(2, 1fr);
+  flex-direction: column;
 
-  gap: 28px;
+  gap: 32px;
+
+  margin-top: 55px;
 
 }
 
 
 /* =========================================================
-   TARJETAS
+   TARJETA
    ========================================================= */
 
 .experience-card {
@@ -355,45 +173,37 @@
   display: grid;
 
   grid-template-columns:
-    0.95fr
-    1.05fr;
+    minmax(300px, 0.95fr)
+    minmax(0, 1.05fr);
+
+  min-height: 410px;
 
   overflow: hidden;
 
-  min-height: 330px;
-
   border:
     1px solid
-    var(--color-border);
+    var(--border);
 
-  border-radius: 22px;
+  border-radius: 23px;
 
-  background:
-    #ffffff;
-
-  box-shadow:
-    0 8px 28px
-    rgba(11, 43, 34, 0.05);
-
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+  background: #ffffff;
 
 }
 
 
-.experience-card:hover {
+.experience-card:nth-child(even) {
 
-  transform:
-    translateY(-5px);
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(300px, 0.95fr);
 
-  border-color:
-    var(--color-accent);
+}
 
-  box-shadow:
-    0 20px 42px
-    rgba(11, 43, 34, 0.11);
+
+.experience-card:nth-child(even)
+.experience-image {
+
+  order: 2;
 
 }
 
@@ -402,7 +212,7 @@
 
   position: relative;
 
-  min-height: 330px;
+  min-height: 410px;
 
   overflow: hidden;
 
@@ -417,9 +227,7 @@
   object-fit: cover;
 
   transition:
-    transform
-    0.8s
-    ease;
+    transform 0.7s ease;
 
 }
 
@@ -428,7 +236,7 @@
 .experience-image img {
 
   transform:
-    scale(1.06);
+    scale(1.04);
 
 }
 
@@ -437,25 +245,22 @@
 
   position: absolute;
 
-  top: 16px;
-  left: 16px;
+  top: 20px;
+  left: 20px;
 
   padding:
-    6px
-    12px;
+    7px
+    14px;
 
   border-radius: 30px;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
-    rgba(11, 43, 34, 0.88);
+    rgba(11,43,34,0.92);
 
-  backdrop-filter:
-    blur(8px);
+  font-size: 0.65rem;
 
-  font-size: 0.67rem;
   font-weight: 700;
 
   letter-spacing: 1px;
@@ -466,7 +271,7 @@
 
 
 /* =========================================================
-   CONTENIDO DE TARJETA
+   CONTENIDO
    ========================================================= */
 
 .experience-content {
@@ -475,19 +280,24 @@
 
   flex-direction: column;
 
-  padding: 28px;
+  justify-content: center;
+
+  padding:
+    45px
+    55px;
 
 }
 
 
 .experience-number {
 
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 
   color:
-    var(--color-accent);
+    var(--accent);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+
   font-weight: 700;
 
   letter-spacing: 2px;
@@ -495,40 +305,46 @@
 }
 
 
-.experience-subtitle {
+.experience-category {
 
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 
   color:
-    var(--color-accent);
+    var(--accent);
 
-  font-size: 0.68rem;
+  font-size: 0.7rem;
+
   font-weight: 700;
 
-  letter-spacing: 1.3px;
+  letter-spacing: 1.5px;
 
   text-transform: uppercase;
 
 }
 
 
-.experience-content h3 {
+.experience-content h2 {
 
   margin:
     0
     0
-    13px;
+    18px;
 
   color:
-    var(--color-primary);
+    var(--primary);
 
   font-family:
     'Playfair Display',
     serif;
 
-  font-size: 1.5rem;
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      2.8rem
+    );
 
-  line-height: 1.25;
+  line-height: 1.1;
 
 }
 
@@ -538,19 +354,21 @@
   margin:
     0
     0
-    24px;
+    30px;
 
   color:
-    var(--color-text-muted);
+    var(--muted);
 
-  font-size: 0.85rem;
+  font-size: 0.94rem;
 
-  line-height: 1.65;
+  line-height: 1.8;
 
 }
 
 
 .experience-link {
+
+  align-self: flex-start;
 
   display: inline-flex;
 
@@ -558,12 +376,11 @@
 
   gap: 8px;
 
-  margin-top: auto;
-
   color:
-    var(--color-primary);
+    var(--primary);
 
-  font-size: 0.82rem;
+  font-size: 0.85rem;
+
   font-weight: 700;
 
   text-decoration: none;
@@ -574,12 +391,10 @@
 .experience-link span {
 
   color:
-    var(--color-accent);
+    var(--accent);
 
   transition:
-    transform
-    0.25s
-    ease;
+    transform 0.25s ease;
 
 }
 
@@ -593,282 +408,13 @@
 
 
 /* =========================================================
-   EXPERIENCIA DESTACADA
+   RESPONSIVE
    ========================================================= */
 
-.garden-highlight {
+@media (max-width: 800px) {
 
-  display: grid;
-
-  grid-template-columns:
-    1.15fr
-    0.85fr;
-
-  min-height: 420px;
-
-  overflow: hidden;
-
-  margin-top: 90px;
-
-  border-radius: 24px;
-
-  background:
-    var(--color-primary);
-
-  box-shadow:
-    0 18px 42px
-    rgba(11, 43, 34, 0.15);
-
-}
-
-
-.highlight-image {
-
-  overflow: hidden;
-
-}
-
-
-.highlight-image img {
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-}
-
-
-.highlight-content {
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
-  padding:
-    50px;
-
-  color:
-    #ffffff;
-
-}
-
-
-.highlight-content > span {
-
-  margin-bottom: 10px;
-
-  color:
-    var(--color-accent);
-
-  font-size: 0.7rem;
-  font-weight: 700;
-
-  letter-spacing: 2px;
-
-}
-
-
-.highlight-content h2 {
-
-  margin:
-    0
-    0
-    16px;
-
-  font-family:
-    'Playfair Display',
-    serif;
-
-  font-size: 2.5rem;
-
-  line-height: 1.15;
-
-}
-
-
-.highlight-content p {
-
-  margin:
-    0
-    0
-    28px;
-
-  color:
-    rgba(255, 255, 255, 0.78);
-
-  font-size: 0.9rem;
-
-  line-height: 1.7;
-
-}
-
-
-.highlight-button {
-
-  align-self:
-    flex-start;
-
-  padding:
-    11px
-    20px;
-
-  border-radius: 11px;
-
-  color:
-    var(--color-primary);
-
-  background:
-    #ffffff;
-
-  font-size: 0.82rem;
-  font-weight: 700;
-
-  text-decoration: none;
-
-  transition:
-    transform
-    0.25s
-    ease;
-
-}
-
-
-.highlight-button:hover {
-
-  transform:
-    translateY(-2px);
-
-}
-
-
-/* =========================================================
-   CTA FINAL
-   ========================================================= */
-
-.experiences-cta {
-
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 40px;
-
-  margin-top: 80px;
-
-  padding:
-    42px
-    48px;
-
-  border:
-    1px solid
-    rgba(201, 157, 102, 0.30);
-
-  border-radius: 24px;
-
-  background:
-    var(--color-accent-soft);
-
-}
-
-
-.experiences-cta span {
-
-  color:
-    var(--color-accent);
-
-  font-size: 0.7rem;
-  font-weight: 700;
-
-  letter-spacing: 2px;
-
-}
-
-
-.experiences-cta h2 {
-
-  margin:
-    7px
-    0
-    8px;
-
-  color:
-    var(--color-primary);
-
-  font-family:
-    'Playfair Display',
-    serif;
-
-  font-size: 2rem;
-
-}
-
-
-.experiences-cta p {
-
-  max-width: 640px;
-
-  margin: 0;
-
-  color:
-    var(--color-text-muted);
-
-  font-size: 0.87rem;
-
-  line-height: 1.6;
-
-}
-
-
-.cta-button {
-
-  flex-shrink: 0;
-
-  padding:
-    12px
-    22px;
-
-  border-radius: 12px;
-
-  color: #ffffff;
-
-  background:
-    var(--color-primary);
-
-  font-size: 0.82rem;
-  font-weight: 700;
-
-  text-decoration: none;
-
-  transition:
-    all
-    0.25s
-    ease;
-
-}
-
-
-.cta-button:hover {
-
-  background:
-    var(--color-primary-light);
-
-  transform:
-    translateY(-2px);
-
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 950px) {
-
-  .experiences-grid {
+  .experience-card,
+  .experience-card:nth-child(even) {
 
     grid-template-columns:
       1fr;
@@ -876,191 +422,56 @@
   }
 
 
-  .experience-card {
+  .experience-card:nth-child(even)
+  .experience-image {
 
-    grid-template-columns:
-      0.8fr
-      1.2fr;
-
-  }
-
-
-  .intro-section {
-
-    grid-template-columns:
-      1fr;
-
-    gap: 20px;
-
-  }
-
-}
-
-
-/* =========================================================
-   MÓVIL
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  .experiences-page {
-
-    padding:
-      20px
-      14px
-      60px;
-
-  }
-
-
-  .experiences-hero {
-
-    padding:
-      50px
-      28px;
-
-    border-radius: 18px;
-
-  }
-
-
-  .experiences-hero h1 {
-
-    font-size:
-      2.5rem;
-
-  }
-
-
-  .intro-section {
-
-    margin-top: 55px;
-
-    padding:
-      0
-      8px;
-
-  }
-
-
-  .intro-content h2 {
-
-    font-size:
-      2rem;
-
-  }
-
-
-  .experiences-section {
-
-    margin-top:
-      65px;
-
-  }
-
-
-  .experience-card {
-
-    grid-template-columns:
-      1fr;
+    order: 0;
 
   }
 
 
   .experience-image {
 
-    min-height:
-      230px;
-
-    height:
-      230px;
-
-  }
-
-
-  .garden-highlight {
-
-    grid-template-columns:
-      1fr;
-
-    margin-top:
-      65px;
-
-  }
-
-
-  .highlight-image {
-
-    height:
-      280px;
-
-  }
-
-
-  .highlight-content {
-
-    padding:
-      34px
-      26px;
-
-  }
-
-
-  .highlight-content h2 {
-
-    font-size:
-      2rem;
-
-  }
-
-
-  .experiences-cta {
-
-    align-items:
-      flex-start;
-
-    flex-direction:
-      column;
-
-    margin-top:
-      55px;
-
-    padding:
-      32px
-      26px;
-
-    border-radius:
-      18px;
-
-  }
-
-
-  .cta-button {
-
-    width: 100%;
-
-    text-align: center;
+    min-height: 300px;
 
   }
 
 }
 
 
-/* =========================================================
-   ACCESIBILIDAD
-   ========================================================= */
+@media (max-width: 600px) {
 
-@media (prefers-reduced-motion: reduce) {
+  .experiences-page {
 
-  *,
-  *::before,
-  *::after {
+    padding:
+      20px
+      14px
+      65px;
 
-    animation-duration:
-      0.01ms !important;
+  }
 
-    transition-duration:
-      0.01ms !important;
+
+  .experiences-header {
+
+    padding:
+      48px
+      28px;
+
+  }
+
+
+  .experience-content {
+
+    padding:
+      30px
+      25px;
+
+  }
+
+
+  .experience-image {
+
+    min-height: 240px;
 
   }
 

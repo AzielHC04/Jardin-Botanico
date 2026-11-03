@@ -1,0 +1,787 @@
+<div class="experiencias-admin-page">
+
+  <header class="admin-header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="volver-link"
+      >
+        ← Panel administrativo
+      </a>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Experiencias
+      </h1>
+
+      <p>
+        Administra las experiencias
+        visibles en el sitio público.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn-nuevo"
+      (click)="nuevaExperiencia()"
+    >
+      + Nueva experiencia
+    </button>
+
+  </header>
+
+
+  <section class="stats-grid">
+
+    <article>
+      <span>TOTAL</span>
+      <strong>{{ experiencias.length }}</strong>
+    </article>
+
+    <article>
+      <span>ACTIVAS</span>
+      <strong>{{ totalActivas }}</strong>
+    </article>
+
+    <article>
+      <span>DESTACADAS</span>
+      <strong>{{ totalDestacadas }}</strong>
+    </article>
+
+    <article>
+      <span>INACTIVAS</span>
+      <strong>{{ totalInactivas }}</strong>
+    </article>
+
+  </section>
+
+
+  <div
+    class="mensaje-exito"
+    *ngIf="mensajeExito"
+  >
+    {{ mensajeExito }}
+  </div>
+
+
+  <div
+    class="mensaje-error"
+    *ngIf="mensajeError"
+  >
+    {{ mensajeError }}
+  </div>
+
+
+  <!-- ======================================================
+       EDITOR
+       ====================================================== -->
+
+  <section
+    id="editor-experiencia"
+    class="editor-panel"
+    *ngIf="mostrarFormulario"
+  >
+
+    <div class="editor-header">
+
+      <div>
+
+        <span class="eyebrow">
+          {{
+            experienciaEditandoId
+              ? 'EDITAR EXPERIENCIA'
+              : 'NUEVA EXPERIENCIA'
+          }}
+        </span>
+
+        <h2>
+          {{
+            experienciaEditandoId
+              ? 'Actualizar experiencia'
+              : 'Crear experiencia'
+          }}
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        (click)="cancelarFormulario()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      class="experiencia-form"
+      [formGroup]="formulario"
+      (ngSubmit)="guardarExperiencia()"
+    >
+
+      <div class="campo campo-completo">
+
+        <label for="titulo">
+          Título *
+        </label>
+
+        <input
+          id="titulo"
+          type="text"
+          formControlName="titulo"
+          placeholder="Nombre de la experiencia"
+        >
+
+        <small
+          class="campo-error"
+          *ngIf="campoInvalido('titulo')"
+        >
+          Ingresa un título válido.
+        </small>
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="subtitulo">
+          Subtítulo
+        </label>
+
+        <input
+          id="subtitulo"
+          type="text"
+          formControlName="subtitulo"
+          placeholder="Texto complementario"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="descripcion">
+          Descripción *
+        </label>
+
+        <textarea
+          id="descripcion"
+          rows="5"
+          formControlName="descripcion"
+          placeholder="Describe la experiencia..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="categoria">
+          Categoría
+        </label>
+
+        <input
+          id="categoria"
+          type="text"
+          formControlName="categoria"
+          placeholder="Ej. naturaleza"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="etiqueta">
+          Etiqueta
+        </label>
+
+        <input
+          id="etiqueta"
+          type="text"
+          formControlName="etiqueta"
+          placeholder="Ej. Jardín Botánico"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="ruta_destino">
+          Ruta relacionada
+        </label>
+
+        <input
+          id="ruta_destino"
+          type="text"
+          formControlName="ruta_destino"
+          placeholder="/jardin"
+        >
+
+        <small class="campo-ayuda">
+          Enlace secundario opcional.
+        </small>
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="orden">
+          Orden
+        </label>
+
+        <input
+          id="orden"
+          type="number"
+          min="0"
+          formControlName="orden"
+        >
+
+      </div>
+
+
+      <!-- IMAGEN PRINCIPAL -->
+
+      <div class="campo campo-completo">
+
+        <label>
+          Imagen principal
+        </label>
+
+
+        <div class="imagen-editor">
+
+          <div
+            class="imagen-preview"
+            *ngIf="
+              formulario.get('imagen_url')?.value
+            "
+          >
+
+            <img
+              [src]="
+                formulario.get('imagen_url')?.value
+              "
+              alt="Vista previa"
+            >
+
+          </div>
+
+
+          <div class="imagen-controles">
+
+            <label class="btn-subir">
+
+              {{
+                subiendoImagen
+                  ? 'Procesando...'
+                  : 'Seleccionar imagen'
+              }}
+
+              <input
+                type="file"
+                accept="image/*"
+                [disabled]="subiendoImagen"
+                (change)="seleccionarImagen($event)"
+              >
+
+            </label>
+
+
+            <span>
+              <strong>
+                Máximo 5 MB.
+              </strong>
+            </span>
+
+            <span>
+              Recomendado:
+              1200 × 720 px.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="imagen_url">
+          URL de imagen principal
+        </label>
+
+        <input
+          id="imagen_url"
+          type="url"
+          formControlName="imagen_url"
+        >
+
+      </div>
+
+
+      <div class="opciones campo-completo">
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="activa"
+          >
+
+          <span>
+
+            <strong>
+              Experiencia activa
+            </strong>
+
+            <small>
+              Visible públicamente.
+            </small>
+
+          </span>
+
+        </label>
+
+
+        <label class="switch-option">
+
+          <input
+            type="checkbox"
+            formControlName="destacada"
+          >
+
+          <span>
+
+            <strong>
+              Destacada
+            </strong>
+
+            <small>
+              Puede aparecer en Home.
+            </small>
+
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <div class="form-actions campo-completo">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cancelarFormulario()"
+        >
+          Cerrar
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="
+            guardando
+            || subiendoImagen
+          "
+        >
+          {{
+            guardando
+              ? 'Guardando...'
+              : (
+                  experienciaEditandoId
+                    ? 'Guardar cambios'
+                    : 'Crear experiencia'
+                )
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+
+    <!-- ====================================================
+         GALERÍA
+         ==================================================== -->
+
+    <section
+      class="galeria-admin"
+      *ngIf="experienciaEditandoId"
+    >
+
+      <div class="galeria-admin-header">
+
+        <div>
+
+          <span class="eyebrow">
+            GALERÍA
+          </span>
+
+          <h3>
+            Fotografías de referencia
+          </h3>
+
+          <p>
+            Recomendamos entre 3 y 6 fotografías
+            para mostrar mejor la experiencia.
+          </p>
+
+        </div>
+
+
+        <label class="btn-agregar-galeria">
+
+          {{
+            subiendoGaleria
+              ? 'Procesando...'
+              : '+ Agregar fotografía'
+          }}
+
+          <input
+            type="file"
+            accept="image/*"
+            [disabled]="subiendoGaleria"
+            (change)="
+              seleccionarImagenGaleria(
+                $event
+              )
+            "
+          >
+
+        </label>
+
+      </div>
+
+
+      <div class="galeria-ayuda">
+
+        Máximo 5 MB por fotografía ·
+        Recomendado 1200 × 720 px ·
+        La imagen se adapta automáticamente.
+
+      </div>
+
+
+      <div
+        class="estado-panel"
+        *ngIf="cargandoGaleria"
+      >
+        Cargando galería...
+      </div>
+
+
+      <div
+        class="galeria-vacia"
+        *ngIf="
+          !cargandoGaleria
+          && galeria.length === 0
+        "
+      >
+
+        <strong>
+          Aún no hay fotografías adicionales.
+        </strong>
+
+        <p>
+          La imagen principal seguirá siendo
+          utilizada como portada de la experiencia.
+        </p>
+
+      </div>
+
+
+      <div
+        class="galeria-admin-grid"
+        *ngIf="
+          !cargandoGaleria
+          && galeria.length > 0
+        "
+      >
+
+        <article
+          class="galeria-admin-card"
+          *ngFor="
+            let imagen
+            of galeria
+          "
+          [class.inactiva]="
+            !imagen.activa
+          "
+        >
+
+          <div class="galeria-admin-imagen">
+
+            <img
+              [src]="imagen.imagen_url"
+              alt="Fotografía de la experiencia"
+            >
+
+            <span
+              *ngIf="!imagen.activa"
+            >
+              Inactiva
+            </span>
+
+          </div>
+
+
+          <div class="galeria-admin-content">
+
+            <label>
+              Descripción
+            </label>
+
+            <input
+              #descripcionImagen
+              type="text"
+              [value]="
+                imagen.descripcion
+                || ''
+              "
+              placeholder="Ej. Taller durante la visita"
+            >
+
+
+            <label>
+              Orden
+            </label>
+
+            <input
+              #ordenImagen
+              type="number"
+              min="0"
+              [value]="imagen.orden"
+            >
+
+
+            <button
+              type="button"
+              class="btn-galeria-guardar"
+              [disabled]="
+                imagenActualizandoId
+                === imagen.id
+              "
+              (click)="
+                actualizarImagenGaleria(
+                  imagen,
+                  descripcionImagen.value,
+                  ordenImagen.value
+                )
+              "
+            >
+              Guardar información
+            </button>
+
+
+            <div class="galeria-admin-actions">
+
+              <button
+                type="button"
+                (click)="
+                  cambiarEstadoImagenGaleria(
+                    imagen
+                  )
+                "
+              >
+                {{
+                  imagen.activa
+                    ? 'Desactivar'
+                    : 'Activar'
+                }}
+              </button>
+
+
+              <button
+                type="button"
+                class="eliminar"
+                (click)="
+                  eliminarImagenGaleria(
+                    imagen
+                  )
+                "
+              >
+                Quitar
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <div
+      class="galeria-bloqueada"
+      *ngIf="!experienciaEditandoId"
+    >
+
+      Guarda primero la experiencia para
+      habilitar su galería de fotografías.
+
+    </div>
+
+  </section>
+
+
+  <!-- FILTROS -->
+
+  <section class="filtros">
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'todas'"
+      (click)="cambiarFiltro('todas')"
+    >
+      Todas
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'activas'"
+      (click)="cambiarFiltro('activas')"
+    >
+      Activas
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'inactivas'"
+      (click)="cambiarFiltro('inactivas')"
+    >
+      Inactivas
+    </button>
+
+    <button
+      type="button"
+      [class.active]="filtroActual === 'destacadas'"
+      (click)="cambiarFiltro('destacadas')"
+    >
+      Destacadas
+    </button>
+
+  </section>
+
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando experiencias...
+  </div>
+
+
+  <section
+    class="experiencias-grid"
+    *ngIf="
+      !cargando
+      && !errorCarga
+    "
+  >
+
+    <article
+      class="experiencia-card"
+      *ngFor="
+        let experiencia
+        of experienciasFiltradas
+      "
+      [class.inactiva]="
+        !experiencia.activa
+      "
+    >
+
+      <div class="experiencia-imagen">
+
+        <img
+          [src]="
+            experiencia.imagen_url
+            || 'assets/J.jpg'
+          "
+          [alt]="experiencia.titulo"
+        >
+
+      </div>
+
+
+      <div class="experiencia-content">
+
+        <div class="orden">
+          {{ experiencia.orden }}
+        </div>
+
+        <span class="experiencia-etiqueta">
+          {{
+            experiencia.etiqueta
+            || experiencia.categoria
+            || 'Experiencia'
+          }}
+        </span>
+
+        <h2>
+          {{ experiencia.titulo }}
+        </h2>
+
+        <p class="experiencia-descripcion">
+          {{ experiencia.descripcion }}
+        </p>
+
+
+        <div class="experiencia-actions">
+
+          <button
+            type="button"
+            class="btn-editar"
+            (click)="
+              editarExperiencia(
+                experiencia
+              )
+            "
+          >
+            Editar
+          </button>
+
+
+          <button
+            type="button"
+            class="btn-estado"
+            (click)="
+              cambiarEstado(
+                experiencia
+              )
+            "
+          >
+            {{
+              experiencia.activa
+                ? 'Desactivar'
+                : 'Activar'
+            }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</div>

@@ -3,8 +3,13 @@ import {
   OnInit
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  RouterLink
+} from '@angular/router';
 
 import {
   SupabaseService
@@ -15,31 +20,12 @@ import {
 } from '../../core/models/experiencia.model';
 
 
-interface ExperienciaVista {
-
-  id: string;
-
-  titulo: string;
-
-  subtitulo: string;
-
-  descripcion: string;
-
-  imagen: string;
-
-  categoria: string;
-
-  etiqueta: string;
-
-  ruta?: string;
-
-}
-
-
 @Component({
-  selector: 'app-experiencias',
+  selector:
+    'app-experiencias',
 
-  standalone: true,
+  standalone:
+    true,
 
   imports: [
     CommonModule,
@@ -57,7 +43,7 @@ implements OnInit {
 
 
   experiencias:
-    ExperienciaVista[] = [];
+    Experiencia[] = [];
 
 
   cargando:
@@ -85,84 +71,43 @@ implements OnInit {
   private async cargarExperiencias():
     Promise<void> {
 
-    this.cargando = true;
+    this.cargando =
+      true;
 
-    this.errorCarga = false;
+
+    this.errorCarga =
+      false;
 
 
     try {
 
-      const experienciasSupabase:
-        Experiencia[] =
-          await this.supabaseService
-            .obtenerExperienciasActivas();
-
-
       this.experiencias =
-        experienciasSupabase.map(
-          experiencia =>
-            this.convertirExperiencia(
-              experiencia
-            )
-        );
+        await this.supabaseService
+          .obtenerExperienciasActivas();
 
     }
     catch (error) {
 
       console.error(
-        'No fue posible cargar las experiencias:',
+        'No fue posible cargar experiencias:',
         error
       );
 
 
-      this.experiencias = [];
+      this.experiencias =
+        [];
 
-      this.errorCarga = true;
+
+      this.errorCarga =
+        true;
 
     }
     finally {
 
-      this.cargando = false;
+      this.cargando =
+        false;
 
     }
-
-  }
-
-
-  private convertirExperiencia(
-    experiencia:
-      Experiencia
-  ): ExperienciaVista {
-
-    return {
-
-      id:
-        experiencia.id,
-
-      titulo:
-        experiencia.titulo,
-
-      subtitulo:
-        experiencia.subtitulo ?? '',
-
-      descripcion:
-        experiencia.descripcion,
-
-      imagen:
-        experiencia.imagen_url
-        ?? 'assets/J.jpg',
-
-      categoria:
-        experiencia.categoria ?? '',
-
-      etiqueta:
-        experiencia.etiqueta ?? '',
-
-      ruta:
-        experiencia.ruta_destino
-        ?? undefined
-
-    };
 
   }
 

@@ -7,16 +7,16 @@ import {
 } from './pages/home/home.component';
 
 import {
-  GastronomiaComponent
-} from './pages/gastronomia/gastronomia.component';
-
-import {
   ReservaDetalleComponent
 } from './pages/reserva-detalle/reserva-detalle.component';
 
 import {
   ExperienciasComponent
 } from './pages/experiencias/experiencias.component';
+
+import {
+  ExperienciaDetalleComponent
+} from './pages/experiencia-detalle/experiencia-detalle.component';
 
 import {
   EventosComponent
@@ -47,6 +47,10 @@ import {
 } from './pages/admin-eventos/admin-eventos.component';
 
 import {
+  AdminExperienciasComponent
+} from './pages/admin-experiencias/admin-experiencias.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -61,98 +65,84 @@ export const routes:
 
   {
     path: '',
-
-    redirectTo:
-      'home',
-
-    pathMatch:
-      'full'
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
 
 
   {
-    path:
-      'home',
-
-    component:
-      HomeComponent
+    path: 'home',
+    component: HomeComponent
   },
 
 
   {
-    path:
-      'experiencias',
+    path: 'experiencias',
+    component: ExperienciasComponent
+  },
 
-    component:
-      ExperienciasComponent
+
+  /*
+   * NUEVA FICHA INDIVIDUAL
+   */
+
+  {
+    path: 'experiencia/:id',
+    component: ExperienciaDetalleComponent
   },
 
 
   {
-    path:
-      'eventos',
-
-    component:
-      EventosComponent
+    path: 'eventos',
+    component: EventosComponent
   },
 
 
   {
-    path:
-      'jardin',
-
-    component:
-      JardinComponent
+    path: 'jardin',
+    component: JardinComponent
   },
 
 
   {
-    path:
-      'gastronomia',
-
-    component:
-      GastronomiaComponent
+    path: 'contacto',
+    component: ContactoComponent
   },
 
 
   {
-    path:
-      'contacto',
-
-    component:
-      ContactoComponent
-  },
-
-
-  {
-    path:
-      'reserva/:id',
-
-    component:
-      ReservaDetalleComponent
+    path: 'reserva/:id',
+    component: ReservaDetalleComponent
   },
 
 
   /* =========================================================
-     ADMINISTRACIÓN
+     RUTA ANTIGUA DE GASTRONOMÍA
+
+     Ya no mostramos el componente prototipo.
+     Cualquier enlace antiguo vuelve a Experiencias.
      ========================================================= */
 
   {
-    path:
-      'admin/login',
+    path: 'gastronomia',
+    redirectTo: 'experiencias',
+    pathMatch: 'full'
+  },
 
-    component:
-      AdminLoginComponent
+
+  /* =========================================================
+     ADMIN
+     ========================================================= */
+
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent
   },
 
 
   {
-    path:
-      'admin',
-
-    component:
-      AdminDashboardComponent,
-
+    path: 'admin',
+    component: AdminDashboardComponent,
     canActivate: [
       adminGuard
     ]
@@ -160,12 +150,8 @@ export const routes:
 
 
   {
-    path:
-      'admin/reservas',
-
-    component:
-      AdminReservasComponent,
-
+    path: 'admin/reservas',
+    component: AdminReservasComponent,
     canActivate: [
       adminGuard
     ]
@@ -173,12 +159,17 @@ export const routes:
 
 
   {
-    path:
-      'admin/eventos',
+    path: 'admin/eventos',
+    component: AdminEventosComponent,
+    canActivate: [
+      adminGuard
+    ]
+  },
 
-    component:
-      AdminEventosComponent,
 
+  {
+    path: 'admin/experiencias',
+    component: AdminExperienciasComponent,
     canActivate: [
       adminGuard
     ]
@@ -190,11 +181,8 @@ export const routes:
      ========================================================= */
 
   {
-    path:
-      '**',
-
-    redirectTo:
-      'home'
+    path: '**',
+    redirectTo: 'home'
   }
 
 ];

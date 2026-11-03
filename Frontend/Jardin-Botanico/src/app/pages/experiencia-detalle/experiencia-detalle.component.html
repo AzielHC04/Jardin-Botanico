@@ -1,0 +1,473 @@
+<div class="experiencia-page">
+
+
+  <!-- ======================================================
+       CARGANDO
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando experiencia...
+  </div>
+
+
+  <!-- ======================================================
+       ERROR
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="
+      !cargando
+      && errorCarga
+    "
+  >
+
+    <h2>
+      Experiencia no disponible
+    </h2>
+
+    <a
+      routerLink="/experiencias"
+      class="btn-estado"
+    >
+      Volver a experiencias
+    </a>
+
+  </div>
+
+
+  <!-- ======================================================
+       CONTENIDO
+       ====================================================== -->
+
+  <ng-container
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && experiencia
+    "
+  >
+
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+
+    <section class="experiencia-hero">
+
+      <img
+        class="hero-image"
+        [src]="
+          experiencia.imagen_url
+          || 'assets/J.jpg'
+        "
+        [alt]="experiencia.titulo"
+      >
+
+
+      <div class="hero-overlay">
+      </div>
+
+
+      <div class="hero-content">
+
+        <a
+          routerLink="/experiencias"
+          class="volver-link"
+        >
+          ← Experiencias
+        </a>
+
+
+        <span class="hero-etiqueta">
+          {{ etiquetaVisible }}
+        </span>
+
+
+        <h1>
+          {{ experiencia.titulo }}
+        </h1>
+
+
+        <p
+          class="hero-subtitulo"
+          *ngIf="experiencia.subtitulo"
+        >
+          {{ experiencia.subtitulo }}
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         INFORMACIÓN
+         ==================================================== -->
+
+    <section class="experiencia-grid">
+
+
+      <!-- CONTENIDO -->
+
+      <article class="experiencia-contenido">
+
+        <span class="section-eyebrow">
+          DESCUBRE TEYA
+        </span>
+
+
+        <h2>
+          Sobre esta experiencia
+        </h2>
+
+
+        <div class="divider">
+        </div>
+
+
+        <p class="descripcion">
+          {{ experiencia.descripcion }}
+        </p>
+
+
+        <div
+          class="detalle-destacado"
+          *ngIf="experiencia.subtitulo"
+        >
+
+          <span>
+            EXPERIENCIA
+          </span>
+
+          <strong>
+            {{ experiencia.subtitulo }}
+          </strong>
+
+        </div>
+
+
+        <div class="datos">
+
+          <div
+            class="dato"
+            *ngIf="experiencia.categoria"
+          >
+
+            <span>
+              Categoría
+            </span>
+
+            <strong>
+              {{ experiencia.categoria }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="dato"
+            *ngIf="experiencia.etiqueta"
+          >
+
+            <span>
+              Tipo
+            </span>
+
+            <strong>
+              {{ experiencia.etiqueta }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- PANEL -->
+
+      <aside class="experiencia-panel">
+
+        <span class="section-eyebrow">
+          VIVE TEYA
+        </span>
+
+
+        <h2>
+          Conoce la experiencia
+        </h2>
+
+
+        <p>
+          Descubre los espacios,
+          actividades y propuestas que forman
+          parte de la experiencia Teya.
+        </p>
+
+
+        <a
+          *ngIf="rutaRelacionada"
+          [routerLink]="rutaRelacionada"
+          class="btn-principal"
+        >
+          {{ textoRutaRelacionada }}
+          <span>→</span>
+        </a>
+
+
+        <a
+          routerLink="/contacto"
+          class="btn-secundario"
+        >
+          Solicitar información
+        </a>
+
+
+        <a
+          routerLink="/experiencias"
+          class="volver-experiencias"
+        >
+          Ver todas las experiencias
+        </a>
+
+      </aside>
+
+    </section>
+
+
+    <!-- ====================================================
+         COLLAGE
+         ==================================================== -->
+
+    <section
+      class="galeria-publica"
+      *ngIf="
+        galeria.length > 0
+      "
+    >
+
+
+      <div class="galeria-header">
+
+        <span class="section-eyebrow">
+          MOMENTOS DE LA EXPERIENCIA
+        </span>
+
+
+        <h2>
+          Una mirada a lo que puedes vivir
+        </h2>
+
+
+        <p>
+          Explora algunos de los espacios,
+          actividades y momentos que forman
+          parte de esta experiencia.
+        </p>
+
+      </div>
+
+
+      <!-- COLLAGE FIJO -->
+
+      <div
+        class="collage"
+        [class.pocas-imagenes]="
+          galeria.length <= 3
+        "
+      >
+
+        <button
+          type="button"
+          class="collage-item"
+          *ngFor="
+            let imagen
+            of galeria | slice:0:6;
+            let i = index
+          "
+          (click)="abrirImagen(i)"
+        >
+
+          <img
+            [src]="imagen.imagen_url"
+            [alt]="
+              imagen.descripcion
+              || experiencia.titulo
+            "
+            loading="lazy"
+          >
+
+
+          <!-- DESCRIPCIÓN -->
+
+          <div
+            class="collage-caption"
+            *ngIf="
+              imagen.descripcion
+              && !(
+                i === 5
+                &&
+                cantidadImagenesOcultas > 0
+              )
+            "
+          >
+            {{ imagen.descripcion }}
+          </div>
+
+
+          <!-- +N -->
+
+          <div
+            class="collage-mas"
+            *ngIf="
+              i === 5
+              &&
+              cantidadImagenesOcultas > 0
+            "
+          >
+
+            <strong>
+              +{{ cantidadImagenesOcultas }}
+            </strong>
+
+            <span>
+              Ver más fotografías
+            </span>
+
+          </div>
+
+        </button>
+
+      </div>
+
+
+      <div class="galeria-indicacion">
+
+        <span>
+          {{ galeria.length }}
+          {{
+            galeria.length === 1
+              ? 'fotografía'
+              : 'fotografías'
+          }}
+        </span>
+
+        <span>
+          Haz clic para ampliar
+        </span>
+
+      </div>
+
+    </section>
+
+  </ng-container>
+
+</div>
+
+
+<!-- ========================================================
+     VISOR
+     ======================================================== -->
+
+<div
+  class="visor"
+  *ngIf="
+    imagenSeleccionada
+    && experiencia
+  "
+  (click)="cerrarImagen()"
+>
+
+
+  <!-- CERRAR -->
+
+  <button
+    type="button"
+    class="visor-cerrar"
+    aria-label="Cerrar imagen"
+    (click)="cerrarImagen()"
+  >
+    ×
+  </button>
+
+
+  <!-- CONTADOR -->
+
+  <div class="visor-contador">
+
+    {{
+      imagenSeleccionadaIndex + 1
+    }}
+
+    /
+
+    {{ galeria.length }}
+
+  </div>
+
+
+  <!-- ANTERIOR -->
+
+  <button
+    type="button"
+    class="
+      visor-flecha
+      visor-anterior
+    "
+    aria-label="Fotografía anterior"
+    (click)="imagenAnterior($event)"
+  >
+    ‹
+  </button>
+
+
+  <!-- IMAGEN -->
+
+  <div
+    class="visor-contenido"
+    (click)="$event.stopPropagation()"
+  >
+
+    <img
+      [src]="
+        imagenSeleccionada.imagen_url
+      "
+      [alt]="
+        imagenSeleccionada.descripcion
+        || experiencia.titulo
+      "
+    >
+
+
+    <p
+      *ngIf="
+        imagenSeleccionada.descripcion
+      "
+    >
+      {{
+        imagenSeleccionada.descripcion
+      }}
+    </p>
+
+  </div>
+
+
+  <!-- SIGUIENTE -->
+
+  <button
+    type="button"
+    class="
+      visor-flecha
+      visor-siguiente
+    "
+    aria-label="Fotografía siguiente"
+    (click)="imagenSiguiente($event)"
+  >
+    ›
+  </button>
+
+</div>

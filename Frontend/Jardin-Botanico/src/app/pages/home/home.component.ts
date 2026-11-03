@@ -1,14 +1,17 @@
 import {
   Component,
-  OnInit,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import {
-  EventoCardComponent
-} from '../../shared/evento-card/evento-card.component';
+  CommonModule
+} from '@angular/common';
+
+import {
+  RouterLink
+} from '@angular/router';
+
 import {
   SupabaseService
 } from '../../core/services/supabase.service';
@@ -25,8 +28,12 @@ import {
   Experiencia
 } from '../../core/models/experiencia.model';
 
+import {
+  EventoCardComponent
+} from '../../shared/evento-card/evento-card.component';
 
-interface ExperienciaDestacada {
+
+interface ExperienciaHome {
 
   id: string;
 
@@ -41,7 +48,7 @@ interface ExperienciaDestacada {
 }
 
 
-interface EventoDestacado {
+interface EventoHome {
 
   id: string;
 
@@ -79,25 +86,71 @@ export class HomeComponent
 implements OnInit, OnDestroy {
 
 
-  /* =========================================================
-     BANNERS
-     ========================================================= */
-
   banners:
     Banner[] = [];
 
 
-  currentBannerIndex:
+  bannerIndex:
     number = 0;
+
+
+  experienciasDestacadas:
+    ExperienciaHome[] = [];
+
+
+  eventosDestacados:
+    EventoHome[] = [];
+
+
+  cargandoEventos:
+    boolean = true;
 
 
   private bannerInterval?:
     ReturnType<typeof setInterval>;
 
 
-  private readonly bannerDelay:
-    number = 5000;
+  constructor(
+    private supabaseService:
+      SupabaseService
+  ) {}
 
+
+  async ngOnInit():
+    Promise<void> {
+
+    await Promise.all([
+
+      this.cargarBanners(),
+
+      this.cargarExperiencias(),
+
+      this.cargarEventos()
+
+    ]);
+
+  }
+
+
+  ngOnDestroy():
+    void {
+
+    if (
+      this.bannerInterval
+    ) {
+
+      clearInterval(
+        this.bannerInterval
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     BANNER ACTUAL
+     ========================================================= */
 
   get bannerActual():
     Banner | null {
@@ -112,73 +165,8 @@ implements OnInit, OnDestroy {
 
 
     return this.banners[
-      this.currentBannerIndex
+      this.bannerIndex
     ];
-
-  }
-
-
-  /* =========================================================
-     EXPERIENCIAS DESTACADAS
-     ========================================================= */
-
-  experienciasDestacadas:
-    ExperienciaDestacada[] = [];
-
-
-  /* =========================================================
-     EVENTOS DESTACADOS
-     ========================================================= */
-
-  eventosDestacados:
-    EventoDestacado[] = [];
-
-
-  /* =========================================================
-     ESTADOS
-     ========================================================= */
-
-  cargandoExperiencias:
-    boolean = true;
-
-
-  cargandoEventos:
-    boolean = true;
-
-
-  constructor(
-    private supabaseService:
-      SupabaseService
-  ) {}
-
-
-  /* =========================================================
-     CICLO DE VIDA
-     ========================================================= */
-
-  async ngOnInit():
-    Promise<void> {
-
-
-    await Promise.all([
-
-      this.cargarBanners(),
-
-      this.cargarExperienciasDestacadas(),
-
-      this.cargarEventosDestacados()
-
-    ]);
-
-
-    this.iniciarCarrusel();
-
-  }
-
-
-  ngOnDestroy(): void {
-
-    this.detenerCarrusel();
 
   }
 
@@ -197,74 +185,79 @@ implements OnInit, OnDestroy {
           .obtenerBannersActivos();
 
 
-      this.currentBannerIndex = 0;
+      if (
+        this.banners.length > 1
+      ) {
+
+        this.iniciarBannerAutomatico();
+
+      }
 
     }
     catch (error) {
 
       console.error(
-        'No fue posible cargar los banners:',
+        'No fue posible cargar banners:',
         error
       );
 
 
-      /*
-       * Solo el Hero conserva fallback,
-       * para evitar una portada completamente vacía.
-       */
-
-      this.banners = [
-
-        {
-
-          id:
-            'fallback',
-
-          titulo:
-            'Jardín Botánico de Teya',
-
-          descripcion:
-            'Naturaleza, historia y experiencias que conectan con la riqueza cultural y botánica de Yucatán.',
-
-          imagen_url:
-            'assets/b.jpg',
-
-          texto_boton:
-            'Conocer el jardín',
-
-          ruta_boton:
-            '/jardin',
-
-          orden:
-            1,
-
-          activo:
-            true,
-
-          created_at:
-            '',
-
-          updated_at:
-            ''
-
-        }
-
-      ];
+      this.banners =
+        [];
 
     }
 
   }
 
 
+  private iniciarBannerAutomatico():
+    void {
+
+    if (
+      this.bannerInterval
+    ) {
+
+      clearInterval(
+        this.bannerInterval
+      );
+
+    }
+
+
+    this.bannerInterval =
+      setInterval(
+        () => {
+
+          if (
+            this.banners.length === 0
+          ) {
+
+            return;
+
+          }
+
+
+          this.bannerIndex =
+            (
+              this.bannerIndex
+              + 1
+            )
+            %
+            this.banners.length;
+
+        },
+        5000
+      );
+
+  }
+
+
   /* =========================================================
-     EXPERIENCIAS DESTACADAS
+     EXPERIENCIAS
      ========================================================= */
 
-  private async cargarExperienciasDestacadas():
+  private async cargarExperiencias():
     Promise<void> {
-
-    this.cargandoExperiencias = true;
-
 
     try {
 
@@ -291,11 +284,17 @@ implements OnInit, OnDestroy {
 
             imagen:
               experiencia.imagen_url
-              ?? 'assets/J.jpg',
+              || 'assets/J.jpg',
+
+            /*
+             * IMPORTANTE:
+             *
+             * ruta_destino deja de controlar
+             * el botón principal.
+             */
 
             ruta:
-              experiencia.ruta_destino
-              ?? '/experiencias'
+              `/experiencia/${experiencia.id}`
 
           })
         );
@@ -304,7 +303,7 @@ implements OnInit, OnDestroy {
     catch (error) {
 
       console.error(
-        'No fue posible cargar las experiencias destacadas:',
+        'No fue posible cargar experiencias destacadas:',
         error
       );
 
@@ -313,24 +312,19 @@ implements OnInit, OnDestroy {
         [];
 
     }
-    finally {
-
-      this.cargandoExperiencias =
-        false;
-
-    }
 
   }
 
 
   /* =========================================================
-     EVENTOS DESTACADOS
+     EVENTOS
      ========================================================= */
 
-  private async cargarEventosDestacados():
+  private async cargarEventos():
     Promise<void> {
 
-    this.cargandoEventos = true;
+    this.cargandoEventos =
+      true;
 
 
     try {
@@ -345,17 +339,40 @@ implements OnInit, OnDestroy {
 
       this.eventosDestacados =
         eventos.map(
-          evento =>
-            this.convertirEventoParaHome(
-              evento
-            )
+          evento => ({
+
+            id:
+              evento.id,
+
+            titulo:
+              evento.titulo,
+
+            descripcion:
+              evento.descripcion,
+
+            horario:
+              this.formatearHorario(
+                evento.fecha_inicio,
+                evento.fecha_fin
+              ),
+
+            precio:
+              this.formatearPrecio(
+                evento
+              ),
+
+            imagen:
+              evento.imagen_url
+              || 'assets/J.jpg'
+
+          })
         );
 
     }
     catch (error) {
 
       console.error(
-        'No fue posible cargar los eventos destacados:',
+        'No fue posible cargar eventos destacados:',
         error
       );
 
@@ -374,55 +391,11 @@ implements OnInit, OnDestroy {
   }
 
 
-  /* =========================================================
-     EVENTO → HOME
-     ========================================================= */
-
-  private convertirEventoParaHome(
-    evento:
-      Evento
-  ): EventoDestacado {
-
-    return {
-
-      id:
-        evento.id,
-
-      titulo:
-        evento.titulo,
-
-      descripcion:
-        evento.descripcion,
-
-      horario:
-        this.formatearHorario(
-          evento.fecha_inicio,
-          evento.fecha_fin
-        ),
-
-      precio:
-        this.formatearPrecio(
-          evento
-        ),
-
-      imagen:
-        evento.imagen_url
-        ?? 'assets/J.jpg'
-
-    };
-
-  }
-
-
-  /* =========================================================
-     HORARIO
-     ========================================================= */
-
   private formatearHorario(
-    fechaInicio:
+    inicio:
       string,
 
-    fechaFin:
+    fin:
       string | null
   ): string {
 
@@ -447,43 +420,38 @@ implements OnInit, OnDestroy {
       );
 
 
-    const inicio =
+    const inicioTexto =
       formatter.format(
         new Date(
-          fechaInicio
+          inicio
         )
       );
 
 
-    if (!fechaFin) {
+    if (!fin) {
 
-      return inicio;
+      return inicioTexto;
 
     }
 
 
-    const fin =
+    return (
+      `${inicioTexto} - `
+      +
       formatter.format(
         new Date(
-          fechaFin
+          fin
         )
-      );
-
-
-    return `${inicio} - ${fin}`;
+      )
+    );
 
   }
 
-
-  /* =========================================================
-     PRECIO
-     ========================================================= */
 
   private formatearPrecio(
     evento:
       Evento
   ): string {
-
 
     if (
       evento.precio_texto
@@ -495,7 +463,8 @@ implements OnInit, OnDestroy {
 
 
     if (
-      evento.precio === null
+      evento.precio ===
+      null
     ) {
 
       return 'Consultar';
@@ -524,63 +493,6 @@ implements OnInit, OnDestroy {
       .format(
         evento.precio
       );
-
-  }
-
-
-  /* =========================================================
-     CARRUSEL HERO
-     ========================================================= */
-
-  private iniciarCarrusel():
-    void {
-
-    this.detenerCarrusel();
-
-
-    if (
-      this.banners.length <= 1
-    ) {
-
-      return;
-
-    }
-
-
-    this.bannerInterval =
-      setInterval(
-        () => {
-
-          this.currentBannerIndex =
-            (
-              this.currentBannerIndex + 1
-            )
-            %
-            this.banners.length;
-
-        },
-        this.bannerDelay
-      );
-
-  }
-
-
-  private detenerCarrusel():
-    void {
-
-    if (
-      this.bannerInterval
-    ) {
-
-      clearInterval(
-        this.bannerInterval
-      );
-
-
-      this.bannerInterval =
-        undefined;
-
-    }
 
   }
 
