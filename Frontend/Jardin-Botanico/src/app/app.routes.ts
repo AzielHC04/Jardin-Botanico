@@ -51,6 +51,10 @@ import {
 } from './pages/admin-experiencias/admin-experiencias.component';
 
 import {
+  AdminContenidoComponent
+} from './pages/admin-contenido/admin-contenido.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -82,10 +86,6 @@ export const routes:
   },
 
 
-  /*
-   * NUEVA FICHA INDIVIDUAL
-   */
-
   {
     path: 'experiencia/:id',
     component: ExperienciaDetalleComponent
@@ -115,13 +115,6 @@ export const routes:
     component: ReservaDetalleComponent
   },
 
-
-  /* =========================================================
-     RUTA ANTIGUA DE GASTRONOMÍA
-
-     Ya no mostramos el componente prototipo.
-     Cualquier enlace antiguo vuelve a Experiencias.
-     ========================================================= */
 
   {
     path: 'gastronomia',
@@ -170,6 +163,15 @@ export const routes:
   {
     path: 'admin/experiencias',
     component: AdminExperienciasComponent,
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
+  {
+    path: 'admin/contenido',
+    component: AdminContenidoComponent,
     canActivate: [
       adminGuard
     ]

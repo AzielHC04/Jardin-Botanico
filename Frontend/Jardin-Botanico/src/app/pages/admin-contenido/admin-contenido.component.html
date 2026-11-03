@@ -1,0 +1,769 @@
+<div class="contenido-admin-page">
+
+
+  <!-- ======================================================
+       HEADER
+       ====================================================== -->
+
+  <header class="admin-header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="volver-link"
+      >
+        ← Panel administrativo
+      </a>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Contenido
+      </h1>
+
+      <p>
+        Configura la información general
+        y los banners del sitio.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       NAVEGACIÓN
+       ====================================================== -->
+
+  <nav class="contenido-tabs">
+
+    <button
+      type="button"
+      [class.active]="
+        seccionActual === 'general'
+      "
+      (click)="
+        cambiarSeccion('general')
+      "
+    >
+      Información general
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        seccionActual === 'banners'
+      "
+      (click)="
+        cambiarSeccion('banners')
+      "
+    >
+      Banners del Home
+    </button>
+
+  </nav>
+
+
+  <!-- MENSAJES -->
+
+  <div
+    class="mensaje-exito"
+    *ngIf="mensajeExito"
+  >
+    {{ mensajeExito }}
+  </div>
+
+
+  <div
+    class="mensaje-error"
+    *ngIf="mensajeError"
+  >
+    {{ mensajeError }}
+  </div>
+
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando contenido...
+  </div>
+
+
+  <!-- ======================================================
+       CONFIGURACIÓN GENERAL
+       ====================================================== -->
+
+  <section
+    class="panel"
+    *ngIf="
+      !cargando
+      && seccionActual === 'general'
+    "
+  >
+
+    <div class="panel-header">
+
+      <div>
+
+        <span class="eyebrow">
+          SITIO PÚBLICO
+        </span>
+
+        <h2>
+          Información general
+        </h2>
+
+        <p>
+          Estos datos son utilizados
+          por las secciones públicas del sitio.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form
+      class="contenido-form"
+      [formGroup]="formularioGeneral"
+      (ngSubmit)="guardarConfiguracion()"
+    >
+
+
+      <div class="campo">
+
+        <label for="nombre">
+          Nombre *
+        </label>
+
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="subtitulo">
+          Subtítulo
+        </label>
+
+        <input
+          id="subtitulo"
+          type="text"
+          formControlName="subtitulo"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="descripcion">
+          Descripción institucional
+        </label>
+
+        <textarea
+          id="descripcion"
+          rows="4"
+          formControlName="descripcion"
+        ></textarea>
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="direccion">
+          Dirección *
+        </label>
+
+        <input
+          id="direccion"
+          type="text"
+          formControlName="direccion"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="referencia">
+          Referencia
+        </label>
+
+        <input
+          id="referencia"
+          type="text"
+          formControlName="referencia"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="telefono">
+          Teléfono
+        </label>
+
+        <input
+          id="telefono"
+          type="text"
+          formControlName="telefono"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="whatsapp">
+          WhatsApp
+        </label>
+
+        <input
+          id="whatsapp"
+          type="text"
+          formControlName="whatsapp"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="email">
+          Correo
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+        >
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="horarios">
+          Horarios
+        </label>
+
+        <input
+          id="horarios"
+          type="text"
+          formControlName="horarios_atencion"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="google_maps_url">
+          Enlace Google Maps
+        </label>
+
+        <input
+          id="google_maps_url"
+          type="url"
+          formControlName="google_maps_url"
+        >
+
+      </div>
+
+
+      <div class="campo campo-completo">
+
+        <label for="mapa_embed_url">
+          URL de mapa embebido
+        </label>
+
+        <input
+          id="mapa_embed_url"
+          type="url"
+          formControlName="mapa_embed_url"
+        >
+
+        <small>
+          Es la dirección utilizada para mostrar
+          el mapa dentro de Contacto.
+        </small>
+
+      </div>
+
+
+      <div class="form-actions campo-completo">
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="guardandoGeneral"
+        >
+          {{
+            guardandoGeneral
+              ? 'Guardando...'
+              : 'Guardar información'
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- ======================================================
+       BANNERS
+       ====================================================== -->
+
+  <ng-container
+    *ngIf="
+      !cargando
+      && seccionActual === 'banners'
+    "
+  >
+
+
+    <section class="panel banners-header">
+
+      <div>
+
+        <span class="eyebrow">
+          HOME
+        </span>
+
+        <h2>
+          Banners principales
+        </h2>
+
+        <p>
+          Las imágenes activas rotan
+          automáticamente en el encabezado del Home.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-nuevo"
+        (click)="nuevoBanner()"
+      >
+        + Nuevo banner
+      </button>
+
+    </section>
+
+
+    <!-- EDITOR -->
+
+    <section
+      id="editor-banner"
+      class="panel editor-banner"
+      *ngIf="mostrarEditorBanner"
+    >
+
+      <div class="editor-header">
+
+        <div>
+
+          <span class="eyebrow">
+            {{
+              bannerEditandoId
+                ? 'EDITAR BANNER'
+                : 'NUEVO BANNER'
+            }}
+          </span>
+
+          <h2>
+            {{
+              bannerEditandoId
+                ? 'Actualizar banner'
+                : 'Crear banner'
+            }}
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-cerrar"
+          (click)="cancelarBanner()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form
+        class="contenido-form"
+        [formGroup]="formularioBanner"
+        (ngSubmit)="guardarBanner()"
+      >
+
+
+        <div class="campo">
+
+          <label for="banner_titulo">
+            Título
+          </label>
+
+          <input
+            id="banner_titulo"
+            type="text"
+            formControlName="titulo"
+          >
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="banner_orden">
+            Orden
+          </label>
+
+          <input
+            id="banner_orden"
+            type="number"
+            min="0"
+            formControlName="orden"
+          >
+
+        </div>
+
+
+        <div class="campo campo-completo">
+
+          <label for="banner_descripcion">
+            Descripción
+          </label>
+
+          <textarea
+            id="banner_descripcion"
+            rows="3"
+            formControlName="descripcion"
+          ></textarea>
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="texto_boton">
+            Texto del botón
+          </label>
+
+          <input
+            id="texto_boton"
+            type="text"
+            formControlName="texto_boton"
+            placeholder="Ej. Conocer el jardín"
+          >
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="ruta_boton">
+            Ruta del botón
+          </label>
+
+          <input
+            id="ruta_boton"
+            type="text"
+            formControlName="ruta_boton"
+            placeholder="/jardin"
+          >
+
+        </div>
+
+
+        <!-- IMAGEN -->
+
+        <div class="campo campo-completo">
+
+          <label>
+            Imagen del banner *
+          </label>
+
+
+          <div class="imagen-editor">
+
+            <div
+              class="banner-preview"
+              *ngIf="
+                formularioBanner
+                  .get('imagen_url')
+                  ?.value
+              "
+            >
+
+              <img
+                [src]="
+                  formularioBanner
+                    .get('imagen_url')
+                    ?.value
+                "
+                alt="Vista previa del banner"
+              >
+
+            </div>
+
+
+            <div class="imagen-controles">
+
+              <label class="btn-subir">
+
+                {{
+                  subiendoBanner
+                    ? 'Procesando...'
+                    : 'Seleccionar imagen'
+                }}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  [disabled]="subiendoBanner"
+                  (change)="
+                    seleccionarImagenBanner(
+                      $event
+                    )
+                  "
+                >
+
+              </label>
+
+
+              <span>
+                Máximo 5 MB.
+              </span>
+
+              <span>
+                Recomendado:
+                1600 × 700 px.
+              </span>
+
+              <span>
+                El sistema adapta automáticamente
+                la fotografía.
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="campo campo-completo">
+
+          <label for="banner_imagen_url">
+            URL de imagen
+          </label>
+
+          <input
+            id="banner_imagen_url"
+            type="url"
+            formControlName="imagen_url"
+          >
+
+        </div>
+
+
+        <div class="campo-completo">
+
+          <label class="switch-option">
+
+            <input
+              type="checkbox"
+              formControlName="activo"
+            >
+
+            <span>
+
+              <strong>
+                Banner activo
+              </strong>
+
+              <small>
+                Visible en la rotación del Home.
+              </small>
+
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <div class="form-actions campo-completo">
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="cancelarBanner()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="submit"
+            class="btn-guardar"
+            [disabled]="
+              guardandoBanner
+              || subiendoBanner
+            "
+          >
+            {{
+              guardandoBanner
+                ? 'Guardando...'
+                : (
+                    bannerEditandoId
+                      ? 'Guardar cambios'
+                      : 'Crear banner'
+                  )
+            }}
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- LISTADO -->
+
+    <section class="banners-grid">
+
+      <article
+        class="banner-card"
+        *ngFor="
+          let banner
+          of banners
+        "
+        [class.inactivo]="
+          !banner.activo
+        "
+      >
+
+        <div class="banner-card-image">
+
+          <img
+            [src]="banner.imagen_url"
+            [alt]="
+              banner.titulo
+              || 'Banner'
+            "
+          >
+
+          <span
+            *ngIf="!banner.activo"
+          >
+            Inactivo
+          </span>
+
+        </div>
+
+
+        <div class="banner-card-content">
+
+          <div class="banner-order">
+            Orden {{ banner.orden }}
+          </div>
+
+
+          <h3>
+            {{
+              banner.titulo
+              || 'Banner sin título'
+            }}
+          </h3>
+
+
+          <p>
+            {{
+              banner.descripcion
+              || 'Sin descripción'
+            }}
+          </p>
+
+
+          <div class="banner-meta">
+
+            <span
+              *ngIf="banner.texto_boton"
+            >
+              {{ banner.texto_boton }}
+            </span>
+
+            <span
+              *ngIf="banner.ruta_boton"
+            >
+              {{ banner.ruta_boton }}
+            </span>
+
+          </div>
+
+
+          <div class="banner-actions">
+
+            <button
+              type="button"
+              class="btn-editar"
+              (click)="editarBanner(banner)"
+            >
+              Editar
+            </button>
+
+
+            <button
+              type="button"
+              class="btn-estado"
+              [disabled]="
+                bannerActualizandoId
+                === banner.id
+              "
+              (click)="
+                cambiarEstadoBanner(
+                  banner
+                )
+              "
+            >
+              {{
+                banner.activo
+                  ? 'Desactivar'
+                  : 'Activar'
+              }}
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </ng-container>
+
+</div>
