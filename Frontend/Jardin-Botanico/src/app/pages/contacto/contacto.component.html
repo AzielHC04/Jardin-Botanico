@@ -1,0 +1,350 @@
+<div class="contact-page">
+
+  <!-- ======================================================
+       HERO
+       ====================================================== -->
+
+  <section class="contact-hero">
+
+    <span class="hero-eyebrow">
+      VISÍTANOS
+    </span>
+
+    <h1>
+      Ubicación & Contacto
+    </h1>
+
+    <p>
+      Encuentra la información necesaria
+      para conocer y visitar el Jardín Botánico de Teya.
+    </p>
+
+  </section>
+
+
+  <!-- ======================================================
+       INFORMACIÓN + MAPA
+       ====================================================== -->
+
+  <section class="contact-section">
+
+    <div class="contact-container">
+
+
+      <!-- ==================================================
+           INFORMACIÓN
+           ================================================== -->
+
+      <div class="contact-details">
+
+        <span class="contact-badge">
+          {{ infoJardin.subtitulo }}
+        </span>
+
+        <h2>
+          {{ infoJardin.nombre }}
+        </h2>
+
+        <p class="contact-description">
+          {{ infoJardin.descripcion }}
+        </p>
+
+
+        <div class="info-list">
+
+
+          <!-- DIRECCIÓN -->
+
+          <div class="info-item">
+
+            <div class="icon-wrapper">
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <path
+                  d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
+                />
+
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="3"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div class="info-content">
+
+              <strong>
+                Dirección
+              </strong>
+
+              <p>
+                {{ infoJardin.direccion }}
+              </p>
+
+              <small>
+                {{ infoJardin.referencia }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- HORARIOS -->
+
+          <div class="info-item">
+
+            <div class="icon-wrapper">
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+
+                <polyline
+                  points="12 6 12 12 16 14"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div class="info-content">
+
+              <strong>
+                Horarios de atención
+              </strong>
+
+              <p>
+                {{ infoJardin.horariosAtencion }}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- TELÉFONO -->
+
+          <div class="info-item">
+
+            <div class="icon-wrapper">
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div class="info-content">
+
+              <strong>
+                Teléfono & WhatsApp
+              </strong>
+
+              <p>
+                {{ infoJardin.telefono }}
+              </p>
+
+              <small>
+                WhatsApp:
+                {{ infoJardin.whatsapp }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- CORREO -->
+
+          <div class="info-item">
+
+            <div class="icon-wrapper">
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <rect
+                  width="20"
+                  height="16"
+                  x="2"
+                  y="4"
+                  rx="2"
+                />
+
+                <path
+                  d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div class="info-content">
+
+              <strong>
+                Correo electrónico
+              </strong>
+
+              <p>
+                {{ infoJardin.email }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- BOTÓN GOOGLE MAPS -->
+
+        <button
+          type="button"
+          class="btn-directions"
+          (click)="abrirComoLlegar()"
+        >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <polygon
+              points="3 11 22 2 13 21 11 13 3 11"
+            />
+
+          </svg>
+
+          <span>
+            Cómo llegar en Google Maps
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- ==================================================
+           MAPA
+           ================================================== -->
+
+      <div class="map-wrapper">
+
+        <iframe
+          [src]="infoJardin.mapaEmbedUrl"
+          width="100%"
+          height="100%"
+          style="border: 0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa del Jardín Botánico de Teya"
+        >
+        </iframe>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       RECORDATORIO DE VISITA
+       ====================================================== -->
+
+  <section class="visit-note">
+
+    <div>
+
+      <span class="visit-note-label">
+        JARDÍN BOTÁNICO DE TEYA
+      </span>
+
+      <h2>
+        Te esperamos en Teya
+      </h2>
+
+      <p>
+        Consulta la ubicación antes de tu visita
+        y utiliza Google Maps para obtener
+        indicaciones desde tu ubicación.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="visit-note-button"
+      (click)="abrirComoLlegar()"
+    >
+      Abrir Google Maps
+    </button>
+
+  </section>
+
+</div>

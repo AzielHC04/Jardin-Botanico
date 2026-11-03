@@ -1,0 +1,1346 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+
+:host {
+
+  --bg-surface: #fcfbf7;
+
+  --color-primary: #0b2b22;
+  --color-primary-light: #164e3f;
+
+  --color-accent: #c99d66;
+  --color-accent-soft: #fbf5ed;
+
+  --color-text-main: #2c3531;
+  --color-text-muted: #64748b;
+
+  --color-border: #e8eae6;
+
+  display: block;
+
+  background:
+    var(--bg-surface);
+
+}
+
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.garden-page {
+
+  width: 100%;
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding:
+    40px
+    20px
+    80px;
+
+  color:
+    var(--color-text-main);
+
+  font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.garden-hero {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  min-height: 480px;
+
+  overflow: hidden;
+
+  padding:
+    55px;
+
+  border-radius: 24px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-light) 100%
+    );
+
+  box-shadow:
+    0 22px 48px
+    rgba(11, 43, 34, 0.18);
+
+}
+
+
+.garden-hero::before {
+
+  content: '';
+
+  position: absolute;
+
+  width: 380px;
+  height: 380px;
+
+  top: -160px;
+  right: -100px;
+
+  border:
+    1px solid
+    rgba(201, 157, 102, 0.25);
+
+  border-radius: 50%;
+
+}
+
+
+.garden-hero::after {
+
+  content: '';
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  top: -90px;
+  right: -30px;
+
+  border:
+    1px solid
+    rgba(201, 157, 102, 0.18);
+
+  border-radius: 50%;
+
+}
+
+
+.garden-hero-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 760px;
+
+}
+
+
+.hero-eyebrow {
+
+  display: block;
+
+  margin-bottom: 12px;
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  letter-spacing: 2.5px;
+
+}
+
+
+.garden-hero h1 {
+
+  margin:
+    0
+    0
+    18px;
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    clamp(
+      2.8rem,
+      6vw,
+      4.5rem
+    );
+
+  line-height: 1.05;
+
+}
+
+
+.garden-hero p {
+
+  max-width: 620px;
+
+  margin:
+    0
+    0
+    28px;
+
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+
+}
+
+
+.hero-button {
+
+  display: inline-flex;
+
+  padding:
+    12px
+    22px;
+
+  border-radius: 12px;
+
+  color:
+    var(--color-primary);
+
+  background:
+    #ffffff;
+
+  font-size: 0.84rem;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    transform
+    0.25s
+    ease;
+
+}
+
+
+.hero-button:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* =========================================================
+   INTRODUCCIÓN
+   ========================================================= */
+
+.garden-introduction {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 70px;
+
+  margin-top: 90px;
+
+  padding:
+    0
+    30px;
+
+}
+
+
+.section-eyebrow {
+
+  display: block;
+
+  margin-bottom: 10px;
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 2.2px;
+
+}
+
+
+.intro-heading h2 {
+
+  max-width: 500px;
+
+  margin: 0;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  line-height: 1.15;
+
+}
+
+
+.intro-text {
+
+  padding-top: 28px;
+
+}
+
+
+.intro-text p {
+
+  margin:
+    0
+    0
+    18px;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.94rem;
+
+  line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   ENCABEZADOS
+   ========================================================= */
+
+.pillars-section,
+.collections-section {
+
+  margin-top: 90px;
+
+}
+
+
+.section-header {
+
+  max-width: 690px;
+
+  margin:
+    0
+    auto
+    40px;
+
+  text-align: center;
+
+}
+
+
+.subheading {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  letter-spacing: 2.4px;
+
+}
+
+
+.section-header h2 {
+
+  margin:
+    0
+    0
+    14px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 2.4rem;
+
+}
+
+
+.header-divider {
+
+  width: 50px;
+  height: 3px;
+
+  margin:
+    0
+    auto;
+
+  background:
+    var(--color-accent);
+
+}
+
+
+.section-description {
+
+  margin:
+    20px
+    auto
+    0;
+
+  max-width: 600px;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.9rem;
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   PILARES
+   ========================================================= */
+
+.pillars-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 24px;
+
+}
+
+
+.pillar-card {
+
+  padding:
+    34px;
+
+  border:
+    1px solid
+    var(--color-border);
+
+  border-radius: 20px;
+
+  background:
+    #ffffff;
+
+  transition:
+    transform
+    0.3s
+    ease,
+    border-color
+    0.3s
+    ease,
+    box-shadow
+    0.3s
+    ease;
+
+}
+
+
+.pillar-card:hover {
+
+  transform:
+    translateY(-5px);
+
+  border-color:
+    var(--color-accent);
+
+  box-shadow:
+    0 16px 35px
+    rgba(11, 43, 34, 0.08);
+
+}
+
+
+.pillar-number {
+
+  display: block;
+
+  margin-bottom: 25px;
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+}
+
+
+.pillar-card h3 {
+
+  margin:
+    0
+    0
+    12px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 1.45rem;
+
+}
+
+
+.pillar-card p {
+
+  margin: 0;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.86rem;
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   COLECCIONES
+   ========================================================= */
+
+.collections-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 24px;
+
+}
+
+
+.collection-card {
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--color-border);
+
+  border-radius: 20px;
+
+  background:
+    #ffffff;
+
+  transition:
+    transform
+    0.35s
+    ease,
+    box-shadow
+    0.35s
+    ease;
+
+}
+
+
+.collection-card:hover {
+
+  transform:
+    translateY(-6px);
+
+  box-shadow:
+    0 20px 40px
+    rgba(11, 43, 34, 0.10);
+
+}
+
+
+.collection-image {
+
+  position: relative;
+
+  height: 245px;
+
+  overflow: hidden;
+
+}
+
+
+.collection-image img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform
+    0.8s
+    ease;
+
+}
+
+
+.collection-card:hover
+.collection-image img {
+
+  transform:
+    scale(1.06);
+
+}
+
+
+.collection-badge {
+
+  position: absolute;
+
+  top: 16px;
+  left: 16px;
+
+  padding:
+    6px
+    13px;
+
+  border-radius: 30px;
+
+  color: #ffffff;
+
+  background:
+    rgba(11, 43, 34, 0.88);
+
+  font-size: 0.67rem;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+}
+
+
+.collection-content {
+
+  padding: 24px;
+
+}
+
+
+.collection-number {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+}
+
+
+.collection-content h3 {
+
+  margin:
+    0
+    0
+    10px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 1.4rem;
+
+}
+
+
+.collection-content p {
+
+  margin: 0;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.84rem;
+
+  line-height: 1.65;
+
+}
+
+
+/* =========================================================
+   ORQUÍDEAS / QR
+   ========================================================= */
+
+.orchids-section {
+
+  display: grid;
+
+  grid-template-columns:
+    0.9fr
+    1.1fr;
+
+  min-height: 480px;
+
+  overflow: hidden;
+
+  margin-top: 90px;
+
+  border-radius: 24px;
+
+  color: #ffffff;
+
+  background:
+    var(--color-primary);
+
+  box-shadow:
+    0 20px 45px
+    rgba(11, 43, 34, 0.16);
+
+}
+
+
+.orchids-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding:
+    50px;
+
+}
+
+
+.section-eyebrow.light {
+
+  color:
+    var(--color-accent);
+
+}
+
+
+.orchids-content h2 {
+
+  margin:
+    0
+    0
+    18px;
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    2.6rem;
+
+  line-height: 1.15;
+
+}
+
+
+.orchids-content > p {
+
+  margin:
+    0
+    0
+    14px;
+
+  color:
+    rgba(255, 255, 255, 0.76);
+
+  font-size: 0.88rem;
+
+  line-height: 1.7;
+
+}
+
+
+.orchids-visual {
+
+  min-height: 480px;
+
+}
+
+
+.orchids-visual img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+.qr-example {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 25px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+}
+
+
+.qr-icon {
+
+  flex-shrink: 0;
+
+  color:
+    var(--color-accent);
+
+}
+
+
+.qr-example strong {
+
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 0.85rem;
+
+}
+
+
+.qr-example span {
+
+  display: block;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 0.75rem;
+
+  line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   CONSERVACIÓN
+   ========================================================= */
+
+.conservation-section {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 60px;
+
+  align-items: center;
+
+  margin-top: 90px;
+
+}
+
+
+.conservation-image {
+
+  height: 420px;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+}
+
+
+.conservation-image img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+.conservation-content h2 {
+
+  margin:
+    0;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 2.5rem;
+
+  line-height: 1.15;
+
+}
+
+
+.content-divider {
+
+  width: 50px;
+  height: 3px;
+
+  margin:
+    20px
+    0
+    24px;
+
+  background:
+    var(--color-accent);
+
+}
+
+
+.conservation-content p {
+
+  margin:
+    0
+    0
+    16px;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.9rem;
+
+  line-height: 1.75;
+
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.garden-cta {
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  margin-top: 90px;
+
+  padding:
+    42px
+    48px;
+
+  border:
+    1px solid
+    rgba(201, 157, 102, 0.30);
+
+  border-radius: 24px;
+
+  background:
+    var(--color-accent-soft);
+
+}
+
+
+.garden-cta > div > span {
+
+  color:
+    var(--color-accent);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+}
+
+
+.garden-cta h2 {
+
+  margin:
+    7px
+    0
+    8px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 2rem;
+
+}
+
+
+.garden-cta p {
+
+  margin: 0;
+
+  color:
+    var(--color-text-muted);
+
+  font-size: 0.87rem;
+
+}
+
+
+.cta-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+
+}
+
+
+.cta-primary,
+.cta-secondary {
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    11px
+    20px;
+
+  border-radius: 11px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    all
+    0.25s
+    ease;
+
+}
+
+
+.cta-primary {
+
+  color: #ffffff;
+
+  background:
+    var(--color-primary);
+
+}
+
+
+.cta-secondary {
+
+  color:
+    var(--color-primary);
+
+  border:
+    1px solid
+    var(--color-primary);
+
+  background:
+    transparent;
+
+}
+
+
+.cta-primary:hover,
+.cta-secondary:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .garden-introduction,
+  .conservation-section {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .pillars-grid,
+  .collections-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+
+  .pillar-card:last-child,
+  .collection-card:last-child {
+
+    grid-column:
+      1 / -1;
+
+  }
+
+
+  .orchids-section {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .orchids-visual {
+
+    height: 400px;
+
+  }
+
+
+  .garden-cta {
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .garden-page {
+
+    padding:
+      20px
+      14px
+      60px;
+
+  }
+
+
+  .garden-hero {
+
+    min-height: 500px;
+
+    padding:
+      40px
+      28px;
+
+    border-radius: 18px;
+
+  }
+
+
+  .garden-introduction {
+
+    gap: 25px;
+
+    margin-top: 60px;
+
+    padding:
+      0
+      8px;
+
+  }
+
+
+  .intro-text {
+
+    padding-top: 0;
+
+  }
+
+
+  .pillars-section,
+  .collections-section,
+  .orchids-section,
+  .conservation-section,
+  .garden-cta {
+
+    margin-top: 65px;
+
+  }
+
+
+  .pillars-grid,
+  .collections-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .pillar-card:last-child,
+  .collection-card:last-child {
+
+    grid-column:
+      auto;
+
+  }
+
+
+  .orchids-content {
+
+    padding:
+      34px
+      26px;
+
+  }
+
+
+  .orchids-content h2 {
+
+    font-size:
+      2rem;
+
+  }
+
+
+  .orchids-visual {
+
+    height:
+      300px;
+
+    min-height:
+      auto;
+
+  }
+
+
+  .conservation-image {
+
+    height:
+      300px;
+
+  }
+
+
+  .conservation-content h2 {
+
+    font-size:
+      2rem;
+
+  }
+
+
+  .garden-cta {
+
+    padding:
+      32px
+      26px;
+
+    border-radius:
+      18px;
+
+  }
+
+
+  .cta-actions {
+
+    width: 100%;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .cta-primary,
+  .cta-secondary {
+
+    width: 100%;
+
+  }
+
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      0.01ms !important;
+
+    transition-duration:
+      0.01ms !important;
+
+  }
+
+}

@@ -1,117 +1,339 @@
-:host {
-  display: block;
+/* =========================================================
+   NAVBAR — HACIENDA TEYA
+   ========================================================= */
+
+.teya-navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-}
 
-.teya-navbar {
-  background-color: rgba(253, 251, 247, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e2dacb;
-  box-shadow: 0 4px 20px rgba(45, 74, 34, 0.05);
-  padding: 0.8rem 1.5rem;
+  width: 100%;
+  background: rgba(252, 251, 247, 0.96);
+  border-bottom: 1px solid var(--color-border);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .navbar-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1180px;
+  min-height: 78px;
+
   margin: 0 auto;
+  padding: 0 20px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 32px;
 }
+
+
+/* =========================================================
+   IDENTIDAD
+   ========================================================= */
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-}
 
-.brand-icon {
-  font-size: 1.8rem;
-  background-color: #e8f0e3;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid #c8dcb9;
+  color: inherit;
+  text-decoration: none;
+
+  flex-shrink: 0;
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .brand-name {
-  font-family: 'Georgia', serif;
-  font-size: 1.35rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: #2d4a22;
+
+  color: var(--color-primary);
   line-height: 1.1;
 }
 
 .brand-tagline {
-  font-size: 0.72rem;
-  color: #726255;
-  letter-spacing: 0.08em;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  letter-spacing: 1.4px;
   text-transform: uppercase;
-  margin-top: 2px;
+
+  color: var(--color-accent);
 }
+
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
 
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
+
+  gap: 6px;
+
+  flex: 1;
 }
 
 .nav-link {
-  text-decoration: none;
-  color: #4a4036;
-  font-size: 0.95rem;
-  font-weight: 500;
   position: relative;
-  padding: 0.4rem 0;
+
+  padding: 10px 12px;
+
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+
+  color: var(--color-text-main);
+  text-decoration: none;
+
+  border-radius: 8px;
+
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: #2d4a22;
+.nav-link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-accent-soft);
 }
 
-.nav-link.active::after {
+
+/* Línea inferior animada */
+
+.nav-link::after {
   content: '';
+
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+
   height: 2px;
-  background-color: #2d4a22;
-  border-radius: 2px;
+
+  background-color: var(--color-accent);
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  transition: transform 0.25s ease;
 }
 
-.btn-reservar {
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   ACCIÓN PRINCIPAL
+   ========================================================= */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+
+.btn-nav-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: #2d4a22;
+  justify-content: center;
+
+  padding: 11px 20px;
+
+  background-color: var(--color-primary);
   color: #ffffff;
-  padding: 0.65rem 1.3rem;
-  border-radius: 24px;
-  text-decoration: none;
-  font-size: 0.88rem;
+
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
   font-weight: 600;
-  transition: background-color 0.2s ease;
+
+  text-decoration: none;
+  white-space: nowrap;
+
+  box-shadow: 0 6px 16px rgba(11, 43, 34, 0.12);
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.btn-reservar:hover {
-  background-color: #1e3317;
+.btn-nav-primary:hover {
+  background-color: var(--color-primary-light);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 22px rgba(11, 43, 34, 0.2);
 }
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+  .navbar-container {
+    gap: 20px;
+  }
+
+  .nav-menu {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+
+  .btn-nav-primary {
+    padding: 10px 15px;
+    font-size: 0.78rem;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
 
 @media (max-width: 768px) {
+
+  .teya-navbar {
+    position: sticky;
+    top: 0;
+  }
+
+  .navbar-container {
+    min-height: auto;
+
+    padding: 14px 16px 10px;
+
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "brand action"
+      "nav nav";
+
+    gap: 14px;
+  }
+
+
+  /* Marca */
+
+  .brand {
+    grid-area: brand;
+  }
+
+  .brand-name {
+    font-size: 1.25rem;
+  }
+
+  .brand-tagline {
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+  }
+
+
+  /* Botón */
+
+  .nav-actions {
+    grid-area: action;
+  }
+
+  .btn-nav-primary {
+    padding: 9px 13px;
+
+    border-radius: 10px;
+
+    font-size: 0.7rem;
+  }
+
+
+  /* Menú horizontal */
+
   .nav-menu {
+    grid-area: nav;
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 4px;
+
+    overflow-x: auto;
+
+    padding-bottom: 4px;
+
+    scrollbar-width: none;
+  }
+
+  .nav-menu::-webkit-scrollbar {
     display: none;
   }
+
+  .nav-link {
+    flex-shrink: 0;
+
+    padding: 8px 11px;
+
+    font-size: 0.76rem;
+
+    background-color: #ffffff;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: 30px;
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .nav-link:hover {
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
+
+}
+
+
+/* =========================================================
+   TELÉFONOS PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .brand-name {
+    font-size: 1.15rem;
+  }
+
+  .btn-nav-primary {
+    padding: 8px 11px;
+  }
+
 }

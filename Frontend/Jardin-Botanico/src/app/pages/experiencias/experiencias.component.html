@@ -1,0 +1,258 @@
+<div class="experiences-page">
+
+  <!-- ======================================================
+       HERO
+       ====================================================== -->
+
+  <section class="experiences-hero">
+
+    <span class="hero-eyebrow">
+      DESCUBRE TEYA
+    </span>
+
+    <h1>
+      Experiencias
+    </h1>
+
+    <p>
+      Naturaleza, gastronomía, cultura y actividades
+      que transforman cada visita a Teya
+      en una experiencia diferente.
+    </p>
+
+  </section>
+
+
+  <!-- ======================================================
+       INTRODUCCIÓN
+       ====================================================== -->
+
+  <section class="intro-section">
+
+    <div class="intro-label">
+
+      <span>
+        VIVE EL ENTORNO
+      </span>
+
+    </div>
+
+
+    <div class="intro-content">
+
+      <h2>
+        Más que una visita
+      </h2>
+
+      <p>
+        Teya reúne naturaleza, historia y tradición
+        en un mismo espacio. Cada experiencia está
+        pensada para descubrir distintas formas de
+        conectar con el entorno y la cultura de Yucatán.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       EXPERIENCIAS
+       ====================================================== -->
+
+  <section class="experiences-section">
+
+    <div class="section-header">
+
+      <span class="subheading">
+        EXPERIENCIAS TEYA
+      </span>
+
+      <h2>
+        Elige cómo vivir tu visita
+      </h2>
+
+      <div class="header-divider"></div>
+
+      <p>
+        Explora las distintas actividades disponibles
+        y encuentra la experiencia que mejor se adapte
+        a tu visita.
+      </p>
+
+    </div>
+
+
+    <div class="experiences-grid">
+
+      <article
+        class="experience-card"
+        *ngFor="let experiencia of experiencias"
+      >
+
+        <!-- IMAGEN -->
+
+        <div class="experience-image">
+
+          <img
+            [src]="experiencia.imagen"
+            [alt]="experiencia.titulo"
+            loading="lazy"
+          >
+
+          <span class="experience-badge">
+            {{ experiencia.etiqueta }}
+          </span>
+
+        </div>
+
+
+        <!-- CONTENIDO -->
+
+        <div class="experience-content">
+
+          <span class="experience-number">
+            0{{ experiencia.id }}
+          </span>
+
+
+          <span class="experience-subtitle">
+            {{ experiencia.subtitulo }}
+          </span>
+
+
+          <h3>
+            {{ experiencia.titulo }}
+          </h3>
+
+
+          <p>
+            {{ experiencia.descripcion }}
+          </p>
+
+
+          <!-- SI EXISTE UNA RUTA -->
+
+          <a
+            *ngIf="experiencia.ruta"
+            [routerLink]="experiencia.ruta"
+            class="experience-link"
+          >
+
+            Conocer más
+
+            <span>
+              →
+            </span>
+
+          </a>
+
+
+          <!-- SI TODAVÍA NO EXISTE PÁGINA PROPIA -->
+
+          <a
+            *ngIf="!experiencia.ruta"
+            routerLink="/contacto"
+            class="experience-link"
+          >
+
+            Solicitar información
+
+            <span>
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       BLOQUE DESTACADO
+       ====================================================== -->
+
+  <section class="garden-highlight">
+
+    <div class="highlight-image">
+
+      <img
+        src="assets/J.jpg"
+        alt="Jardín Botánico de Teya"
+        loading="lazy"
+      >
+
+    </div>
+
+
+    <div class="highlight-content">
+
+      <span>
+        EXPERIENCIA DESTACADA
+      </span>
+
+      <h2>
+        Conoce el Jardín Botánico
+      </h2>
+
+      <p>
+        Descubre las colecciones vegetales, los espacios
+        naturales y el trabajo de conservación que forma
+        parte del Jardín Botánico de Teya.
+      </p>
+
+
+      <a
+        routerLink="/jardin"
+        class="highlight-button"
+      >
+
+        Descubrir el jardín
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       CTA
+       ====================================================== -->
+
+  <section class="experiences-cta">
+
+    <div>
+
+      <span>
+        PLANEA TU VISITA
+      </span>
+
+      <h2>
+        ¿Buscas una experiencia especial?
+      </h2>
+
+      <p>
+        Contáctanos para conocer opciones,
+        disponibilidad y actividades para visitantes,
+        grupos o eventos especiales.
+      </p>
+
+    </div>
+
+
+    <a
+      routerLink="/contacto"
+      class="cta-button"
+    >
+      Solicitar información
+    </a>
+
+  </section>
+
+</div>

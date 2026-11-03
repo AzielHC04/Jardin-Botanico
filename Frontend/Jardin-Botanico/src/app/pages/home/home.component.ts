@@ -1,261 +1,195 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
-interface Evento {
+
+interface ExperienciaDestacada {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  imagen: string;
+  ruta: string;
+}
+
+
+interface EventoDestacado {
   id: number;
   titulo: string;
   descripcion: string;
   horario: string;
   precio: string;
   imagen: string;
-  categoria: 'hoy' | 'proximos' | 'pasados';
-  cuposLimites?: number;
 }
 
-interface EventoEspecial {
-  id: number;
-  titulo: string;
-  subtitulo: string;
-  fecha: string;
-  descripcion: string;
-  imagen: string;
-  etiqueta: string;
-}
-
-interface InfoHacienda {
-  nombre: string;
-  subtitulo: string;
-  historia: string;
-  direccion: string;
-  referencia: string;
-  telefono: string;
-  whatsapp: string;
-  email: string;
-  horariosAtencion: string;
-  mapaEmbedUrl: SafeResourceUrl;
-}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+
+  imports: [
+    CommonModule,
+    RouterLink
+  ],
+
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+
   bannerImages: string[] = [
     'assets/b.jpg',
-    'assets/b.jpg',
-    'assets/b.jpg'
+    'assets/J.jpg',
+    'assets/imagenes/jazz.jpg'
   ];
-  currentBannerIndex = 0;
-  private bannerInterval: any;
 
-  filtroActual: 'hoy' | 'proximos' | 'pasados' = 'hoy';
-  eventosFiltrados: Evento[] = [];
-  
-  // Índice de la tarjeta enfocada en el centro del carrusel 3D
-  activeIndex = 0;
+  currentBannerIndex: number = 0;
 
-  eventos: Evento[] = [
+  private bannerInterval?: ReturnType<typeof setInterval>;
+
+
+  /* =========================================================
+     EXPERIENCIAS DESTACADAS
+     ========================================================= */
+
+  experienciasDestacadas: ExperienciaDestacada[] = [
+
     {
       id: 1,
-      titulo: 'Taller de Cerámica Botánica',
-      descripcion: 'Crea tus propias macetas de arcilla decoradas con relieve de hojas reales del jardín.',
-      horario: '10:00 AM - 12:00 PM',
-      precio: '$250 MXN',
+
+      titulo: 'Recorridos por el Jardín',
+
+      descripcion:
+        'Descubre la riqueza natural del Jardín Botánico de Teya mediante recorridos y experiencias de interpretación.',
+
       imagen: 'assets/J.jpg',
-      categoria: 'hoy',
-      cuposLimites: 4
+
+      ruta: '/jardin'
     },
+
     {
       id: 2,
-      titulo: 'Recorrido Informativo Guiado',
-      descripcion: 'Paseo guiado por la hacienda sobre la historia henequenera y sus majestuosos jardines.',
-      horario: '04:00 PM - 05:30 PM',
-      precio: 'Entrada General ($80 MXN)',
-      imagen: 'assets/J.jpg',
-      categoria: 'hoy'
+
+      titulo: 'Gastronomía Yucateca',
+
+      descripcion:
+        'Conoce los sabores tradicionales de Yucatán y la propuesta gastronómica que forma parte de la experiencia Teya.',
+
+      imagen: 'assets/b.jpg',
+
+      ruta: '/gastronomia'
     },
+
     {
       id: 3,
-      titulo: 'Cena Yucateca Tradicional',
-      descripcion: 'Experiencia gastronómica maya de 3 tiempos en el restaurante principal.',
-      horario: '08:00 PM - 10:30 PM',
-      precio: '$650 MXN',
-      imagen: 'assets/J.jpg',
-      categoria: 'hoy',
-      cuposLimites: 2
-    },
-    {
-      id: 4,
-      titulo: 'Exposición de Orquídeas Exóticas',
-      descripcion: 'Muestra especial de especies raras de orquídeas en las terrazas de la hacienda.',
-      horario: '11:00 AM - 03:00 PM',
-      precio: '$120 MXN',
-      imagen: 'assets/J.jpg',
-      categoria: 'proximos'
-    },
-    {
-      id: 5,
-      titulo: 'Noche de Fotografías Nocturnas',
-      descripcion: 'Taller práctico de fotografía de larga exposición recorriendo la arquitectura colonial.',
-      horario: '07:00 PM - 09:00 PM',
-      precio: '$300 MXN',
-      imagen: 'assets/J.jpg',
-      categoria: 'pasados'
-    }
-  ];
 
-  // SECCIÓN DE EVENTOS ESPECIALES & GALAS NOCTURNAS
-  eventosEspeciales: EventoEspecial[] = [
-    {
-      id: 101,
-      titulo: 'Noches de Jazz en la Hacienda',
-      subtitulo: 'Música en vivo & Coctelería Yucateca',
-      fecha: 'Próximo Viernes • 08:00 PM',
-      descripcion: 'Disfruta de bandas de jazz en vivo rodeado de la iluminación nocturna de los jardines coloniales y prueba nuestra coctelería artesanal.',
+      titulo: 'Experiencias Especiales',
+
+      descripcion:
+        'Actividades culturales, naturales y experiencias diseñadas para disfrutar Teya de una manera diferente.',
+
       imagen: 'assets/imagenes/jazz.jpg',
-      etiqueta: 'Especial'
-    },
-    {
-      id: 102,
-      titulo: 'Gran Gala Yucateca',
-      subtitulo: 'Tradición, Jarana & Gastronomía Maya',
-      fecha: '15 de Septiembre • 07:00 PM',
-      descripcion: 'Celebración especial con música y jarana en vivo, cata de licores artesanales y una cena maridaje con la mejor cocina tradicional.',
-      imagen: 'assets/J.jpg',
-      etiqueta: 'Tradicional'
-    },
-    {
-      id: 103,
-      titulo: 'Boda Muestra & Expo Eventos',
-      subtitulo: 'Montajes Exclusivos & Recorrido por Jardines',
-      fecha: 'Edición Especial de Primavera',
-      descripcion: 'Conoce nuestras instalaciones, decoración colonial para bodas de ensueño, salones y banquetes gourmet.',
-      imagen: 'assets/J.jpg',
-      etiqueta: 'Especial'
+
+      ruta: '/experiencias'
     }
+
   ];
 
-  // DATOS REALES DE LA HACIENDA TEYA
-  infoHacienda!: InfoHacienda;
 
-  constructor(
-    private ngZone: NgZone,
-    private sanitizer: DomSanitizer
-  ) {
-    const rawMapUrl =
-      'https://maps.google.com/maps?' +
-      'q=Jard%C3%ADn%20Bot%C3%A1nico%20de%20Teya%2C%20' +
-      'Carretera%20M%C3%A9rida-Canc%C3%BAn%20km%2011.2%2C%20' +
-      '97370%20M%C3%A9rida%2C%20Yucat%C3%A1n' +
-      '&t=&z=17&ie=UTF8&iwloc=&output=embed';
+  /* =========================================================
+     EVENTOS DESTACADOS
 
-    this.infoHacienda = {
-      nombre: 'Jardín Botánico de Teya',
+     Por ahora son datos locales.
+     Posteriormente serán obtenidos desde el backend.
+     ========================================================= */
 
-      subtitulo: 'Historia, Gastronomía Yucateca & Eventos',
+  eventosDestacados: EventoDestacado[] = [
 
-      historia:
-        'Fundada en 1683, la Hacienda Teya comenzó como una próspera finca ganadera y posteriormente henequenera. Tras años de abandono, fue restaurada en 1974 para convertirse en un referente emblemático del turismo, la cocina tradicional yucateca, el hospedaje boutique y la celebración de eventos inolvidables.',
+    {
+      id: 1,
 
-      direccion:
-        'Carretera Mérida - Cancún Km 11.2, C.P. 97370, Mérida, Yucatán',
+      titulo: 'Taller de Cerámica Botánica',
 
-      referencia:
-        'Jardín Botánico de Teya, sobre la carretera Mérida - Cancún.',
+      descripcion:
+        'Crea tus propias piezas inspiradas en formas y elementos naturales del jardín.',
 
-      telefono: '+52 (999) 988 0800',
-      whatsapp: '+52 (999) 123 4567',
-      email: 'ventas@haciendateya.com',
+      horario: '10:00 AM - 12:00 PM',
 
-      horariosAtencion:
-        'Lunes a Domingo: 08:00 AM - 06:00 PM',
+      precio: '$250 MXN',
 
-      mapaEmbedUrl:
-        this.sanitizer.bypassSecurityTrustResourceUrl(rawMapUrl)
-    };
-  }
+      imagen: 'assets/J.jpg'
+    },
+
+    {
+      id: 2,
+
+      titulo: 'Recorrido Informativo Guiado',
+
+      descripcion:
+        'Conoce la naturaleza, la historia y los espacios que forman parte de Teya.',
+
+      horario: '04:00 PM - 05:30 PM',
+
+      precio: '$80 MXN',
+
+      imagen: 'assets/J.jpg'
+    },
+
+    {
+      id: 3,
+
+      titulo: 'Cena Yucateca Tradicional',
+
+      descripcion:
+        'Una experiencia gastronómica inspirada en la cocina tradicional de Yucatán.',
+
+      horario: '08:00 PM - 10:30 PM',
+
+      precio: '$650 MXN',
+
+      imagen: 'assets/J.jpg'
+    }
+
+  ];
+
+
+  /* =========================================================
+     CICLO DE VIDA
+     ========================================================= */
 
   ngOnInit(): void {
-    this.actualizarFiltro();
 
-    this.ngZone.runOutsideAngular(() => {
-      this.bannerInterval = setInterval(() => {
-        this.ngZone.run(() => {
-          this.currentBannerIndex = (this.currentBannerIndex + 1) % this.bannerImages.length;
-        });
-      }, 5000);
-    });
+    if (this.bannerImages.length <= 1) {
+      return;
+    }
+
+    this.bannerInterval = setInterval(() => {
+
+      this.currentBannerIndex =
+        (this.currentBannerIndex + 1)
+        % this.bannerImages.length;
+
+    }, 5000);
+
   }
+
 
   ngOnDestroy(): void {
+
     if (this.bannerInterval) {
+
       clearInterval(this.bannerInterval);
-    }
-  }
 
-  setFiltro(categoria: 'hoy' | 'proximos' | 'pasados'): void {
-    this.filtroActual = categoria;
-    this.actualizarFiltro();
-  }
-
-  private actualizarFiltro(): void {
-    this.eventosFiltrados = this.eventos.filter(evento => evento.categoria === this.filtroActual);
-    this.activeIndex = 0;
-  }
-
-  // NAVEGACIÓN DEL CARRUSEL 3D
-  siguiente(): void {
-    if (this.eventosFiltrados.length === 0) return;
-    this.activeIndex = (this.activeIndex + 1) % this.eventosFiltrados.length;
-  }
-
-  anterior(): void {
-    if (this.eventosFiltrados.length === 0) return;
-    this.activeIndex = (this.activeIndex - 1 + this.eventosFiltrados.length) % this.eventosFiltrados.length;
-  }
-
-  setCardActive(index: number): void {
-    this.activeIndex = index;
-  }
-
-  getCardClass(index: number): string {
-    const total = this.eventosFiltrados.length;
-    if (total === 0) return '';
-
-    if (index === this.activeIndex) {
-      return 'card-center';
     }
 
-    const prevIndex = (this.activeIndex - 1 + total) % total;
-    const nextIndex = (this.activeIndex + 1) % total;
-
-    if (index === prevIndex) {
-      return 'card-left';
-    } else if (index === nextIndex) {
-      return 'card-right';
-    }
-
-    return 'card-hidden';
   }
 
-  reservar(evento: Evento): void {
-    alert(`Has iniciado la reserva para: ${evento.titulo}`);
-  }
-
-  solicitarInformacionEspecial(especial: EventoEspecial): void {
-    alert(`Has solicitado información sobre: ${especial.titulo}`);
-  }
-
-  abrirComoLlegar(): void {
-    window.open(
-      'https://maps.app.goo.gl/rWZDS1EzM5FnLZ7C9',
-      '_blank',
-      'noopener,noreferrer'
-    );
-  }
 }
