@@ -7,9 +7,9 @@
 
   <header class="admin-header">
 
-    <div>
+    <div class="admin-identidad">
 
-      <span>
+      <span class="admin-eyebrow">
         PANEL ADMINISTRATIVO
       </span>
 
@@ -38,6 +38,7 @@
 
     <button
       type="button"
+      class="btn-cerrar-sesion"
       (click)="cerrarSesion()"
       [disabled]="cerrandoSesion"
     >
@@ -81,101 +82,156 @@
   <section class="modules-grid">
 
 
-    <!-- RESERVAS -->
+    <!-- ====================================================
+         RESERVAS
+         ==================================================== -->
 
     <a
       routerLink="/admin/reservas"
-      class="module-card activo"
+      class="module-card module-card-active"
     >
 
-      <span>
+      <div class="module-number">
         01
-      </span>
+      </div>
+
 
       <h3>
         Reservas
       </h3>
 
+
       <p>
-        Consultar solicitudes
-        y actualizar su estado.
+        Consultar solicitudes y actualizar
+        su estado.
       </p>
 
-      <strong>
-        Abrir módulo →
-      </strong>
+
+      <div class="module-footer">
+
+        <span class="module-action">
+          Abrir módulo
+        </span>
+
+        <span class="module-arrow">
+          →
+        </span>
+
+      </div>
 
     </a>
 
 
-    <!-- EVENTOS -->
+    <!-- ====================================================
+         EVENTOS
+         ==================================================== -->
 
-    <article class="module-card">
+    <article
+      class="
+        module-card
+        module-card-disabled
+      "
+    >
 
-      <span>
+      <div class="module-number">
         02
-      </span>
+      </div>
+
 
       <h3>
         Eventos
       </h3>
+
 
       <p>
         Crear, editar y administrar
         eventos.
       </p>
 
-      <small>
-        Próximamente
-      </small>
+
+      <div class="module-footer">
+
+        <span class="module-soon">
+          Próximamente
+        </span>
+
+      </div>
 
     </article>
 
 
-    <!-- EXPERIENCIAS -->
+    <!-- ====================================================
+         EXPERIENCIAS
+         ==================================================== -->
 
-    <article class="module-card">
+    <article
+      class="
+        module-card
+        module-card-disabled
+      "
+    >
 
-      <span>
+      <div class="module-number">
         03
-      </span>
+      </div>
+
 
       <h3>
         Experiencias
       </h3>
+
 
       <p>
         Administrar experiencias
         públicas.
       </p>
 
-      <small>
-        Próximamente
-      </small>
+
+      <div class="module-footer">
+
+        <span class="module-soon">
+          Próximamente
+        </span>
+
+      </div>
 
     </article>
 
 
-    <!-- CONTENIDO -->
+    <!-- ====================================================
+         CONTENIDO
+         ==================================================== -->
 
-    <article class="module-card">
+    <article
+      class="
+        module-card
+        module-card-disabled
+      "
+    >
 
-      <span>
+      <div class="module-number">
         04
-      </span>
+      </div>
+
 
       <h3>
         Contenido
       </h3>
 
+
       <p>
-        Banners, imágenes
-        e información general.
+        Banners, imágenes e información
+        general.
       </p>
 
-      <small>
-        Próximamente
-      </small>
+
+      <div class="module-footer">
+
+        <span class="module-soon">
+          Próximamente
+        </span>
+
+      </div>
 
     </article>
 
