@@ -1,0 +1,821 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+
+:host {
+
+  --primary: #0b2b22;
+  --primary-light: #164e3f;
+
+  --accent: #c99d66;
+
+  --background: #fcfbf7;
+
+  --text: #2c3531;
+  --muted: #64748b;
+
+  --border: #e8eae6;
+
+  display: block;
+
+  min-height: 100vh;
+
+  background:
+    var(--background);
+
+}
+
+
+*,
+*::before,
+*::after {
+
+  box-sizing: border-box;
+
+}
+
+
+.reservas-page {
+
+  width: 100%;
+
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding:
+    45px
+    20px
+    90px;
+
+  font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
+  color:
+    var(--text);
+
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.reservas-header {
+
+  padding:
+    38px
+    40px;
+
+  border-radius: 22px;
+
+  color: #ffffff;
+
+  background:
+    var(--primary);
+
+}
+
+
+.volver-link {
+
+  display: inline-flex;
+
+  margin-bottom: 28px;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+
+  font-size: 0.74rem;
+
+  text-decoration: none;
+
+}
+
+
+.eyebrow {
+
+  display: block;
+
+  color:
+    var(--accent);
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+}
+
+
+.reservas-header h1 {
+
+  margin:
+    7px
+    0
+    9px;
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size:
+    2.8rem;
+
+}
+
+
+.reservas-header p {
+
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.7);
+
+}
+
+
+/* =========================================================
+   ESTADÍSTICAS
+   ========================================================= */
+
+.stats-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 18px;
+
+  margin-top: 28px;
+
+}
+
+
+.stats-grid article {
+
+  padding: 23px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+}
+
+
+.stats-grid span {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color:
+    var(--muted);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+}
+
+
+.stats-grid strong {
+
+  color:
+    var(--primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 2rem;
+
+}
+
+
+/* =========================================================
+   FILTROS
+   ========================================================= */
+
+.filtros {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin:
+    32px
+    0;
+
+}
+
+
+.filtros button {
+
+  padding:
+    9px
+    17px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 30px;
+
+  color:
+    var(--muted);
+
+  background:
+    #ffffff;
+
+  font-family:
+    inherit;
+
+  font-size: 0.74rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+}
+
+
+.filtros button.active {
+
+  border-color:
+    var(--primary);
+
+  color: #ffffff;
+
+  background:
+    var(--primary);
+
+}
+
+
+/* =========================================================
+   ESTADOS
+   ========================================================= */
+
+.estado-panel {
+
+  padding: 40px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 17px;
+
+  color:
+    var(--muted);
+
+  background: #ffffff;
+
+  text-align: center;
+
+}
+
+
+.estado-panel.error {
+
+  color:
+    #963e32;
+
+  background:
+    #fff8f5;
+
+}
+
+
+.estado-panel button {
+
+  margin-top: 10px;
+
+  padding:
+    10px
+    16px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  background:
+    var(--primary);
+
+  cursor: pointer;
+
+}
+
+
+.mensaje-error {
+
+  margin-bottom: 20px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  color:
+    #963e32;
+
+  background:
+    #fff3ef;
+
+}
+
+
+/* =========================================================
+   LISTA
+   ========================================================= */
+
+.reservas-lista {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+
+.reserva-card {
+
+  padding: 28px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 25px
+    rgba(11, 43, 34, 0.04);
+
+}
+
+
+/* =========================================================
+   EVENTO
+   ========================================================= */
+
+.evento-info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid
+    var(--border);
+
+}
+
+
+.evento-imagen {
+
+  width: 105px;
+  height: 78px;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+}
+
+
+.evento-imagen img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+.evento-texto h2 {
+
+  margin:
+    7px
+    0
+    4px;
+
+  color:
+    var(--primary);
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 1.35rem;
+
+}
+
+
+.evento-texto p {
+
+  margin: 0;
+
+  color:
+    var(--muted);
+
+  font-size: 0.72rem;
+
+}
+
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+
+.estado-badge {
+
+  display: inline-flex;
+
+  padding:
+    5px
+    10px;
+
+  border-radius: 30px;
+
+  font-size: 0.62rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+}
+
+
+.estado-badge.pendiente {
+
+  color: #8a652c;
+
+  background: #fff4da;
+
+}
+
+
+.estado-badge.confirmada {
+
+  color: #276246;
+
+  background: #e8f6ee;
+
+}
+
+
+.estado-badge.cancelada {
+
+  color: #923f36;
+
+  background: #fbecea;
+
+}
+
+
+/* =========================================================
+   DATOS
+   ========================================================= */
+
+.datos-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    20px
+    25px;
+
+  padding:
+    25px
+    0;
+
+}
+
+
+.datos-grid div {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+}
+
+
+.datos-grid span,
+.mensaje-cliente span {
+
+  color:
+    var(--muted);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+
+}
+
+
+.datos-grid strong,
+.datos-grid a {
+
+  color:
+    var(--primary);
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+}
+
+
+.datos-grid a {
+
+  text-decoration: none;
+
+}
+
+
+/* =========================================================
+   MENSAJE
+   ========================================================= */
+
+.mensaje-cliente {
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background:
+    #f7f8f5;
+
+}
+
+
+.mensaje-cliente p {
+
+  margin:
+    7px
+    0
+    0;
+
+  color:
+    var(--text);
+
+  font-size: 0.78rem;
+
+  line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.acciones {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 22px;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    var(--border);
+
+}
+
+
+.acciones > span {
+
+  margin-right: 5px;
+
+  color:
+    var(--muted);
+
+  font-size: 0.7rem;
+
+}
+
+
+.acciones button {
+
+  padding:
+    8px
+    13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 9px;
+
+  background:
+    #ffffff;
+
+  font-family: inherit;
+
+  font-size: 0.68rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+}
+
+
+.acciones button:disabled {
+
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+}
+
+
+.btn-pendiente.active {
+
+  color: #8a652c;
+
+  border-color: #e6c878;
+
+  background: #fff4da;
+
+}
+
+
+.btn-confirmar.active {
+
+  color: #276246;
+
+  border-color: #a8d8bd;
+
+  background: #e8f6ee;
+
+}
+
+
+.btn-cancelar.active {
+
+  color: #923f36;
+
+  border-color: #e4b3ad;
+
+  background: #fbecea;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .stats-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+
+  .datos-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .reservas-page {
+
+    padding:
+      25px
+      14px
+      60px;
+
+  }
+
+
+  .reservas-header {
+
+    padding:
+      30px
+      24px;
+
+  }
+
+
+  .reservas-header h1 {
+
+    font-size: 2.2rem;
+
+  }
+
+
+  .stats-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+
+  .reserva-card {
+
+    padding: 20px;
+
+  }
+
+
+  .evento-info {
+
+    align-items:
+      flex-start;
+
+  }
+
+
+  .evento-imagen {
+
+    width: 85px;
+    height: 70px;
+
+  }
+
+
+  .datos-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .acciones {
+
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .acciones button {
+
+    width: 100%;
+
+  }
+
+}

@@ -147,6 +147,24 @@ export class AdminLoginComponent {
         );
 
 
+      const perfil =
+        await this.authService
+          .obtenerPerfilAdminActual();
+
+
+      if (!perfil) {
+
+        await this.authService
+          .cerrarSesion();
+
+
+        throw new Error(
+          'SIN_ACCESO_ADMIN'
+        );
+
+      }
+
+
       const returnUrl =
         this.route
           .snapshot
@@ -171,8 +189,23 @@ export class AdminLoginComponent {
       );
 
 
-      this.errorLogin =
-        'Correo o contraseña incorrectos.';
+      if (
+        error instanceof Error
+        &&
+        error.message ===
+          'SIN_ACCESO_ADMIN'
+      ) {
+
+        this.errorLogin =
+          'Esta cuenta no tiene acceso al panel administrativo.';
+
+      }
+      else {
+
+        this.errorLogin =
+          'Correo o contraseña incorrectos.';
+
+      }
 
     }
     finally {
@@ -186,8 +219,7 @@ export class AdminLoginComponent {
 
 
   campoInvalido(
-    campo:
-      string
+    campo: string
   ): boolean {
 
     const control =

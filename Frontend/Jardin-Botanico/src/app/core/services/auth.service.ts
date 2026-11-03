@@ -11,6 +11,21 @@ import {
 } from './supabase.service';
 
 
+export interface PerfilAdmin {
+
+  id: string;
+
+  nombre: string;
+
+  rol:
+    | 'admin'
+    | 'editor';
+
+  activo: boolean;
+
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -102,17 +117,76 @@ export class AuthService {
 
 
   /* =========================================================
-     COMPROBAR AUTENTICACIÓN
+     PERFIL ADMINISTRATIVO
      ========================================================= */
 
-  async estaAutenticado():
-    Promise<boolean> {
+  async obtenerPerfilAdminActual():
+    Promise<PerfilAdmin | null> {
 
     const usuario =
       await this.obtenerUsuarioActual();
 
 
-    return !!usuario;
+    if (!usuario) {
+
+      return null;
+
+    }
+
+
+    const {
+      data,
+      error
+    } = await this.supabaseService
+      .client
+      .schema('public')
+      .from('perfiles_admin')
+      .select(`
+        id,
+        nombre,
+        rol,
+        activo
+      `)
+      .eq(
+        'id',
+        usuario.id
+      )
+      .eq(
+        'activo',
+        true
+      )
+      .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        'Error al verificar perfil administrativo:',
+        error
+      );
+
+      return null;
+
+    }
+
+
+    return data as PerfilAdmin | null;
+
+  }
+
+
+  /* =========================================================
+     ACCESO ADMIN
+     ========================================================= */
+
+  async puedeAccederAdmin():
+    Promise<boolean> {
+
+    const perfil =
+      await this.obtenerPerfilAdminActual();
+
+
+    return !!perfil;
 
   }
 
@@ -129,9 +203,7 @@ export class AuthService {
     } = await this.supabaseService
       .client
       .auth
-      .signOut({
-        scope: 'local'
-      });
+      .signOut();
 
 
     if (error) {

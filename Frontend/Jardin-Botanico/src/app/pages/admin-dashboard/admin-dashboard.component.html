@@ -1,5 +1,10 @@
 <div class="admin-page">
 
+
+  <!-- ======================================================
+       CABECERA
+       ====================================================== -->
+
   <header class="admin-header">
 
     <div>
@@ -13,7 +18,19 @@
       </h1>
 
       <p>
+
+        <strong *ngIf="perfil">
+          {{ perfil.nombre }}
+        </strong>
+
+        <ng-container *ngIf="perfil">
+          · {{ perfil.rol }}
+        </ng-container>
+
+        <br>
+
         {{ email }}
+
       </p>
 
     </div>
@@ -34,6 +51,10 @@
   </header>
 
 
+  <!-- ======================================================
+       BIENVENIDA
+       ====================================================== -->
+
   <section class="welcome">
 
     <span class="eyebrow">
@@ -45,52 +66,117 @@
     </h2>
 
     <p>
-      El acceso administrativo ya está
-      funcionando correctamente.
-    </p>
-
-    <p>
-      En los siguientes pasos agregaremos
-      los módulos para gestionar banners,
-      eventos, experiencias, reservas,
-      imágenes y configuración del sitio.
+      Desde aquí podrás administrar
+      el contenido y las solicitudes
+      recibidas desde el sitio público.
     </p>
 
   </section>
 
 
+  <!-- ======================================================
+       MÓDULOS
+       ====================================================== -->
+
   <section class="modules-grid">
 
-    <article>
-      <span>01</span>
-      <h3>Eventos</h3>
+
+    <!-- RESERVAS -->
+
+    <a
+      routerLink="/admin/reservas"
+      class="module-card activo"
+    >
+
+      <span>
+        01
+      </span>
+
+      <h3>
+        Reservas
+      </h3>
+
       <p>
-        Crear, editar, activar y desactivar eventos.
+        Consultar solicitudes
+        y actualizar su estado.
       </p>
+
+      <strong>
+        Abrir módulo →
+      </strong>
+
+    </a>
+
+
+    <!-- EVENTOS -->
+
+    <article class="module-card">
+
+      <span>
+        02
+      </span>
+
+      <h3>
+        Eventos
+      </h3>
+
+      <p>
+        Crear, editar y administrar
+        eventos.
+      </p>
+
+      <small>
+        Próximamente
+      </small>
+
     </article>
 
-    <article>
-      <span>02</span>
-      <h3>Reservas</h3>
+
+    <!-- EXPERIENCIAS -->
+
+    <article class="module-card">
+
+      <span>
+        03
+      </span>
+
+      <h3>
+        Experiencias
+      </h3>
+
       <p>
-        Consultar solicitudes recibidas.
+        Administrar experiencias
+        públicas.
       </p>
+
+      <small>
+        Próximamente
+      </small>
+
     </article>
 
-    <article>
-      <span>03</span>
-      <h3>Experiencias</h3>
-      <p>
-        Administrar experiencias públicas.
-      </p>
-    </article>
 
-    <article>
-      <span>04</span>
-      <h3>Contenido</h3>
+    <!-- CONTENIDO -->
+
+    <article class="module-card">
+
+      <span>
+        04
+      </span>
+
+      <h3>
+        Contenido
+      </h3>
+
       <p>
-        Gestionar banners, imágenes y datos generales.
+        Banners, imágenes
+        e información general.
       </p>
+
+      <small>
+        Próximamente
+      </small>
+
     </article>
 
   </section>

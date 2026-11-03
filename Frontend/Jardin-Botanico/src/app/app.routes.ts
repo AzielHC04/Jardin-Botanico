@@ -39,6 +39,10 @@ import {
 } from './pages/admin-dashboard/admin-dashboard.component';
 
 import {
+  AdminReservasComponent
+} from './pages/admin-reservas/admin-reservas.component';
+
+import {
   adminGuard
 } from './core/guards/admin.guard';
 
@@ -151,8 +155,21 @@ export const routes:
   },
 
 
+  {
+    path:
+      'admin/reservas',
+
+    component:
+      AdminReservasComponent,
+
+    canActivate: [
+      adminGuard
+    ]
+  },
+
+
   /* =========================================================
-     RUTA NO ENCONTRADA
+     FALLBACK
      ========================================================= */
 
   {

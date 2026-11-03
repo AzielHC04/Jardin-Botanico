@@ -8,11 +8,13 @@ import {
 } from '@angular/common';
 
 import {
-  Router
+  Router,
+  RouterLink
 } from '@angular/router';
 
 import {
-  AuthService
+  AuthService,
+  PerfilAdmin
 } from '../../core/services/auth.service';
 
 
@@ -24,7 +26,8 @@ import {
     true,
 
   imports: [
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
 
   templateUrl:
@@ -35,6 +38,10 @@ import {
 })
 export class AdminDashboardComponent
 implements OnInit {
+
+
+  perfil:
+    PerfilAdmin | null = null;
 
 
   email:
@@ -64,9 +71,18 @@ implements OnInit {
         .obtenerUsuarioActual();
 
 
+    const perfil =
+      await this.authService
+        .obtenerPerfilAdminActual();
+
+
     this.email =
       usuario?.email
       ?? '';
+
+
+    this.perfil =
+      perfil;
 
   }
 
@@ -88,6 +104,14 @@ implements OnInit {
         .navigate([
           '/admin/login'
         ]);
+
+    }
+    catch (error) {
+
+      console.error(
+        'No fue posible cerrar sesión:',
+        error
+      );
 
     }
     finally {

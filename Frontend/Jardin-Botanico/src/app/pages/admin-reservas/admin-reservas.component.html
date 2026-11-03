@@ -1,0 +1,494 @@
+<div class="reservas-page">
+
+
+  <!-- ======================================================
+       CABECERA
+       ====================================================== -->
+
+  <header class="reservas-header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="volver-link"
+      >
+        ← Panel administrativo
+      </a>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Reservas
+      </h1>
+
+      <p>
+        Consulta y administra las solicitudes
+        recibidas desde el sitio.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       RESUMEN
+       ====================================================== -->
+
+  <section class="stats-grid">
+
+    <article>
+
+      <span>
+        TOTAL
+      </span>
+
+      <strong>
+        {{ reservas.length }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        PENDIENTES
+      </span>
+
+      <strong>
+        {{ totalPendientes }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        CONFIRMADAS
+      </span>
+
+      <strong>
+        {{ totalConfirmadas }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        CANCELADAS
+      </span>
+
+      <strong>
+        {{ totalCanceladas }}
+      </strong>
+
+    </article>
+
+  </section>
+
+
+  <!-- ======================================================
+       FILTROS
+       ====================================================== -->
+
+  <section class="filtros">
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'todas'
+      "
+      (click)="
+        cambiarFiltro('todas')
+      "
+    >
+      Todas
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'pendiente'
+      "
+      (click)="
+        cambiarFiltro('pendiente')
+      "
+    >
+      Pendientes
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'confirmada'
+      "
+      (click)="
+        cambiarFiltro('confirmada')
+      "
+    >
+      Confirmadas
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        filtroActual === 'cancelada'
+      "
+      (click)="
+        cambiarFiltro('cancelada')
+      "
+    >
+      Canceladas
+    </button>
+
+  </section>
+
+
+  <!-- ======================================================
+       CARGANDO
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="cargando"
+  >
+    Cargando reservas...
+  </div>
+
+
+  <!-- ======================================================
+       ERROR
+       ====================================================== -->
+
+  <div
+    class="estado-panel error"
+    *ngIf="
+      !cargando
+      && errorCarga
+    "
+  >
+
+    <p>
+      No fue posible cargar las reservas.
+    </p>
+
+    <button
+      type="button"
+      (click)="cargarReservas()"
+    >
+      Intentar nuevamente
+    </button>
+
+  </div>
+
+
+  <div
+    class="mensaje-error"
+    *ngIf="mensajeError"
+  >
+    {{ mensajeError }}
+  </div>
+
+
+  <!-- ======================================================
+       SIN RESULTADOS
+       ====================================================== -->
+
+  <div
+    class="estado-panel"
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && reservasFiltradas.length === 0
+    "
+  >
+
+    No hay reservas en esta categoría.
+
+  </div>
+
+
+  <!-- ======================================================
+       RESERVAS
+       ====================================================== -->
+
+  <section
+    class="reservas-lista"
+    *ngIf="
+      !cargando
+      && !errorCarga
+      && reservasFiltradas.length > 0
+    "
+  >
+
+    <article
+      class="reserva-card"
+      *ngFor="
+        let reserva
+        of reservasFiltradas
+      "
+    >
+
+
+      <!-- EVENTO -->
+
+      <div class="evento-info">
+
+        <div
+          class="evento-imagen"
+          *ngIf="reserva.evento?.imagen_url"
+        >
+
+          <img
+            [src]="reserva.evento?.imagen_url"
+            [alt]="
+              reserva.evento?.titulo
+              || 'Evento'
+            "
+          >
+
+        </div>
+
+
+        <div class="evento-texto">
+
+          <span
+            class="estado-badge"
+            [class.pendiente]="
+              reserva.estado === 'pendiente'
+            "
+            [class.confirmada]="
+              reserva.estado === 'confirmada'
+            "
+            [class.cancelada]="
+              reserva.estado === 'cancelada'
+            "
+          >
+            {{ reserva.estado }}
+          </span>
+
+
+          <h2>
+            {{
+              reserva.evento?.titulo
+              || 'Evento'
+            }}
+          </h2>
+
+
+          <p>
+            {{
+              formatearFechaEvento(
+                reserva.evento?.fecha_inicio
+              )
+            }}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- CLIENTE -->
+
+      <div class="datos-grid">
+
+        <div>
+
+          <span>
+            Cliente
+          </span>
+
+          <strong>
+            {{ reserva.nombre }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Personas
+          </span>
+
+          <strong>
+            {{ reserva.cantidad_personas }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Correo
+          </span>
+
+          <a
+            [href]="
+              'mailto:' + reserva.email
+            "
+          >
+            {{ reserva.email }}
+          </a>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Teléfono
+          </span>
+
+          <a
+            [href]="
+              'tel:' + reserva.telefono
+            "
+          >
+            {{ reserva.telefono }}
+          </a>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Monto
+          </span>
+
+          <strong>
+            {{
+              formatearMonto(
+                reserva
+              )
+            }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Solicitud
+          </span>
+
+          <strong>
+            {{
+              formatearFechaSolicitud(
+                reserva.created_at
+              )
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- MENSAJE -->
+
+      <div
+        class="mensaje-cliente"
+        *ngIf="reserva.mensaje"
+      >
+
+        <span>
+          Mensaje del visitante
+        </span>
+
+        <p>
+          {{ reserva.mensaje }}
+        </p>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+
+      <div class="acciones">
+
+        <span>
+          Cambiar estado:
+        </span>
+
+
+        <button
+          type="button"
+          class="btn-pendiente"
+          [class.active]="
+            reserva.estado === 'pendiente'
+          "
+          [disabled]="
+            reservaActualizandoId === reserva.id
+          "
+          (click)="
+            cambiarEstado(
+              reserva,
+              'pendiente'
+            )
+          "
+        >
+          Pendiente
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-confirmar"
+          [class.active]="
+            reserva.estado === 'confirmada'
+          "
+          [disabled]="
+            reservaActualizandoId === reserva.id
+          "
+          (click)="
+            cambiarEstado(
+              reserva,
+              'confirmada'
+            )
+          "
+        >
+          Confirmar
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          [class.active]="
+            reserva.estado === 'cancelada'
+          "
+          [disabled]="
+            reservaActualizandoId === reserva.id
+          "
+          (click)="
+            cambiarEstado(
+              reserva,
+              'cancelada'
+            )
+          "
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</div>

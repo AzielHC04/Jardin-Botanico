@@ -32,12 +32,12 @@ export const adminGuard:
       );
 
 
-    const autenticado =
+    const puedeAcceder =
       await authService
-        .estaAutenticado();
+        .puedeAccederAdmin();
 
 
-    if (autenticado) {
+    if (puedeAcceder) {
 
       return true;
 
